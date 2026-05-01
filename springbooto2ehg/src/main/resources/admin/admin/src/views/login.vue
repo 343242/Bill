@@ -77,7 +77,7 @@
 </template>
 <script>
 
-import menu from "@/utils/menu";
+import { normalizeMenus } from "@/utils/menu";
 
 export default {
   data() {
@@ -136,7 +136,7 @@ export default {
 			data
 		}) => {
 			if (data && data.code === 0) {
-				this.menus = JSON.parse(data.data.list[0].menujson);
+				this.menus = normalizeMenus(JSON.parse(data.data.list[0].menujson));
                 for (let i = 0; i < this.menus.length; i++) {
                   if (this.menus[i].hasBackLogin=='是') {
                         this.roles.push(this.menus[i])

@@ -9,9 +9,12 @@ server:
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/springbooto2ehg?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
-        username: root
-        password: change-me
+#        url: jdbc:mysql://127.0.0.1:3306/springbooto2ehg?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+#        username: root
+#        password: 123456
+        url: jdbc:mysql://162.14.112.164:3306/springbooto2ehg?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+        username: springbooto2ehg
+        password: Mky789123456
 
     servlet:
       multipart:
