@@ -43,13 +43,11 @@ function restructureAdminBackMenu(backMenu) {
     const coachInfoMenu = allChildren.find(child => child.tableName === 'jiaolian');
     const noticeMenu = allChildren.find(child => child.tableName === 'news');
     const schoolOverviewMenu = allChildren.find(child => child.tableName === 'shouYeXinXi');
-    const otherHomeMenus = (homeParentMenu.child || []).filter(child => !['jiaolian', 'news', 'shouYeXinXi'].includes(child.tableName));
-
     return backMenu.map((parentMenu, index) => {
         if (index === studentMenuIndex) {
             return {
                 ...studentParentMenu,
-                menu: '学员信息管理',
+                menu: '学员信息管理（原基础信息管理）',
                 child: dedupeMenuItems([
                     renameMenuItem(studentInfoMenu, '学员信息管理'),
                     renameMenuItem(signupInfoMenu, '报名信息管理')
@@ -63,8 +61,7 @@ function restructureAdminBackMenu(backMenu) {
                 child: dedupeMenuItems([
                     renameMenuItem(schoolOverviewMenu, '驾校概况'),
                     renameMenuItem(coachInfoMenu, '教练信息展示'),
-                    renameMenuItem(noticeMenu, '报名须知'),
-                    ...otherHomeMenus
+                    renameMenuItem(noticeMenu, '报名须知')
                 ])
             };
         }
