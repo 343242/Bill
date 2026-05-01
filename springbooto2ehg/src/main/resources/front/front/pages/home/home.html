@@ -1080,6 +1080,7 @@
       data: {
 
         jiaxiaoxinxiRecommend: [],
+        targetSchoolName: '南京市雨花驾校C1',
 
         swiperList: [],
         // 新闻公告
@@ -1235,9 +1236,17 @@
 		}, function(res) {
 			var yuhuaSchool = null
 			for (var i = 0; i < res.data.list.length; i++) {
-				if (res.data.list[i].jiaxiaomingcheng && res.data.list[i].jiaxiaomingcheng.indexOf('雨花驾校') !== -1) {
+				if (res.data.list[i].jiaxiaomingcheng === vue.targetSchoolName) {
 					yuhuaSchool = res.data.list[i]
 					break
+				}
+			}
+			if (!yuhuaSchool) {
+				for (var j = 0; j < res.data.list.length; j++) {
+					if (res.data.list[j].jiaxiaomingcheng && res.data.list[j].jiaxiaomingcheng.indexOf(vue.targetSchoolName) !== -1) {
+						yuhuaSchool = res.data.list[j]
+						break
+					}
 				}
 			}
 			vue.jiaxiaoxinxiRecommend = yuhuaSchool ? [yuhuaSchool] : []

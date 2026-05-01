@@ -323,7 +323,8 @@ width: 100%;
         swiperList: [],
         dataList: [],
 	baseurl:'',
-	swiperIndex: '-1'
+	swiperIndex: '-1',
+	targetSchoolName: '南京市雨花驾校C1'
       },
       filters: {
         newsDesc: function(val) {
@@ -343,6 +344,9 @@ width: 100%;
         },
         jump(url) {
           jump(url)
+        },
+        jumpToTargetSchool() {
+          jump('../jiaxiaoxinxi/detail.html?id=' + this.dataList[0].id)
         }
       }
     });
@@ -394,10 +398,32 @@ width: 100%;
         }
       });
 
+      loadTargetSchool();
 
-
-      // 分页列表
-      pageList();
+      function loadTargetSchool() {
+        http.request('jiaxiaoxinxi/list', 'get', {
+          page: 1,
+          limit: 50,
+          jiaxiaomingcheng: '%' + vue.targetSchoolName + '%'
+        }, function(res) {
+          var targetSchool = null;
+          for (var i = 0; i < res.data.list.length; i++) {
+            if (res.data.list[i].jiaxiaomingcheng === vue.targetSchoolName) {
+              targetSchool = res.data.list[i];
+              break;
+            }
+          }
+          if (!targetSchool && res.data.list.length > 0) {
+            targetSchool = res.data.list[0];
+          }
+          if (targetSchool) {
+            vue.dataList = [targetSchool];
+            vue.jumpToTargetSchool();
+            return;
+          }
+          pageList();
+        })
+      }
 
       // 搜索按钮
       jquery('#btn-search').click(function(e) {
