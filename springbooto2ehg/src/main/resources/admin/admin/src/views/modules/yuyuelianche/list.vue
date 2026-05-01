@@ -154,11 +154,6 @@
                     {{ scope.row.yuyueshuoming || '-' }}
                   </template>
               </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign"
-                  prop="shhf"
-                 :header-align="contents.tableAlign"
-                  label="审核回复">
-              </el-table-column>
               <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
                   v-if="checkAuth('审核')"
                   prop="sfsh"
