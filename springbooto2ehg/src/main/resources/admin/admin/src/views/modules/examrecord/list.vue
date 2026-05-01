@@ -30,6 +30,7 @@
           @selection-change="selectionChangeHandler"
           style="width: 100%;"
         >
+          <el-table-column prop="zhanghao" header-align="center" align="center" sortable label="学员账号"></el-table-column>
           <el-table-column prop="username" header-align="center" align="center" sortable label="姓名"></el-table-column>
           <el-table-column
             prop="papername"

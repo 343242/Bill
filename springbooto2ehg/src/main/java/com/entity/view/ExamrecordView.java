@@ -21,6 +21,11 @@ import java.io.Serializable;
 public class ExamrecordView  extends ExamrecordEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 学员账号
+	 */
+	private String zhanghao;
+
 	public ExamrecordView(){
 	}
  
@@ -31,6 +36,14 @@ public class ExamrecordView  extends ExamrecordEntity implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 		
+		
+	}
+
+	public String getZhanghao() {
+		return zhanghao;
+	}
+
+	public void setZhanghao(String zhanghao) {
+		this.zhanghao = zhanghao;
 	}
 }

@@ -44,9 +44,17 @@
 	
 	<select id="selectGroupBy"
 		resultType="com.entity.view.ExamrecordView" >
-		select userid,username,paperid,papername,sum(myscore) myscore from examrecord     
+		select
+			examrecord.userid,
+			examrecord.username,
+			xueyuan.zhanghao,
+			examrecord.paperid,
+			examrecord.papername,
+			sum(examrecord.myscore) myscore
+		from examrecord
+		left join xueyuan on xueyuan.id = examrecord.userid
         <where> 1=1 ${ew.sqlSegment}</where>
-        group by userid,username,paperid,papername  
+        group by examrecord.userid,examrecord.username,xueyuan.zhanghao,examrecord.paperid,examrecord.papername  
 	</select>
 
 </mapper>
