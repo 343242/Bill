@@ -42,6 +42,11 @@
             label="试题名称"
           ></el-table-column>
           <el-table-column prop="score" header-align="center" align="center" sortable label="分值"></el-table-column>
+          <el-table-column header-align="center" align="center" label="选项内容" width="220">
+            <template slot-scope="scope">
+              <div class="options-cell">{{ formatOptions(scope.row.options) }}</div>
+            </template>
+          </el-table-column>
           <el-table-column prop="answer" header-align="center" align="center" sortable label="正确答案"></el-table-column>
           <el-table-column
             prop="myanswer"
@@ -178,6 +183,23 @@ export default {
       this.pageIndex = val;
       this.getDataList();
     },
+    formatOptions(options) {
+      if (!options) {
+        return "";
+      }
+      try {
+        const optionList = typeof options === "string" ? JSON.parse(options) : options;
+        if (!Array.isArray(optionList)) {
+          return "";
+        }
+        return optionList
+          .map(item => item && item.text ? item.text : "")
+          .filter(item => item)
+          .join("\n");
+      } catch (e) {
+        return options;
+      }
+    },
     // 多选
     selectionChangeHandler(val) {
       this.dataListSelections = val;
@@ -223,5 +245,10 @@ export default {
 }
 .table-content {
 	background: transparent;
+}
+.options-cell {
+  white-space: pre-line;
+  text-align: left;
+  line-height: 1.6;
 }
 </style>
