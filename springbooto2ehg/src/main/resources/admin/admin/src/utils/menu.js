@@ -47,7 +47,7 @@ function restructureAdminBackMenu(backMenu) {
         if (index === studentMenuIndex) {
             return {
                 ...studentParentMenu,
-                menu: '学员信息管理（原基础信息管理）',
+                menu: '学员信息管理',
                 child: dedupeMenuItems([
                     renameMenuItem(studentInfoMenu, '学员信息管理'),
                     renameMenuItem(signupInfoMenu, '报名信息管理')
