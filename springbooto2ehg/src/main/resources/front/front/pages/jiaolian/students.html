@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的学员</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/common.css">
+</head>
+<style>
+    html::after {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        content: '';
+        display: block;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+    }
+    .index-title {
+        text-align: center;
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .student-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .student-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .student-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #4fc3f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 24px;
+        margin-right: 15px;
+    }
+    .student-detail {
+        flex: 1;
+    }
+    .student-name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .student-meta {
+        color: #666;
+        font-size: 14px;
+    }
+    .info-row {
+        display: flex;
+        padding: 8px 0;
+        border-top: 1px solid #eee;
+    }
+    .info-label {
+        width: 80px;
+        color: #999;
+    }
+    .info-value {
+        flex: 1;
+        color: #333;
+    }
+</style>
+<body>
+    <div id="app">
+        <div class="index-title" style="padding: 20px;">
+            <span style="font-size: 24px;font-weight: bold;">我的学员</span>
+        </div>
+
+        <div style="padding: 0 20px;">
+            <div id="studentList">
+                <div v-for="(item, index) in studentList" :key="index" class="student-card">
+                    <div class="student-info">
+                        <div class="student-avatar">
+                            {{item.zhangxingming ? item.zhangxingming.substring(0,1) : item.xingming ? item.xingming.substring(0,1) : '学'}}
+                        </div>
+                        <div class="student-detail">
+                            <div class="student-name">{{item.xingming || '未设置姓名'}}</div>
+                            <div class="student-meta">账号：{{item.zhanghao}}</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">手机号</div>
+                        <div class="info-value">{{item.shouji || '未设置'}}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">性别</div>
+                        <div class="info-value">{{item.xingbie || '未设置'}}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">年龄</div>
+                        <div class="info-value">{{item.nianling || '未设置'}}</div>
+                    </div>
+                </div>
+                <div v-if="studentList.length === 0" style="text-align: center;padding: 50px;color: #999;">
+                    暂无学员记录
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/vue.js"></script>
+    <script src="../../js/config.js"></script>
+    <script src="../../modules/config.js"></script>
+    <script src="../../js/utils.js"></script>
+
+    <script>
+        var vue = new Vue({
+            el: '#app',
+            data: {
+                studentList: [],
+                baseurl: ''
+            },
+            mounted() {
+                this.baseurl = layui.http.baseurl;
+                this.getStudentList();
+            },
+            methods: {
+                getStudentList: function() {
+                    var that = this;
+                    layui.http.request('jiaolian/getStudents', 'get', {}, function(res) {
+                        if(res.code == 0) {
+                            that.studentList = res.data || [];
+                        }
+                    });
+                }
+            }
+        });
+
+        layui.use(['layer', 'element', 'carousel', 'http', 'jquery', 'form'], function() {
+            var layer = layui.layer;
+            var element = layui.element;
+            var carousel = layui.carousel;
+            var http = layui.http;
+            var jquery = layui.jquery;
+            var form = layui.form;
+
+            vue.baseurl = http.baseurl;
+        });
+    </script>
+</body>
+</html>

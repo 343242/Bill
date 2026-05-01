@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的排班</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/common.css">
+</head>
+<style>
+    html::after {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        content: '';
+        display: block;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+    }
+    .index-title {
+        text-align: center;
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .schedule-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .schedule-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .schedule-item:last-child {
+        border-bottom: none;
+    }
+    .status-tag {
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+    .status-pending {
+        background: #fff3e0;
+        color: #ff9800;
+    }
+    .status-confirmed {
+        background: #e8f5e9;
+        color: #4caf50;
+    }
+    .status-finished {
+        background: #f5f5f5;
+        color: #999;
+    }
+    .filter-bar {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+</style>
+<body>
+    <div id="app">
+        <div class="index-title" style="padding: 20px;">
+            <span style="font-size: 24px;font-weight: bold;">我的排班</span>
+        </div>
+
+        <div style="padding: 0 20px;">
+            <div class="filter-bar">
+                <div class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <select name="shangkezt" id="shangkezt" lay-filter="statusFilter">
+                                <option value="">全部状态</option>
+                                <option value="待上课">待上课</option>
+                                <option value="已完成">已完成</option>
+                                <option value="已取消">已取消</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-submit lay-filter="queryBtn">查询</button>
+                            <button class="layui-btn layui-btn-primary" id="refreshBtn">刷新</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scheduleList">
+                <div v-for="(item, index) in scheduleList" :key="index" class="schedule-card">
+                    <div class="schedule-item">
+                        <div>
+                            <div style="font-weight: bold;font-size: 16px;">{{item.kechengmingcheng}}</div>
+                            <div style="color: #666;margin-top: 5px;">
+                                <span>{{item.kemuleixing}}</span> |
+                                <span>{{item.kechengshijian}}</span>
+                            </div>
+                        </div>
+                        <span :class="getStatusClass(item.shangkezt)" class="status-tag">{{item.shangkezt || '待上课'}}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <div style="color: #666;">
+                            <span>学员：{{item.xingming}}</span>
+                            <span style="margin-left: 15px;">账号：{{item.zhanghao}}</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item" v-if="item.shangkezt === '待上课'">
+                        <button class="layui-btn layui-btn-sm" @click="updateStatus(item, '已完成')">标记完成</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-primary" @click="updateStatus(item, '已取消')">取消课程</button>
+                    </div>
+                </div>
+                <div v-if="scheduleList.length === 0" style="text-align: center;padding: 50px;color: #999;">
+                    暂无排班记录
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/vue.js"></script>
+    <script src="../../js/config.js"></script>
+    <script src="../../modules/config.js"></script>
+    <script src="../../js/utils.js"></script>
+
+    <script>
+        var vue = new Vue({
+            el: '#app',
+            data: {
+                scheduleList: [],
+                baseurl: ''
+            },
+            mounted() {
+                this.baseurl = layui.http.baseurl;
+                this.getScheduleList();
+            },
+            methods: {
+                getScheduleList: function(shangkezt) {
+                    var that = this;
+                    var params = {
+                        page: 1,
+                        limit: 100,
+                        sort: 'kechengshijian',
+                        order: 'desc'
+                    };
+                    if(shangkezt) {
+                        params.shangkezt = shangkezt;
+                    }
+                    layui.http.request('jiaolian/getSchedule', 'get', params, function(res) {
+                        if(res.code == 0) {
+                            that.scheduleList = res.data || [];
+                        }
+                    });
+                },
+                getStatusClass: function(status) {
+                    if(status === '已完成') return 'status-confirmed';
+                    if(status === '已取消') return 'status-finished';
+                    return 'status-pending';
+                },
+                updateStatus: function(item, status) {
+                    var that = this;
+                    layui.layer.confirm('确定要将此排班状态改为"' + status + '"吗？', function(index) {
+                        item.shangkezt = status;
+                        layui.http.request('jiaolian/updateScheduleStatus', 'post', item, function(res) {
+                            if(res.code == 0) {
+                                layui.layer.msg('更新成功', {icon: 6});
+                                that.getScheduleList();
+                            } else {
+                                layui.layer.msg(res.msg, {icon: 5});
+                            }
+                        });
+                        layui.layer.close(index);
+                    });
+                }
+            }
+        });
+
+        layui.use(['layer', 'element', 'carousel', 'http', 'jquery', 'form'], function() {
+            var layer = layui.layer;
+            var element = layui.element;
+            var carousel = layui.carousel;
+            var http = layui.http;
+            var jquery = layui.jquery;
+            var form = layui.form;
+
+            vue.baseurl = http.baseurl;
+
+            form.on('select(statusFilter)', function(data) {
+                vue.getScheduleList(data.value);
+            });
+
+            form.on('submit(queryBtn)', function(data) {
+                vue.getScheduleList(data.field.shangkezt);
+                return false;
+            });
+
+            jquery('#refreshBtn').click(function() {
+                vue.getScheduleList();
+            });
+        });
+    </script>
+</body>
+</html>

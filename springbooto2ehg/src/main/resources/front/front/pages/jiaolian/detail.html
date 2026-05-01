@@ -1,0 +1,460 @@
+<!-- 首页 -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>教练详情</title>
+	<link rel="stylesheet" href="../../layui/css/layui.css">
+	<link rel="stylesheet" href="../../css/style.css" />
+	<link rel="stylesheet" href="../../css/theme.css" />
+	<link rel="stylesheet" href="../../css/common.css" />
+</head>
+<style>
+	html::after {
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		content: '';
+		display: block;
+		background-attachment: fixed;
+		background-size: cover;
+		background-position: center;
+		z-index: -1;
+	}
+	#swiper {
+		overflow: hidden;
+	}
+	#swiper .layui-carousel-ind li {
+		width: 20px;
+		height: 12px;
+		border-width: 0;
+		border-style: solid;
+		border-color: rgba(0,0,0,.3);
+		border-radius: 20px;
+		background-color: #f7f7f7;
+		box-shadow: 0 0 0px rgba(255,0,0,.8);
+	}
+	#swiper .layui-carousel-ind li.layui-this {
+		width: 25px;
+		height: 12px;
+		border-width: 0;
+		border-style: solid;
+		border-color: rgba(0,0,0,.3);
+		border-radius: 20px;
+		background-color: rgba(77, 200, 248, 1);
+		box-shadow: 0 0 0px rgba(255,0,0,.8);
+	}
+
+	.data-detail {
+		padding-bottom: 20px;
+	}
+
+	.data-detail .layui-breadcrumb a.first {
+		color: rgba(0, 0, 0, 1) !important;
+	}
+
+	.tool-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 10px 0;
+		gap: 20px;
+	}
+	.tool-container > div {
+		cursor: pointer;
+	}
+
+	.detail-content {
+		padding: 20px;
+		background: #fff;
+		border-radius: 10px;
+		margin-top: 20px;
+	}
+	.detail-section {
+		margin-bottom: 20px;
+	}
+	.detail-section h3 {
+		font-size: 16px;
+		color: #333;
+		padding-bottom: 10px;
+		border-bottom: 1px solid #eee;
+		margin-bottom: 15px;
+	}
+	.detail-section p {
+		line-height: 1.8;
+		color: #666;
+		font-size: 14px;
+	}
+</style>
+<body>
+
+	<div id="app">
+
+		<div class="data-detail" style="padding:0">
+			<div class="data-detail-breadcrumb" :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.3)","margin":"20px auto","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"20px 20px 0px 0px","borderWidth":"2px","borderStyle":"solid","height":"54px"}'>
+				<span class="layui-breadcrumb">
+					<a class="first" :style='{"padding":"8px 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 5px","borderColor":"rgba(255,0,0,.3)","backgroundColor":"#fff","color":"rgba(0, 0, 0, 1)","borderRadius":"0","borderWidth":"0","fontSize":"16px","borderStyle":"solid"}' href="../home/home.html">首页</a>
+					<a><cite :style='{"padding":"8px 15px","boxShadow":"0 0 5px rgba(136, 198, 229, 1)","margin":"0 15px","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"4px","borderWidth":"1px","fontSize":"16px","borderStyle":"solid"}'>{{title}}</cite></a>
+				</span>
+
+				<a v-if='storeupFlag' :style='{"padding":"0px 10px 0px 0px","boxShadow":"0 0 6px rgba(136, 198, 229, 1)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"rgba(0, 0, 0, 1)","borderRadius":"4px","borderWidth":"1px","fontSize":"16px","lineHeight":"34px","borderStyle":"solid"}' @click="storeUp()" href="javascript:void(0)">
+					<i class="layui-icon" style="font-size: 20px;color: red;" v-if='true' :style='{"color":"rgba(77, 200, 248, 1)","padding":"0 2px 0 0","fontSize":"18px"}'>&#xe67a;</i>取消收藏
+				</a>
+				<!--<a v-if='!storeupFlag' :style='{"padding":"0px 10px 0px 0px","boxShadow":"0 0 6px rgba(136, 198, 229, 1)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"rgba(0, 0, 0, 1)","borderRadius":"4px","borderWidth":"1px","fontSize":"16px","lineHeight":"34px","borderStyle":"solid"}' @click="storeUp()" href="javascript:void(0)">
+					<i class="layui-icon" style="font-size: 20px;color: red;" v-if='true' :style='{"color":"rgba(77, 200, 248, 1)","padding":"0 2px 0 0","fontSize":"18px"}'>&#xe67b;</i>点我收藏
+				</a>-->
+
+			</div>
+		</div>
+
+		<div class="data-detail" style="padding:0;width:100%;" :style='{"padding":"0","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(0,0,0,.3)","borderRadius":"0","borderWidth":"0","background":"rgba(255, 255, 255, 1)","borderStyle":"solid"}'>
+			<div class="layui-row" style="display: flex;width:980px;margin: 0 auto;">
+				<div class="layui-col-md5" style="width:400px">
+					<div class="layui-carousel" id="swiper" :style='{"boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0 auto","borderColor":"rgba(0,0,0,.3)","borderRadius":"0","borderWidth":"0","width":"400px","borderStyle":"solid","height":"400px"}'>
+						<div carousel-item>
+							<div v-if="swiperList.length" v-for="(item,index) in swiperList" :key="index">
+								<img style="width: 100%;height: 100%;object-fit:cover;" :src="baseurl+item" />
+							</div>
+							<div v-if="!swiperList.length && detail.touxiang">
+								<img style="width: 100%;height: 100%;object-fit:cover;" :src="baseurl+detail.touxiang" />
+							</div>
+							<div v-if="!swiperList.length && !detail.touxiang">
+								<img style="width: 100%;height: 100%;object-fit:cover;" src="../../images/default.png" />
+							</div>
+						</div>
+					</div>
+
+					<!--<div class="tool-container">
+						<div v-if='!thumbsupFlag&&!crazilyFlag' @click="thumbsupnumClick()" style="display: flex;align-items: center;">
+							<i class="layui-icon" style="font-size: 20px;color: red;margin-right: 10px;">&#xe6c6;</i>
+							赞一下({{detail.thumbsupnum==null?0:detail.thumbsupnum}})
+						</div>
+						<div v-if='thumbsupFlag' @click="thumbsupnumClick()" style="display: flex;align-items: center;">
+							<i class="layui-icon" style="font-size: 20px;color: red;margin-right: 10px;">&#xe6c6;</i>
+							取消赞({{detail.thumbsupnum==null?0:detail.thumbsupnum}})
+						</div>
+						<div v-if='!thumbsupFlag&&!crazilyFlag' @click="crazilynumClick()" style="display: flex;align-items: center;">
+							<i class="layui-icon" style="font-size: 20px;color: red;margin-right: 10px;">&#xe6c5;</i>
+							踩一下({{detail.crazilynum==null?0:detail.crazilynum}})
+						</div>
+						<div v-if='crazilyFlag' @click="crazilynumClick()" style="display: flex;align-items: center;">
+							<i class="layui-icon" style="font-size: 20px;color: red;margin-right: 10px;">&#xe6c5;</i>
+							取消踩({{detail.crazilynum==null?0:detail.crazilynum}})
+						</div>
+					</div>
+-->
+				</div>
+				<div class="layui-col-md7" style="padding-left: 20px;flex: 1;" :style='{"padding":"0","boxShadow":"0 0 0px rgba(255,0,0,0)","margin":"0 0 0 20px","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"1px","borderStyle":"solid"}'>
+					<h1 style="position: relative;" :style='{"padding":"8px 15px","boxShadow":"0px 0px 6px rgba(136, 198, 229, 1)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","fontSize":"16px","borderStyle":"solid"}' class="title">{{title}}</h1>
+
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>教练工号：</span>
+						<span style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.jiaoliangonghao}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>教练姓名：</span>
+						<span style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.jiaolianxingming}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>性别：</span>
+						<span style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.xingbie}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>年龄：</span>
+						<span style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.nianling}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>手机：</span>
+						<span style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.shouji}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>指导科目：</span>
+						<span style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.zhidaokemu}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>点击次数：</span>
+						<span style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.clicknum}}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="data-detail" style="padding:0;width:980px;margin:20px auto;">
+			<div class="detail-content" :style='{"padding":"20px","boxShadow":"0 0 0px rgba(136, 198, 229, 1)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"10px","borderWidth":"2px","borderStyle":"solid"}'>
+				<div class="detail-section" v-if="detail.gerenjianjie">
+					<h3>个人简介</h3>
+					<div v-html="detail.gerenjianjie"></div>
+				</div>
+				<div class="detail-section" v-if="detail.jiaoxuetese">
+					<h3>教学特色</h3>
+					<div v-html="detail.jiaoxuetese"></div>
+				</div>
+				<div v-if="!detail.gerenjianjie && !detail.jiaoxuetese" style="text-align: center;color: #999;padding: 40px;">
+					暂无详情信息
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script src="../../layui/layui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../modules/config.js"></script>
+	<script src="../../js/utils.js"></script>
+
+	<script>
+		var vue = new Vue({
+			el: '#app',
+			data: {
+				swiperList: [],
+				detail: {
+					id: 0
+				},
+				title: '',
+				count: 0,
+				buynumber: 1,
+				detailTable: 'jiaolian',
+				baseurl: '',
+				storeupFlag: 0,
+				thumbsupFlag: 0,
+				crazilyFlag: 0
+			},
+			methods: {
+				jump(url) {
+					jump(url)
+				},
+				isAuth(tablename, button) {
+					return isFrontAuth(tablename, button)
+				},
+				countDown() {
+					let reversetime = new Date(this.detail.reversetime).getTime()
+					let now = new Date().getTime();
+					let count = reversetime - now;
+					if (count > 0) {
+						this.count = count / 1000
+						var _this = this;
+						this.inter = window.setInterval(function() {
+							_this.count = _this.count - 1;
+							if (_this.count < 0) {
+								window.clearInterval(_this.inter);
+								layer.msg("活动已结束", { time: 2000, icon: 5 })
+							}
+						}, 1000);
+					}
+				},
+
+				thumbsupnumClick() {
+					var _this = this;
+					layui.http.request('storeup/list', 'get', {
+						page: 1,
+						limit: 1,
+						type: '%2%',
+						refid: this.detail.id,
+						tablename: this.detailTable,
+						userid: localStorage.getItem('userid'),
+					}, (res) => {
+						if (res.data.list.length == 1) {
+							layui.http.requestJson(`storeup/delete`, 'post', [res.data.list[0].id], function(res) {
+								_this.detail.thumbsupnum = parseInt(_this.detail.thumbsupnum == null ? 0 : _this.detail.thumbsupnum) - 1
+								vue.$forceUpdate()
+								vue.thumbsupFlag = 0
+							});
+							return;
+						}
+						layui.http.requestJson(`storeup/save`, 'post', {
+							userid: localStorage.getItem('userid'),
+							type: 2,
+							refid: this.detail.id,
+							tablename: this.detailTable
+						}, function(res) {
+							_this.detail.thumbsupnum = parseInt(_this.detail.thumbsupnum == null ? 0 : _this.detail.thumbsupnum) + 1
+							vue.$forceUpdate()
+							vue.thumbsupFlag = 1
+						});
+					});
+				},
+
+				crazilynumClick() {
+					var _this = this;
+					layui.http.request('storeup/list', 'get', {
+						page: 1,
+						limit: 1,
+						type: '%2%',
+						refid: this.detail.id,
+						tablename: this.detailTable,
+						userid: localStorage.getItem('userid'),
+					}, (res) => {
+						if (res.data.list.length == 1) {
+							layui.http.requestJson(`storeup/delete`, 'post', [res.data.list[0].id], function(res) {
+								_this.detail.crazilynum = parseInt(_this.detail.crazilynum == null ? 0 : _this.detail.crazilynum) - 1
+								vue.$forceUpdate()
+								vue.crazilyFlag = 0
+							});
+							return;
+						}
+						layui.http.requestJson(`storeup/save`, 'post', {
+							userid: localStorage.getItem('userid'),
+							type: 3,
+							refid: this.detail.id,
+							tablename: this.detailTable
+						}, function(res) {
+							_this.detail.crazilynum = parseInt(_this.detail.crazilynum == null ? 0 : _this.detail.crazilynum) + 1
+							vue.$forceUpdate()
+							vue.crazilyFlag = 1
+						});
+					});
+				},
+
+				storeUp() {
+					var _this = this;
+					layui.http.request('storeup/list', 'get', {
+						page: 1,
+						limit: 1,
+						type: '%2%',
+						refid: this.detail.id,
+						tablename: this.detailTable,
+						userid: localStorage.getItem('userid'),
+					}, (res) => {
+						if (res.data.list.length == 1) {
+							layui.http.requestJson(`storeup/delete`, 'post', [res.data.list[0].id], function(res) {
+								layer.msg("取消收藏成功", { time: 2000, icon: 5 })
+								vue.storeupFlag = 0
+							});
+							return;
+						}
+						layui.http.requestJson(`storeup/save`, 'post', {
+							userid: localStorage.getItem('userid'),
+							type: 2,
+							refid: this.detail.id,
+							tablename: this.detailTable
+						}, function(res) {
+							layer.msg("收藏成功", { time: 2000, icon: 6 })
+							vue.storeupFlag = 1
+						});
+					});
+				},
+
+				onAcrossTap(acrossTable, crossOptAudit, statusColumnName, tips, statusColumnValue) {
+					localStorage.setItem('crossTable', `jiaolian`);
+					localStorage.setItem('crossObj', JSON.stringify(this.detail));
+					localStorage.setItem('statusColumnName', statusColumnName);
+					localStorage.setItem('statusColumnValue', statusColumnValue);
+					localStorage.setItem('tips', tips);
+
+					if (statusColumnName != '' && !statusColumnName.startsWith("[")) {
+						var obj = JSON.parse(localStorage.getItem('crossObj'));
+						for (var o in obj) {
+							if (o == statusColumnName && obj[o] == statusColumnValue) {
+								layer.msg(tips, { time: 2000, icon: 5 });
+								return
+							}
+						}
+					}
+
+					jump(`../${acrossTable}/add.html?corss=true`);
+				}
+			}
+		})
+
+		layui.use(['layer', 'form', 'element', 'carousel', 'http', 'jquery'], function() {
+			var layer = layui.layer;
+			var element = layui.element;
+			var form = layui.form;
+			var carousel = layui.carousel;
+			var http = layui.http;
+			var jquery = layui.jquery;
+
+			var id = http.getParam('id');
+			vue.detail.id = id;
+			vue.baseurl = http.baseurl;
+
+			layui.http.request(`${vue.detailTable}/detail/` + id, 'get', {}, function(res) {
+				vue.detail = res.data
+				vue.title = vue.detail.jiaolianxingming
+
+				if (vue.detail.touxiang) {
+					vue.swiperList = vue.detail.touxiang.split(',')
+				}
+
+				vue.$nextTick(() => {
+					carousel.render({
+						elem: '#swiper',
+						width: '400px',
+						height: '400px',
+						arrow: 'hover',
+						anim: 'default',
+						autoplay: 'true',
+						interval: '3000',
+						indicator: 'inside'
+					});
+				})
+
+				layui.http.request('storeup/list', 'get', {
+					page: 1,
+					limit: 1,
+					type: '%2%',
+					refid: vue.detail.id,
+					tablename: vue.detailTable,
+					userid: localStorage.getItem('userid'),
+				}, function(res) {
+					if (res.data && res.data.list && res.data.list.length == 1) {
+						vue.storeupFlag = 1
+					}
+				}).catch(function(){});
+
+				layui.http.request('storeup/list', 'get', {
+					page: 1,
+					limit: 1,
+					type: 2,
+					refid: vue.detail.id,
+					tablename: vue.detailTable,
+					userid: localStorage.getItem('userid'),
+				}, function(res) {
+					if (res.data && res.data.list && res.data.list.length == 1) {
+						vue.thumbsupFlag = 1
+					}
+				}).catch(function(){});
+
+				layui.http.request('storeup/list', 'get', {
+					page: 1,
+					limit: 1,
+					type: 3,
+					refid: vue.detail.id,
+					tablename: vue.detailTable,
+					userid: localStorage.getItem('userid'),
+				}, function(res) {
+					if (res.data && res.data.list && res.data.list.length == 1) {
+						vue.crazilyFlag = 1
+					}
+				}).catch(function(){});
+
+				if (vue.detail.reversetime) {
+					vue.countDown();
+				}
+
+				http.request(`${vue.detailTable}/update`, 'post', vue.detail, function(res) {});
+
+			});
+
+		});
+	</script>
+</body>
+</html>

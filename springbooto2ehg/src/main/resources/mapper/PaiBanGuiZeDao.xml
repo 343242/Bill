@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.PaiBanGuiZeDao">
+
+    <resultMap type="com.entity.PaiBanGuiZeEntity" id="paibanguizeMap">
+        <result property="guizemingcheng" column="guizemingcheng"/>
+        <result property="kaishishijian" column="kaishishijian"/>
+        <result property="jieshushijian" column="jieshushijian"/>
+        <result property="keyuyuerenshu" column="keyuyuerenshu"/>
+        <result property="shiyongjiaolian" column="shiyongjiaolian"/>
+        <result property="zhuangtai" column="zhuangtai"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+	<select id="selectListVO"
+		resultType="com.entity.vo.PaiBanGuiZeVO" >
+		SELECT * FROM paibanguize  paibanguize         
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectVO"
+		resultType="com.entity.vo.PaiBanGuiZeVO" >
+		SELECT  paibanguize.* FROM paibanguize  paibanguize 		
+ 		<where> 1=1 </where>
+	</select>
+
+    <select id="selectListView"
+		resultType="com.entity.view.PaiBanGuiZeView" >
+
+		SELECT  paibanguize.* FROM paibanguize  paibanguize          
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectView"
+		resultType="com.entity.view.PaiBanGuiZeView" >
+		SELECT * FROM paibanguize  paibanguize <where> 1=1 </where>
+	</select>
+	
+</mapper>

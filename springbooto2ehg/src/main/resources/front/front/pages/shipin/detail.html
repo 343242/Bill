@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>视频详情</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../xznstatic/css/common.css"/>
+    <link rel="stylesheet" href="../../xznstatic/css/style.css"/>
+    <script type="text/javascript" src="../../xznstatic/js/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="video-detail">
+        <div class="video-player">
+            <div v-if="dataForm.shipinwenjian || dataForm.lianjie" class="video-container">
+                <video 
+                    :src="dataForm.shipinwenjian ? baseurl+dataForm.shipinwenjian : dataForm.lianjie" 
+                    controls="controls" 
+                    :poster="dataForm.fengmian?baseurl+dataForm.fengmian.split(',')[0]:''"
+                    class="video-element"
+                    @loadedmetadata="onVideoLoaded"
+                    @timeupdate="onTimeUpdate"
+                    @ended="onVideoEnded"
+                ></video>
+                <div v-if="videoLoading" class="video-loading">
+                    <div class="loading-spinner"></div>
+                    <span>视频加载中...</span>
+                </div>
+            </div>
+            <div v-else class="no-video">暂无视频</div>
+        </div>
+
+        <div class="video-info-panel">
+            <div class="video-title">{{dataForm.biaoti}}</div>
+            <div class="video-meta-info">
+                <span>类型：{{dataForm.fenlei}}</span>
+                <span>发布时间：{{dataForm.addtime?dataForm.addtime.split(' ')[0]:''}}</span>
+                <span>播放：{{dataForm.clicknum}}次</span>
+            </div>
+
+            <div class="action-bar">
+                <button class="action-btn" :class="{active: isLiked}" @click="dianzan">
+                    <i class="layui-icon layui-icon-praise"></i> 点赞 {{dataForm.dianzanshu}}
+                </button>
+                <button class="action-btn" :class="{active: isCollected}" @click="shoucang">
+                    <i class="layui-icon layui-icon-star"></i> 收藏 {{dataForm.shoucangshu}}
+                </button>
+            </div>
+        </div>
+
+        <div class="comment-section">
+            <div class="section-title">评论</div>
+
+            <div class="comment-form">
+                <div class="comment-input-container">
+                    <textarea v-model="commentContent" placeholder="请输入评论内容..." class="comment-textarea"></textarea>
+                    <button @click="submitComment" class="submit-btn" :disabled="!commentContent.trim()">提交评论</button>
+                </div>
+            </div>
+
+            <div class="comment-list">
+                <div v-for="(item, index) in commentList" :key="index" class="comment-item">
+                    <div class="comment-avatar">{{item.pinglunren?item.pinglunren.substring(0,1):'游'}}</div>
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="comment-user">{{item.pinglunren}}</span>
+                            <span class="comment-time">{{formatDateTime(item.pingluntime)}}</span>
+                            <button class="reply-btn" @click="showReplyForm(item.id)">回复</button>
+                        </div>
+                        <div class="comment-text">{{item.pinglunneirong}}</div>
+                        <!-- 显示回复 -->
+                        <div v-if="item.replies && item.replies.length > 0" class="comment-replies">
+                            <div v-for="(reply, replyIndex) in item.replies" :key="replyIndex" class="reply-item">
+                                <div class="reply-avatar">{{reply.pinglunren?reply.pinglunren.substring(0,1):'游'}}</div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-user">{{reply.pinglunren}}</span>
+                                        <span class="reply-time">{{formatDateTime(reply.pingluntime)}}</span>
+                                    </div>
+                                    <div class="reply-text">{{reply.pinglunneirong}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="replyToId === item.id" class="reply-form">
+                            <textarea v-model="replyContent" placeholder="请输入回复内容..." class="reply-textarea"></textarea>
+                            <div class="reply-actions">
+                                <button @click="cancelReply" class="cancel-btn">取消</button>
+                                <button @click="submitReply(item.id)" class="submit-reply-btn" :disabled="!replyContent.trim()">提交回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="commentList.length == 0" class="empty-comment">暂无评论</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../layui/layui.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/config.js"></script>
+<script src="../../modules/http/http.js"></script>
+
+<script>
+layui.use(['layer', 'element'], function() {
+    var layer = layui.layer;
+    var element = layui.element;
+    var $ = layui.jquery;
+
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            baseurl: baseurl,
+            id: null,
+            dataForm: {},
+            commentContent: '',
+            replyContent: '',
+            replyToId: null,
+            commentList: [],
+            isLiked: false,
+            isCollected: false,
+            userTable: localStorage.getItem('userTable'),
+            username: localStorage.getItem('username'),
+            videoLoading: true,
+            currentTime: 0,
+            duration: 0
+        },
+        created: function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            this.id = urlParams.get('id');
+            if (this.id) {
+                this.getDetail();
+                this.getCommentList();
+                this.checkLike();
+                this.checkCollect();
+            }
+        },
+        methods: {
+            getDetail: function() {
+                var that = this;
+                http.request('shipin/detail/' + that.id, 'get', {
+                }, function(res) {
+                    if (res.code == 0) {
+                        that.dataForm = res.data || {};
+                        that.updateClicknum();
+                    }
+                });
+            },
+            updateClicknum: function() {
+                if (this.id) {
+                    http.request('shipin/update', 'post', {
+                        id: this.id,
+                        clicknum: (this.dataForm.clicknum || 0) + 1
+                    });
+                }
+            },
+            getCommentList: function() {
+                var that = this;
+                http.request('shipinpinglun/list', 'get', {
+                    shipinid: this.id,
+                    sort: 'pingluntime',
+                    order: 'desc'
+                }, function(res) {
+                    if (res.code == 0) {
+                        const allComments = res.data.list
+                        // 构建评论树
+                        that.commentList = that.buildCommentTree(allComments)
+                    }
+                });
+            },
+            // 构建评论树
+            buildCommentTree: function(comments) {
+                const commentMap = new Map()
+                const rootComments = []
+                
+                // 首先将所有评论放入map中
+                comments.forEach(comment => {
+                    commentMap.set(comment.id, comment)
+                    comment.replies = []
+                })
+                
+                // 构建评论树
+                comments.forEach(comment => {
+                    if (comment.parentid) {
+                        // 是回复
+                        const parent = commentMap.get(comment.parentid)
+                        if (parent) {
+                            parent.replies.push(comment)
+                        }
+                    } else {
+                        // 是根评论
+                        rootComments.push(comment)
+                    }
+                })
+                
+                return rootComments
+            },
+            checkLike: function() {
+                if (!this.userTable) return;
+                http.request('storeup/list', 'get', {
+                    page: 1,
+                    limit: 1,
+                    tablename: 'shipin',
+                    refid: this.id,
+                    userid: localStorage.getItem('userid'),
+                    type: 1
+                }, function(res) {
+                    if (res.code == 0 && res.data.total > 0) {
+                        this.isLiked = true;
+                    }
+                }.bind(this));
+            },
+            checkCollect: function() {
+                if (!this.userTable) return;
+                http.request('storeup/list', 'get', {
+                    page: 1,
+                    limit: 1,
+                    tablename: 'shipin',
+                    refid: this.id,
+                    userid: localStorage.getItem('userid'),
+                    type: 2
+                }, function(res) {
+                    if (res.code == 0 && res.data.total > 0) {
+                        this.isCollected = true;
+                    }
+                }.bind(this));
+            },
+            dianzan: function() {
+                if (!this.userTable) {
+                    layer.msg('请先登录', {icon: 5});
+                    return;
+                }
+                var that = this;
+                if (this.isLiked) {
+                    // 取消点赞
+                    http.request('storeup/deleteByType', 'post', {
+                        refid: this.id,
+                        tablename: 'shipin',
+                        type: 1
+                    }, function(res) {
+                        if (res.code == 0) {
+                            that.isLiked = false;
+                            that.dataForm.dianzanshu = Math.max(0, (that.dataForm.dianzanshu || 0) - 1);
+                            layer.msg('取消点赞成功', {icon: 6});
+                        }
+                    });
+                } else {
+                    // 添加点赞
+                    http.request('storeup/add', 'post', {
+                        refid: this.id,
+                        tablename: 'shipin',
+                        type: 1,
+                        name: that.dataForm.biaoti,
+                        picture: that.dataForm.fengmian
+                    }, function(res) {
+                        if (res.code == 0) {
+                            that.isLiked = true;
+                            that.dataForm.dianzanshu = (that.dataForm.dianzanshu || 0) + 1;
+                            layer.msg('点赞成功', {icon: 6});
+                        }
+                    });
+                }
+            },
+            shoucang: function() {
+                if (!this.userTable) {
+                    layer.msg('请先登录', {icon: 5});
+                    return;
+                }
+                var that = this;
+                if (this.isCollected) {
+                    // 取消收藏
+                    http.request('storeup/deleteByType', 'post', {
+                        refid: this.id,
+                        tablename: 'shipin',
+                        type: 2
+                    }, function(res) {
+                        if (res.code == 0) {
+                            that.isCollected = false;
+                            that.dataForm.shoucangshu = Math.max(0, (that.dataForm.shoucangshu || 0) - 1);
+                            layer.msg('取消收藏成功', {icon: 6});
+                        }
+                    });
+                } else {
+                    // 添加收藏
+                    http.request('storeup/add', 'post', {
+                        refid: this.id,
+                        tablename: 'shipin',
+                        type: 2,
+                        name: that.dataForm.biaoti,
+                        picture: that.dataForm.fengmian
+                    }, function(res) {
+                        if (res.code == 0) {
+                            that.isCollected = true;
+                            that.dataForm.shoucangshu = (that.dataForm.shoucangshu || 0) + 1;
+                            layer.msg('收藏成功', {icon: 6});
+                        }
+                    });
+                }
+            },
+            submitComment: function() {
+                if (!this.userTable) {
+                    layer.msg('请先登录', {icon: 5});
+                    return;
+                }
+                if (!this.commentContent) {
+                    layer.msg('请输入评论内容', {icon: 5});
+                    return;
+                }
+                var that = this;
+                http.request('shipinpinglun/add', 'post', {
+                    shipinid: this.id,
+                    pinglunren: this.username || '游客',
+                    pinglunneirong: this.commentContent
+                }, function(res) {
+                    if (res.code == 0) {
+                        layer.msg('评论成功', {icon: 6});
+                        that.commentContent = '';
+                        that.getCommentList();
+                    }
+                });
+            },
+            showReplyForm: function(commentId) {
+                if (!this.userTable) {
+                    layer.msg('请先登录', {icon: 5});
+                    return;
+                }
+                this.replyToId = commentId;
+                this.replyContent = '';
+            },
+            cancelReply: function() {
+                this.replyToId = null;
+                this.replyContent = '';
+            },
+            submitReply: function(commentId) {
+                if (!this.userTable) {
+                    layer.msg('请先登录', {icon: 5});
+                    return;
+                }
+                if (!this.replyContent) {
+                    layer.msg('请输入回复内容', {icon: 5});
+                    return;
+                }
+                var that = this;
+                http.request('shipinpinglun/reply', 'post', {
+                    shipinid: this.id,
+                    pinglunneirong: this.replyContent,
+                    pinglunren: this.username || '游客',
+                    parentid: commentId
+                }, function(res) {
+                    if (res.code == 0) {
+                        layer.msg('回复成功', {icon: 6});
+                        that.replyToId = null;
+                        that.replyContent = '';
+                        that.getCommentList();
+                    }
+                });
+            },
+            // 格式化时间戳为日期时间
+            formatDateTime: function(timestamp) {
+                if (!timestamp) return ''
+                const date = new Date(timestamp)
+                const year = date.getFullYear()
+                const month = String(date.getMonth() + 1).padStart(2, '0')
+                const day = String(date.getDate()).padStart(2, '0')
+                const hours = String(date.getHours()).padStart(2, '0')
+                const minutes = String(date.getMinutes()).padStart(2, '0')
+                const seconds = String(date.getSeconds()).padStart(2, '0')
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+            },
+            onVideoLoaded: function(event) {
+                this.videoLoading = false;
+                this.duration = event.target.duration;
+                // 恢复播放进度
+                var savedTime = this.getSavedPlayTime();
+                if (savedTime > 0) {
+                    event.target.currentTime = savedTime;
+                }
+            },
+            onTimeUpdate: function(event) {
+                this.currentTime = event.target.currentTime;
+                // 每10秒保存一次播放进度
+                if (Math.floor(this.currentTime) % 10 === 0) {
+                    this.savePlayTime(this.currentTime);
+                }
+            },
+            onVideoEnded: function() {
+                // 视频结束时清除保存的进度
+                this.clearPlayTime();
+            },
+            savePlayTime: function(time) {
+                if (this.userTable && this.id) {
+                    var key = 'play_time_' + this.userTable + '_' + this.id;
+                    localStorage.setItem(key, time);
+                }
+            },
+            getSavedPlayTime: function() {
+                if (this.userTable && this.id) {
+                    var key = 'play_time_' + this.userTable + '_' + this.id;
+                    var time = localStorage.getItem(key);
+                    return time ? parseFloat(time) : 0;
+                }
+                return 0;
+            },
+            clearPlayTime: function() {
+                if (this.userTable && this.id) {
+                    var key = 'play_time_' + this.userTable + '_' + this.id;
+                    localStorage.removeItem(key);
+                }
+            }
+        }
+    });
+});
+</script>
+
+<style>
+.video-detail {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.video-player {
+    width: 100%;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.video-container {
+    position: relative;
+}
+
+.video-element {
+    width: 100%;
+    display: block;
+}
+
+.video-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    z-index: 10;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #1e90ff;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.no-video {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 18px;
+}
+
+.video-info-panel {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.video-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.video-meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.action-bar {
+    display: flex;
+    gap: 15px;
+}
+
+.action-btn {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    background: #f5f5f5;
+}
+
+.action-btn.active {
+    background: #1e90ff;
+    color: #fff;
+    border-color: #1e90ff;
+}
+
+.comment-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1e90ff;
+}
+
+.comment-form {
+    margin-bottom: 30px;
+}
+
+.comment-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comment-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color 0.3s;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #1e90ff;
+    box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+}
+
+.submit-btn {
+    align-self: flex-end;
+    padding: 10px 30px;
+    background: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background: #0073e6;
+}
+
+.submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.comment-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.comment-item {
+    display: flex;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1e90ff;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.comment-user {
+    font-weight: bold;
+    color: #333;
+}
+
+.comment-time {
+    color: #999;
+    font-size: 12px;
+}
+
+.reply-btn {
+    background: none;
+    border: none;
+    color: #1e90ff;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.reply-btn:hover {
+    text-decoration: underline;
+}
+
+.comment-text {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.comment-reply {
+    margin-top: 8px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 5px;
+    color: #666;
+    font-size: 13px;
+}
+
+.reply-form {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.reply-textarea {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.reply-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cancel-btn {
+    padding: 6px 15px;
+    background: #fff;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.submit-reply-btn {
+    padding: 6px 15px;
+    background: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.submit-reply-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.empty-comment {
+    text-align: center;
+    padding: 30px 0;
+    color: #999;
+}
+
+.comment-replies {
+    margin-top: 10px;
+    margin-left: 40px;
+    border-left: 2px solid #eee;
+    padding-left: 15px;
+}
+
+.reply-item {
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.reply-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #1e90ff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.reply-content {
+    flex: 1;
+}
+
+.reply-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.reply-user {
+    font-weight: 500;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.reply-time {
+    font-size: 12px;
+    color: #999;
+}
+
+.reply-text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #666;
+}
+</style>
+</body>
+</html>

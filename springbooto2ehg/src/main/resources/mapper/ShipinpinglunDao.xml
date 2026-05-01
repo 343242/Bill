@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.ShipinpinglunDao">
+
+    <resultMap type="com.entity.ShipinpinglunEntity" id="shipinpinglunMap">
+        <result property="shipinid" column="shipinid"/>
+        <result property="pinglunneirong" column="pinglunneirong"/>
+        <result property="pinglunren" column="pinglunren"/>
+        <result property="pingluntime" column="pingluntime"/>
+        <result property="huifuneirong" column="huifuneirong"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+	<select id="selectListVO"
+		resultType="com.entity.vo.ShipinpinglunVO" >
+		SELECT * FROM shipinpinglun  shipinpinglun         
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectVO"
+		resultType="com.entity.vo.ShipinpinglunVO" >
+		SELECT  shipinpinglun.* FROM shipinpinglun  shipinpinglun 		
+ 		<where> 1=1 </where>
+	</select>
+
+    <select id="selectListView"
+		resultType="com.entity.view.ShipinpinglunView" >
+
+		SELECT  shipinpinglun.* FROM shipinpinglun  shipinpinglun          
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectView"
+		resultType="com.entity.view.ShipinpinglunView" >
+		SELECT * FROM shipinpinglun  shipinpinglun <where> 1=1 </where>
+	</select>
+	
+</mapper>

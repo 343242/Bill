@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.XiTongCanShuDao">
+
+    <resultMap type="com.entity.XiTongCanShuEntity" id="xitongcanshuMap">
+        <result property="canshumingcheng" column="canshumingcheng"/>
+        <result property="canshujian" column="canshujian"/>
+        <result property="canshuzhi" column="canshuzhi"/>
+        <result property="beizhu" column="beizhu"/>
+        <result property="zhuangtai" column="zhuangtai"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+	<select id="selectListVO"
+		resultType="com.entity.vo.XiTongCanShuVO" >
+		SELECT * FROM xitongcanshu  xitongcanshu         
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectVO"
+		resultType="com.entity.vo.XiTongCanShuVO" >
+		SELECT  xitongcanshu.* FROM xitongcanshu  xitongcanshu 		
+ 		<where> 1=1 </where>
+	</select>
+
+    <select id="selectListView"
+		resultType="com.entity.view.XiTongCanShuView" >
+
+		SELECT  xitongcanshu.* FROM xitongcanshu  xitongcanshu          
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectView"
+		resultType="com.entity.view.XiTongCanShuView" >
+		SELECT * FROM xitongcanshu  xitongcanshu <where> 1=1 </where>
+	</select>
+	
+</mapper>

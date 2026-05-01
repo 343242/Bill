@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.CuotibanDao">
+
+    <resultMap type="com.entity.CuotibanEntity" id="cuotibanMap">
+        <result property="zhanghao" column="zhanghao"/>
+        <result property="timuid" column="timuid"/>
+        <result property="timuneirong" column="timuneirong"/>
+        <result property="cuowudaan" column="cuowudaan"/>
+        <result property="zhengquedaan" column="zhengquedaan"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+	<select id="selectListVO"
+		resultType="com.entity.vo.CuotibanVO" >
+		SELECT * FROM cuotiban  cuotiban         
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectVO"
+		resultType="com.entity.vo.CuotibanVO" >
+		SELECT  cuotiban.* FROM cuotiban  cuotiban 		
+ 		<where> 1=1 </where>
+	</select>
+
+    <select id="selectListView"
+		resultType="com.entity.view.CuotibanView" >
+
+		SELECT  cuotiban.* FROM cuotiban  cuotiban          
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectView"
+		resultType="com.entity.view.CuotibanView" >
+		SELECT * FROM cuotiban  cuotiban <where> 1=1 </where>
+	</select>
+	
+</mapper>

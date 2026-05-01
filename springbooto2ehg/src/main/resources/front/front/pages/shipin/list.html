@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>视频学习</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../xznstatic/css/common.css"/>
+    <link rel="stylesheet" href="../../xznstatic/css/style.css"/>
+    <script type="text/javascript" src="../../xznstatic/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../../xznstatic/js/jquery.SuperSlide.2.1.1.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="video-list">
+        <div class="section-title">
+            <span>理论视频学习</span>
+        </div>
+        <div class="video-grid">
+            <div v-for="(item, index) in dataList" :key="index" class="video-item" @click="detail(item.id)">
+                <div class="video-cover">
+                    <img :src="item.fengmian?baseurl+item.fengmian.split(',')[0]:''" :alt="item.biaoti">
+                    <div class="play-icon">▶</div>
+                    <div class="video-info">
+                        <span class="views"><i class="layui-icon layui-icon-eye"></i> {{item.clicknum}}</span>
+                        <span class="likes"><i class="layui-icon layui-icon-praise"></i> {{item.dianzanshu}}</span>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <div class="video-title">{{item.biaoti}}</div>
+                    <div class="video-meta">
+                        <span class="type">{{item.fenlei}}</span>
+                        <span class="time">{{item.addtime?item.addtime.split(' ')[0]:''}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="total == 0" class="empty-tip">暂无视频</div>
+    </div>
+</div>
+
+<script src="../../layui/layui.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/config.js"></script>
+<script src="../../modules/http/http.js"></script>
+
+<script>
+layui.use(['layer', 'element'], function() {
+    var layer = layui.layer;
+    var element = layui.element;
+    var $ = layui.jquery;
+
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            baseurl: baseurl,
+            dataList: [],
+            total: 0,
+            page: 1,
+            limit: 12
+        },
+        created: function() {
+            this.getDataList();
+        },
+        methods: {
+            getDataList: function() {
+                var that = this;
+                http.request('shipin/list', 'get', {
+                    page: that.page,
+                    limit: that.limit,
+                    sort: 'addtime',
+                    order: 'desc'
+                }, function(res) {
+                    if (res.code == 0) {
+                        that.dataList = res.data.list;
+                        that.total = res.data.total;
+                    }
+                });
+            },
+            detail: function(id) {
+                window.location.href = 'detail.html?id=' + id;
+            },
+            jump: function(url) {
+                jump(url);
+            }
+        }
+    });
+});
+</script>
+
+<style>
+.video-list {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.section-title span {
+    display: inline-block;
+    padding: 0 20px 10px 20px;
+    border-bottom: 3px solid #1e90ff;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.video-item {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.video-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.video-cover {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.video-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.video-item:hover .play-icon {
+    opacity: 1;
+}
+
+.video-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    font-size: 12px;
+}
+
+.video-info span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.video-content {
+    padding: 15px;
+}
+
+.video-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.video-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #999;
+}
+
+.video-meta .type {
+    background: #1e90ff;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.empty-tip {
+    text-align: center;
+    padding: 50px 0;
+    color: #999;
+    font-size: 16px;
+}
+</style>
+</body>
+</html>

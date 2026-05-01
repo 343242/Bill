@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.ShouYeXinXiDao">
+
+    <resultMap type="com.entity.ShouYeXinXiEntity" id="shouyexinxiMap">
+        <result property="leixing" column="leixing"/>
+        <result property="biaoti" column="biaoti"/>
+        <result property="neirong" column="neirong"/>
+        <result property="tupian" column="tupian"/>
+        <result property="paixu" column="paixu"/>
+        <result property="zhuangtai" column="zhuangtai"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+	<select id="selectListVO"
+		resultType="com.entity.vo.ShouYeXinXiVO" >
+		SELECT * FROM shouyexinxi  shouyexinxi         
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectVO"
+		resultType="com.entity.vo.ShouYeXinXiVO" >
+		SELECT  shouyexinxi.* FROM shouyexinxi  shouyexinxi 		
+ 		<where> 1=1 </where>
+	</select>
+
+    <select id="selectListView"
+		resultType="com.entity.view.ShouYeXinXiView" >
+
+		SELECT  shouyexinxi.* FROM shouyexinxi  shouyexinxi          
+        <where> 1=1 </where>
+	</select>
+	
+	<select id="selectView"
+		resultType="com.entity.view.ShouYeXinXiView" >
+		SELECT * FROM shouyexinxi  shouyexinxi <where> 1=1 </where>
+	</select>
+	
+</mapper>

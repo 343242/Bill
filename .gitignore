@@ -1,0 +1,14 @@
+.codex
+.omc/
+.omx/
+
+.idea/
+.vscode/
+springbooto2ehg/.idea/
+springbooto2ehg/.vscode/
+springbooto2ehg/target/
+springbooto2ehg/output.log
+springbooto2ehg/src/main/resources/admin/admin/node_modules/
+
+.DS_Store
+Thumbs.db

@@ -1,0 +1,568 @@
+[
+    {
+        "backMenu": [
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-rank",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "学员",
+                        "menuJump": "列表",
+                        "tableName": "xueyuan"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-brand",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "教练",
+                        "menuJump": "列表",
+                        "tableName": "jiaolian"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-vip",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "报名须知",
+                        "menuJump": "列表",
+                        "tableName": "news"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-copy",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除",
+                            "审核",
+                            "报表"
+                        ],
+                        "menu": "报名信息",
+                        "menuJump": "列表",
+                        "tableName": "baomingxinxi"
+                    }
+                ],
+                "menu": "基础信息管理"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-settings",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "排班规则管理",
+                        "menuJump": "列表",
+                        "tableName": "paiBanGuiZe"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-time",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "排班计划管理",
+                        "menuJump": "列表",
+                        "tableName": "kechenganpai"
+                    }
+                ],
+                "menu": "教练排班管理"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-video",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "理论视频管理",
+                        "menuJump": "列表",
+                        "tableName": "shipin"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-message",
+                        "buttons": [
+                            "查看",
+                            "回复",
+                            "删除"
+                        ],
+                        "menu": "视频评论管理",
+                        "menuJump": "列表",
+                        "tableName": "shipinpinglun"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-copy",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "练习题库管理",
+                        "menuJump": "列表",
+                        "tableName": "exampaper"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-taxi",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "试题管理",
+                        "tableName": "examquestion"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-attentionfavor",
+                        "buttons": [
+                            "查看",
+                            "删除"
+                        ],
+                        "menu": "考试记录",
+                        "tableName": "examrecord"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-brand",
+                        "buttons": [
+                            "查看",
+                            "删除",
+                            "修改"
+                        ],
+                        "menu": "错题本管理",
+                        "tableName": "cuotiban"
+                    }
+                ],
+                "menu": "理论学习考试管理"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-vipcard",
+                        "buttons": [
+                            "查看",
+                            "修改"
+                        ],
+                        "menu": "预约名额配置",
+                        "menuJump": "列表",
+                        "tableName": "xiTongCanShu"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-vip",
+                        "buttons": [
+                            "查看",
+                            "删除",
+                            "审核"
+                        ],
+                        "menu": "预约信息查询",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-phone",
+                        "buttons": [
+                            "查看",
+                            "新增",
+                            "修改",
+                            "删除",
+                            "审核"
+                        ],
+                        "menu": "预约取消管理",
+                        "menuJump": "列表",
+                        "tableName": "quxiaokecheng"
+                    }
+                ],
+                "menu": "练车预约管理"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-newshot",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "首页信息管理",
+                        "menuJump": "列表",
+                        "tableName": "shouYeXinXi"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-card",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "首页轮播图",
+                        "menuJump": "列表",
+                        "tableName": "config"
+                    }
+                ],
+                "menu": "首页信息管理"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-settings",
+                        "buttons": [
+                            "查看",
+                            "修改"
+                        ],
+                        "menu": "系统参数配置",
+                        "menuJump": "列表",
+                        "tableName": "xiTongCanShu"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-brand",
+                        "buttons": [
+                            "查看",
+                            "删除"
+                        ],
+                        "menu": "操作日志",
+                        "menuJump": "列表",
+                        "tableName": "riZhi"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-attentionfavor",
+                        "buttons": [
+                            "查看",
+                            "编辑名称",
+                            "编辑父级",
+                            "删除"
+                        ],
+                        "menu": "菜单列表",
+                        "tableName": "menu"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-pic",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "资源备份",
+                        "tableName": "ziyuanbeifen"
+                    }
+                ],
+                "menu": "系统管理"
+            }
+        ],
+        "frontMenu": [
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-newshot",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "驾校概况",
+                        "menuJump": "列表",
+                        "tableName": "jiaxiaoxinxi"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-brand",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "教练信息",
+                        "menuJump": "列表",
+                        "tableName": "jiaolian"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-vip",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "报名须知",
+                        "menuJump": "列表",
+                        "tableName": "news"
+                    }
+                ],
+                "menu": "首页信息浏览"
+            }
+        ],
+        "hasBackLogin": "是",
+        "hasBackRegister": "否",
+        "hasFrontLogin": "否",
+        "hasFrontRegister": "否",
+        "roleName": "管理员",
+        "tableName": "users"
+    },
+    {
+        "backMenu": [
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-video",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "理论视频学习",
+                        "menuJump": "列表",
+                        "tableName": "shipin"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-favor",
+                        "buttons": [
+                            "查看",
+                            "删除"
+                        ],
+                        "menu": "视频互动管理",
+                        "menuJump": "列表",
+                        "tableName": "storeup"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-copy",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "练习题库",
+                        "menuJump": "列表",
+                        "tableName": "exampaper"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-attentionfavor",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "理论考试",
+                        "menuJump": "列表",
+                        "tableName": "examrecord"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-brand",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "错题本",
+                        "menuJump": "列表",
+                        "tableName": "cuotiban"
+                    }
+                ],
+                "menu": "理论学习考试"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-vipcard",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "时段预约申请",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-time",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "预约记录查询",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    }
+                ],
+                "menu": "练车预约申请"
+            }
+        ],
+        "frontMenu": [
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-video",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "理论视频学习",
+                        "menuJump": "列表",
+                        "tableName": "shipin"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-copy",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "练习题库",
+                        "menuJump": "列表",
+                        "tableName": "exampaper"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-attentionfavor",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "理论考试",
+                        "menuJump": "列表",
+                        "tableName": "examrecord"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-brand",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "错题本",
+                        "menuJump": "列表",
+                        "tableName": "cuotiban"
+                    }
+                ],
+                "menu": "理论学习考试"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-vipcard",
+                        "buttons": [
+                            "新增",
+                            "查看",
+                            "修改",
+                            "删除"
+                        ],
+                        "menu": "时段预约申请",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-time",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "预约记录查询",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    }
+                ],
+                "menu": "练车预约申请"
+            }
+        ],
+        "hasBackLogin": "是",
+        "hasBackRegister": "否",
+        "hasFrontLogin": "是",
+        "hasFrontRegister": "是",
+        "roleName": "学员",
+        "tableName": "xueyuan"
+    },
+    {
+        "backMenu": [
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-time",
+                        "buttons": [
+                            "查看",
+                            "修改"
+                        ],
+                        "menu": "个人排班查询",
+                        "menuJump": "列表",
+                        "tableName": "kechenganpai"
+                    }
+                ],
+                "menu": "教练排班查看管理"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-rank",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "学员管理",
+                        "menuJump": "列表",
+                        "tableName": "xueyuan"
+                    }
+                ],
+                "menu": "学员管理"
+            },
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-vipcard",
+                        "buttons": [
+                            "查看",
+                            "审核"
+                        ],
+                        "menu": "预约审核",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-time",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "待审核预约查询",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-card",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "已确认预约列表",
+                        "menuJump": "列表",
+                        "tableName": "yuyuelianche"
+                    }
+                ],
+                "menu": "练车预约审核"
+            }
+        ],
+        "frontMenu": [
+            {
+                "child": [
+                    {
+                        "appFrontIcon": "cuIcon-newshot",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "驾校概况",
+                        "menuJump": "列表",
+                        "tableName": "jiaxiaoxinxi"
+                    },
+                    {
+                        "appFrontIcon": "cuIcon-brand",
+                        "buttons": [
+                            "查看"
+                        ],
+                        "menu": "教练信息",
+                        "menuJump": "列表",
+                        "tableName": "jiaolian"
+                    }
+                ],
+                "menu": "首页信息浏览"
+            }
+        ],
+        "hasBackLogin": "是",
+        "hasBackRegister": "是",
+        "hasFrontLogin": "否",
+        "hasFrontRegister": "否",
+        "roleName": "教练",
+        "tableName": "jiaolian"
+    }
+]
