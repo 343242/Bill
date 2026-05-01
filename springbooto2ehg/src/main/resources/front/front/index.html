@@ -190,9 +190,9 @@
 				<div class="title" v-if="false" v-text="projectName"></div>
 				<div class="list">
 					<ul>
-						<li class='current'><a href="javascript:navPage('./pages/home/home.html')" class="menumain"><i v-if="false" class="layui-icon layui-icon-home"></i>首页</a></li>
-						<li v-for="(item,index) in indexNav" v-bind:key="index"><a :href="'javascript:navPage(\''+item.url+'\')'" class="menumain" style="cursor: pointer;"><i v-if="false" class="layui-icon" :class="iconArr[index]"></i>{{item.name}}</a></li>
-						<li><a href="javascript:centerPage();" class="menumain"><i v-if="false" class="layui-icon layui-icon-username"></i>个人中心</a></li>
+						<li :class="{current: activeNavIndex === 0}" @click="openNav(0, './pages/home/home.html')"><a href="javascript:void(0)" class="menumain"><i v-if="false" class="layui-icon layui-icon-home"></i>首页</a></li>
+						<li v-for="(item,index) in indexNav" v-bind:key="index" :class="{current: activeNavIndex === index + 1}" @click="openNav(index + 1, item.url)"><a href="javascript:void(0)" class="menumain" style="cursor: pointer;"><i v-if="false" class="layui-icon" :class="iconArr[index]"></i>{{item.name}}</a></li>
+						<li :class="{current: activeNavIndex === indexNav.length + 1}" @click="openCenterPage()"><a href="javascript:void(0)" class="menumain"><i v-if="false" class="layui-icon layui-icon-username"></i>个人中心</a></li>
 						<li><a :href="adminurl" target="_blank" class="menumain" style="cursor: pointer;"><i v-if="false" class="layui-icon layui-icon-link"></i>后台管理</a></li>
 					</ul>
 				</div>
@@ -224,9 +224,7 @@
 					adminurl: adminurl,
 					chatFlag: chatFlag,
 					projectName: projectName,
-				},
-				mounted: function() {
-					this.bindClickOnLi();
+					activeNavIndex: Number(localStorage.getItem("checkedLiIndex") || 0),
 				},
 				created() {
 					this.iconArr.sort(()=>{
@@ -237,14 +235,15 @@
 					jump(url) {
 						jump(url)
 					},
-					bindClickOnLi() {
-						let list = document.getElementsByTagName("li");
-						for(var i = 0;i<list.length;i++){
-							list[i].onclick = function(){
-								$(this).addClass("current").siblings().removeClass("current");
-                                localStorage.setItem("checkedLiIndex",$(this).index());
-							}
-						}
+					openNav(index, url) {
+						this.activeNavIndex = index;
+						localStorage.setItem("checkedLiIndex", index);
+						navPage(url);
+					},
+					openCenterPage() {
+						this.activeNavIndex = this.indexNav.length + 1;
+						localStorage.setItem("checkedLiIndex", this.activeNavIndex);
+						centerPage();
 					}
 				}
 			});
@@ -287,13 +286,6 @@
 
 			var iframeUrl = localStorage.getItem('iframeUrl');
 			document.getElementById('iframe').src = iframeUrl  || './pages/home/home.html';
-
-            let list = document.getElementsByTagName("li");
-            for(var i = 0;i<list.length;i++){
-                if(i==localStorage.getItem("checkedLiIndex")) {
-                    $(list[i]).addClass("current").siblings().removeClass("current");
-                }
-            }
 
       // var i = 0;
       setInterval(function(){
