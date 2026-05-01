@@ -114,7 +114,7 @@
                        {{scope.row.xingming}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column v-if="!hideCoachAuditColumns" :sortable="contents.tableSortable" :align="contents.tableAlign" 
                     prop="jiaoliangonghao"
                    :header-align="contents.tableAlign"
 		    label="教练工号">
@@ -122,7 +122,7 @@
                        {{scope.row.jiaoliangonghao}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column v-if="!hideCoachAuditColumns" :sortable="contents.tableSortable" :align="contents.tableAlign" 
                     prop="jiaolianxingming"
                    :header-align="contents.tableAlign"
 		    label="教练姓名">
@@ -146,7 +146,7 @@
                     {{ formatStatus(scope.row.sfsh) }}
                   </template>
               </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
+              <el-table-column v-if="!hideCoachAuditColumns" :sortable="contents.tableSortable" :align="contents.tableAlign" 
                   prop="yuyueshuoming"
                  :header-align="contents.tableAlign"
                   label="说明">
@@ -290,6 +290,9 @@ export default {
   computed: {
     viewMode() {
       return this.$route.query.view || ''
+    },
+    hideCoachAuditColumns() {
+      return ['预约审核', '待审核预约查询', '已确认预约列表'].includes(this.viewMode)
     },
     apiUrl() {
       switch(this.viewMode) {
