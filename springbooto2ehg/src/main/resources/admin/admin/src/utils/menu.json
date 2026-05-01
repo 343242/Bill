@@ -326,16 +326,6 @@
                         "tableName": "shipin"
                     },
                     {
-                        "appFrontIcon": "cuIcon-favor",
-                        "buttons": [
-                            "查看",
-                            "删除"
-                        ],
-                        "menu": "视频互动管理",
-                        "menuJump": "列表",
-                        "tableName": "storeup"
-                    },
-                    {
                         "appFrontIcon": "cuIcon-copy",
                         "buttons": [
                             "查看"
@@ -349,7 +339,7 @@
                         "buttons": [
                             "查看"
                         ],
-                        "menu": "理论考试",
+                        "menu": "考试记录",
                         "menuJump": "列表",
                         "tableName": "examrecord"
                     },
