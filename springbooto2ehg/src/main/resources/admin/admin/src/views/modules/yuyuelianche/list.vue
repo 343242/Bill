@@ -143,7 +143,7 @@
                  :header-align="contents.tableAlign"
                   label="预约状态">
                   <template slot-scope="scope">
-                    {{ formatStatus(scope.row.sfsh) }}
+                    {{ displayBookingStatus(scope.row) }}
                   </template>
               </el-table-column>
               <el-table-column v-if="!hideCoachAuditColumns" :sortable="contents.tableSortable" :align="contents.tableAlign" 
@@ -442,9 +442,16 @@ export default {
     headerCellStyle({ row, rowIndex}){
       return {backgroundColor: this.contents.tableHeaderBgColor}
     },
+    displayBookingStatus(row) {
+      if (this.hideCoachAuditColumns) {
+        return this.formatStatus(row.status || row.sfsh)
+      }
+      return this.formatStatus(row.sfsh)
+    },
     formatStatus(value) {
-      if (value === '是') return '已通过'
-      if (value === '否') return '未通过'
+      if (value === '是' || value === '已通过' || value === '通过') return '已通过'
+      if (value === '否' || value === '未通过' || value === '不通过') return '未通过'
+      if (value === '待审核') return '待审核'
       return '待审核'
     },
     // 表格按钮
