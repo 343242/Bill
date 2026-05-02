@@ -108,7 +108,6 @@
                   <div v-if="isAdminSession()" class="admin-action-stack">
                     <el-button v-if="isAuth('exampaper','修改')" type="text" size="mini" class="admin-action-btn" @click="addOrUpdateHandler(scope.row.id)">修改</el-button>
                     <el-button v-if="isAuth('exampaper','删除')" type="text" size="mini" class="admin-action-btn" @click="deleteHandler(scope.row.id)">删除</el-button>
-                    <el-button type="text" size="mini" class="admin-action-btn" @click="exam(scope.row.id)">考试</el-button>
                   </div>
                   <template v-else>
                     <el-button v-if="isAuth('exampaper','查看') && !isStudentSession() && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="success" icon="el-icon-tickets" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
@@ -544,14 +543,20 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
   }
 
   .admin-action-btn {
     margin: 0 !important;
-    padding: 0;
+    min-width: 68px;
+    padding: 6px 12px;
+    font-size: 16px;
+    line-height: 1.2;
     color: #606266;
-    font-weight: 400;
+    font-weight: 500;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    background: #f7f8fa;
   }
 
   .tables {
