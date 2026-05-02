@@ -11,6 +11,7 @@
         <result property="jiaxiaojieshao" column="jiaxiaojieshao"/>
         <result property="jiaxiaodianhua" column="jiaxiaodianhua"/>
         <result property="jiaxiaotupian" column="jiaxiaotupian"/>
+        <result property="zhuangtai" column="zhuangtai"/>
         <result property="thumbsupnum" column="thumbsupnum"/>
         <result property="crazilynum" column="crazilynum"/>
         <result property="clicktime" column="clicktime"/>

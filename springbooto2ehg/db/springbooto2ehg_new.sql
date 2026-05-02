@@ -408,6 +408,7 @@ CREATE TABLE `jiaxiaoxinxi`  (
   `jiaxiaojieshao` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '驾校介绍',
   `jiaxiaodianhua` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '驾校电话',
   `jiaxiaotupian` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '驾校图片',
+  `zhuangtai` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '已发布' COMMENT '状态',
   `thumbsupnum` int NULL DEFAULT 0 COMMENT '赞',
   `crazilynum` int NULL DEFAULT 0 COMMENT '踩',
   `clicktime` datetime NULL DEFAULT NULL COMMENT '最近点击时间',
@@ -418,12 +419,12 @@ CREATE TABLE `jiaxiaoxinxi`  (
 -- ----------------------------
 -- Records of jiaxiaoxinxi
 -- ----------------------------
-INSERT INTO `jiaxiaoxinxi` VALUES (31, '2022-04-20 00:18:12', '南京市雨花驾校C1', 'C1', '驾校地址1', 1, '<p>AAAAAAAA</p>', '13823888881', 'upload/jiaxiaoxinxi_jiaxiaotupian1.jpg', 8, 3, '2026-04-28 02:06:06', 18);
-INSERT INTO `jiaxiaoxinxi` VALUES (32, '2022-04-20 00:18:12', '驾校名称2', '驾校类型2', '驾校地址2', 2, '驾校介绍2', '13823888882', 'upload/jiaxiaoxinxi_jiaxiaotupian2.jpg', 2, 2, '2026-04-28 00:26:38', 3);
-INSERT INTO `jiaxiaoxinxi` VALUES (33, '2022-04-20 00:18:12', '驾校名称3', '驾校类型3', '驾校地址3', 3, '驾校介绍3', '13823888883', 'upload/jiaxiaoxinxi_jiaxiaotupian3.jpg', 3, 3, '2026-04-28 00:26:43', 4);
-INSERT INTO `jiaxiaoxinxi` VALUES (34, '2022-04-20 00:18:12', '驾校名称4', '驾校类型4', '驾校地址4', 4, '驾校介绍4', '13823888884', 'upload/jiaxiaoxinxi_jiaxiaotupian4.jpg', 4, 4, '2022-04-20 00:18:12', 4);
-INSERT INTO `jiaxiaoxinxi` VALUES (35, '2022-04-20 00:18:12', '驾校名称5', '驾校类型5', '驾校地址5', 5, '驾校介绍5', '13823888885', 'upload/jiaxiaoxinxi_jiaxiaotupian5.jpg', 5, 5, '2022-04-20 00:18:12', 5);
-INSERT INTO `jiaxiaoxinxi` VALUES (36, '2022-04-20 00:18:12', '驾校名称6', '驾校类型6', '驾校地址6', 6, '驾校介绍6', '13823888886', 'upload/jiaxiaoxinxi_jiaxiaotupian6.jpg', 6, 6, '2022-04-20 00:18:12', 6);
+INSERT INTO `jiaxiaoxinxi` VALUES (31, '2022-04-20 00:18:12', '南京市雨花驾校C1', 'C1', '驾校地址1', 1, '<p>AAAAAAAA</p>', '13823888881', 'upload/jiaxiaoxinxi_jiaxiaotupian1.jpg', '已发布', 8, 3, '2026-04-28 02:06:06', 18);
+INSERT INTO `jiaxiaoxinxi` VALUES (32, '2022-04-20 00:18:12', '驾校名称2', '驾校类型2', '驾校地址2', 2, '驾校介绍2', '13823888882', 'upload/jiaxiaoxinxi_jiaxiaotupian2.jpg', '未发布', 2, 2, '2026-04-28 00:26:38', 3);
+INSERT INTO `jiaxiaoxinxi` VALUES (33, '2022-04-20 00:18:12', '驾校名称3', '驾校类型3', '驾校地址3', 3, '驾校介绍3', '13823888883', 'upload/jiaxiaoxinxi_jiaxiaotupian3.jpg', '未发布', 3, 3, '2026-04-28 00:26:43', 4);
+INSERT INTO `jiaxiaoxinxi` VALUES (34, '2022-04-20 00:18:12', '驾校名称4', '驾校类型4', '驾校地址4', 4, '驾校介绍4', '13823888884', 'upload/jiaxiaoxinxi_jiaxiaotupian4.jpg', '未发布', 4, 4, '2022-04-20 00:18:12', 4);
+INSERT INTO `jiaxiaoxinxi` VALUES (35, '2022-04-20 00:18:12', '驾校名称5', '驾校类型5', '驾校地址5', 5, '驾校介绍5', '13823888885', 'upload/jiaxiaoxinxi_jiaxiaotupian5.jpg', '未发布', 5, 5, '2022-04-20 00:18:12', 5);
+INSERT INTO `jiaxiaoxinxi` VALUES (36, '2022-04-20 00:18:12', '驾校名称6', '驾校类型6', '驾校地址6', 6, '驾校介绍6', '13823888886', 'upload/jiaxiaoxinxi_jiaxiaotupian6.jpg', '未发布', 6, 6, '2022-04-20 00:18:12', 6);
 
 -- ----------------------------
 -- Table structure for kaoqindaka

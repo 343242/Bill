@@ -69,7 +69,7 @@
           </el-form-item>
         </div>
       </el-col>
-      <el-col :span="24">  
+      <el-col :span="24">
         <el-form-item class="upload" v-if="type!='info' && !ro.jiaxiaotupian" label="驾校图片" prop="jiaxiaotupian">
           <file-upload
           tip="点击上传驾校图片"
@@ -83,6 +83,20 @@
         <div v-else>
           <el-form-item v-if="ruleForm.jiaxiaotupian" label="驾校图片" prop="jiaxiaotupian">
             <img style="margin-right:20px;" v-bind:key="index" v-for="(item,index) in ruleForm.jiaxiaotupian.split(',')" :src="$base.url+item" width="100" height="100">
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item class="select" v-if="type!='info'" label="状态" prop="zhuangtai">
+          <el-select :disabled="ro.zhuangtai" v-model="ruleForm.zhuangtai" placeholder="请选择状态">
+            <el-option label="已发布" value="已发布"></el-option>
+            <el-option label="未发布" value="未发布"></el-option>
+          </el-select>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="状态" prop="zhuangtai">
+              <el-input v-model="ruleForm.zhuangtai"
+                placeholder="状态" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
@@ -195,6 +209,7 @@ export default {
 	jiaxiaojieshao : false,
 	jiaxiaodianhua : false,
 	jiaxiaotupian : false,
+	zhuangtai : false,
 	thumbsupnum : false,
 	crazilynum : false,
 	clicktime : false,
@@ -208,6 +223,7 @@ export default {
         jiaxiaojieshao: '',
         jiaxiaodianhua: '',
         jiaxiaotupian: '',
+        zhuangtai: '已发布',
         clicktime: '',
       },
       rules: {
@@ -226,6 +242,8 @@ export default {
                 { validator: validateMobile, trigger: 'blur' },
           ],
           jiaxiaotupian: [
+          ],
+          zhuangtai: [
           ],
           thumbsupnum: [
                 { validator: validateIntNumber, trigger: 'blur' },
@@ -303,6 +321,11 @@ export default {
           if(o=='jiaxiaotupian'){
             this.ruleForm.jiaxiaotupian = obj[o];
 	    this.ro.jiaxiaotupian = true;
+            continue;
+          }
+          if(o=='zhuangtai'){
+            this.ruleForm.zhuangtai = obj[o];
+	    this.ro.zhuangtai = true;
             continue;
           }
           if(o=='thumbsupnum'){

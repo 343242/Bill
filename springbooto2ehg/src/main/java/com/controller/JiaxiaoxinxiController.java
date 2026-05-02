@@ -74,9 +74,12 @@ public class JiaxiaoxinxiController {
      */
 	@IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,JiaxiaoxinxiEntity jiaxiaoxinxi, 
+    public R list(@RequestParam Map<String, Object> params,JiaxiaoxinxiEntity jiaxiaoxinxi,
 		HttpServletRequest request){
         EntityWrapper<JiaxiaoxinxiEntity> ew = new EntityWrapper<JiaxiaoxinxiEntity>();
+		if(StringUtils.isBlank(jiaxiaoxinxi.getZhuangtai())) {
+			ew.in("zhuangtai", Arrays.asList("已发布", "启用", "显示"));
+		}
 		PageUtils page = jiaxiaoxinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, jiaxiaoxinxi), params), params));
         return R.ok().put("data", page);
     }
@@ -236,6 +239,9 @@ public class JiaxiaoxinxiController {
     @RequestMapping("/autoSort")
     public R autoSort(@RequestParam Map<String, Object> params,JiaxiaoxinxiEntity jiaxiaoxinxi, HttpServletRequest request,String pre){
         EntityWrapper<JiaxiaoxinxiEntity> ew = new EntityWrapper<JiaxiaoxinxiEntity>();
+        if(StringUtils.isBlank(jiaxiaoxinxi.getZhuangtai())) {
+            ew.in("zhuangtai", Arrays.asList("已发布", "启用", "显示"));
+        }
         Map<String, Object> newMap = new HashMap<String, Object>();
         Map<String, Object> param = new HashMap<String, Object>();
 		Iterator<Map.Entry<String, Object>> it = param.entrySet().iterator();

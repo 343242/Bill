@@ -90,8 +90,12 @@ public class JiaxiaoxinxiEntity<T> implements Serializable {
 	/**
 	 * 驾校图片
 	 */
-					
 	private String jiaxiaotupian;
+
+	/**
+	 * 状态
+	 */
+	private String zhuangtai;
 	
 	/**
 	 * 赞
@@ -221,6 +225,18 @@ public class JiaxiaoxinxiEntity<T> implements Serializable {
 	 */
 	public String getJiaxiaotupian() {
 		return jiaxiaotupian;
+	}
+	/**
+	 * 设置：状态
+	 */
+	public void setZhuangtai(String zhuangtai) {
+		this.zhuangtai = zhuangtai;
+	}
+	/**
+	 * 获取：状态
+	 */
+	public String getZhuangtai() {
+		return zhuangtai;
 	}
 	/**
 	 * 设置：赞

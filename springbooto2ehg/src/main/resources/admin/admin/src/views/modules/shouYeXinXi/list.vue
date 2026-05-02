@@ -29,8 +29,13 @@
                 </template>
               </el-table-column>
               <el-table-column prop="addtime" label="添加时间" width="180" />
-              <el-table-column label="操作" width="200" align="center">
+              <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
+                  <el-button
+                    size="small"
+                    type="warning"
+                    @click="togglePublish(scope.row)"
+                  >{{ publishButtonLabel(scope.row.zhuangtai) }}</el-button>
                   <el-button type="primary" size="small" @click="editHandler(scope.row)">编辑</el-button>
                   <el-button type="danger" size="small" @click="deleteHandler(scope.row)">删除</el-button>
                 </template>
@@ -192,6 +197,9 @@ export default {
     statusTagType(status) {
       return this.statusLabel(status) === '已发布' ? 'success' : 'info'
     },
+    publishButtonLabel(status) {
+      return this.statusLabel(status) === '已发布' ? '取消发布' : '发布'
+    },
     search() {
       this.getList()
     },
@@ -329,6 +337,34 @@ export default {
             this.getList()
           } else {
             this.$message.error(res.msg)
+          }
+        })
+      })
+    },
+    togglePublish(row) {
+      const nextStatus = this.statusLabel(row.zhuangtai) === '已发布' ? '未发布' : '已发布'
+      const endpointMap = {
+        shouyexinxi: 'shouyexinxi/update',
+        jiaxiaoxinxi: 'jiaxiaoxinxi/update',
+        jiaolian: 'jiaolian/update',
+        news: 'news/update'
+      }
+      this.$http.get(`${row.sourceTable}/query`, {
+        params: {
+          id: row.sourceId
+        }
+      }).then(({ data: res }) => {
+        if (res.code !== 0) {
+          this.$message.error(res.msg)
+          return
+        }
+        const payload = Object.assign({}, res.data, { zhuangtai: nextStatus })
+        this.$http.post(endpointMap[row.sourceTable], payload).then(({ data: updateRes }) => {
+          if (updateRes.code === 0) {
+            this.$message.success(nextStatus === '已发布' ? '已发布' : '已取消发布')
+            this.getList()
+          } else {
+            this.$message.error(updateRes.msg)
           }
         })
       })

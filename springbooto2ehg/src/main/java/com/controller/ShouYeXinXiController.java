@@ -206,7 +206,7 @@ public class ShouYeXinXiController {
                     "驾校概况",
                     item.getJiaxiaomingcheng(),
                     contentBuilder.toString(),
-                    "-",
+                    item.getZhuangtai(),
                     item.getAddtime()
             ));
         }
