@@ -358,8 +358,8 @@ export default {
       return this.$storage.get('sessionTable') === 'users';
     },
     formatPracticeStatus(status) {
-      if (status === '待上课') {
-        return '待完成';
+      if (status === '待上课' || status === '待完成') {
+        return '未练车';
       }
       return status || '-';
     },
@@ -367,7 +367,7 @@ export default {
       return row.shuoming || row.shhf || '-';
     },
     canCancelRecord(row) {
-      return this.formatPracticeStatus(row.lianchewanchengzhuangtai) === '待完成';
+      return this.formatPracticeStatus(row.lianchewanchengzhuangtai) === '未练车';
     },
     openCancelDialog(row) {
       this.cancelForm = {

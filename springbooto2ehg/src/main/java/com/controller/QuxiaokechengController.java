@@ -26,10 +26,12 @@ import com.annotation.IgnoreAuth;
 
 import com.entity.KechenganpaiEntity;
 import com.entity.QuxiaokechengEntity;
+import com.entity.YuyueliancheEntity;
 import com.entity.view.QuxiaokechengView;
 
 import com.service.KechenganpaiService;
 import com.service.QuxiaokechengService;
+import com.service.YuyueliancheService;
 import com.service.TokenService;
 import com.utils.PageUtils;
 import com.utils.R;
@@ -52,6 +54,8 @@ public class QuxiaokechengController {
     private QuxiaokechengService quxiaokechengService;
     @Autowired
     private KechenganpaiService kechenganpaiService;
+    @Autowired
+    private YuyueliancheService yuyueliancheService;
 
 
     
@@ -64,6 +68,9 @@ public class QuxiaokechengController {
     public R page(@RequestParam Map<String, Object> params,QuxiaokechengEntity quxiaokecheng,
 		HttpServletRequest request){
 		String tableName = request.getSession().getAttribute("tableName").toString();
+		if(tableName.equals("users")) {
+            syncAdminCancelableBookings();
+        }
 		if(tableName.equals("jiaolian")) {
 			quxiaokecheng.setJiaoliangonghao((String)request.getSession().getAttribute("username"));
 		}
@@ -71,6 +78,12 @@ public class QuxiaokechengController {
 			quxiaokecheng.setZhanghao((String)request.getSession().getAttribute("username"));
 		}
         EntityWrapper<QuxiaokechengEntity> ew = new EntityWrapper<QuxiaokechengEntity>();
+        if(tableName.equals("users")) {
+            ew.ge("yuyueshijian", new Date());
+            ew.in("lianchewanchengzhuangtai", Arrays.asList("未练车", "待完成", "待上课"));
+            ew.in("sfsh", Arrays.asList("已通过", "是"));
+            ew.orderBy("yuyueshijian", true);
+        }
 		PageUtils page = quxiaokechengService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, quxiaokecheng), params), params));
 
         return R.ok().put("data", page);
@@ -193,7 +206,7 @@ public class QuxiaokechengController {
         if(record == null) {
             return R.error("取消记录不存在");
         }
-        if(!"待完成".equals(normalizePracticeStatus(record.getLianchewanchengzhuangtai()))) {
+        if(!"未练车".equals(normalizePracticeStatus(record.getLianchewanchengzhuangtai()))) {
             return R.error("当前记录不允许再次取消预约");
         }
 
@@ -282,9 +295,111 @@ public class QuxiaokechengController {
 		return R.ok().put("count", count);
 	}
 
+    private void syncAdminCancelableBookings() {
+        Map<Long, YuyueliancheEntity> appointmentMap = new HashMap<Long, YuyueliancheEntity>();
+        mergeApprovedAppointments(appointmentMap, "status", "已通过");
+        mergeApprovedAppointments(appointmentMap, "sfsh", "已通过");
+        mergeApprovedAppointments(appointmentMap, "sfsh", "是");
+        List<YuyueliancheEntity> appointmentList = new ArrayList<YuyueliancheEntity>(appointmentMap.values());
+        for (YuyueliancheEntity appointment : appointmentList) {
+            if(appointment.getLiancheshijian() == null) {
+                continue;
+            }
+            QuxiaokechengEntity record = findCancellationRecord(appointment);
+            boolean isNewRecord = false;
+            if(record == null) {
+                record = new QuxiaokechengEntity();
+                record.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
+                isNewRecord = true;
+            }
+            mergeAppointmentIntoCancellationRecord(record, appointment);
+            if(isNewRecord) {
+                quxiaokechengService.insert(record);
+            } else {
+                quxiaokechengService.updateById(record);
+            }
+        }
+    }
+
+    private void mergeApprovedAppointments(Map<Long, YuyueliancheEntity> appointmentMap, String fieldName, String fieldValue) {
+        EntityWrapper<YuyueliancheEntity> wrapper = new EntityWrapper<YuyueliancheEntity>();
+        wrapper.ge("liancheshijian", new Date());
+        wrapper.eq(fieldName, fieldValue);
+        List<YuyueliancheEntity> appointmentList = yuyueliancheService.selectList(wrapper);
+        if(appointmentList == null) {
+            return;
+        }
+        for (YuyueliancheEntity appointment : appointmentList) {
+            appointmentMap.put(appointment.getId(), appointment);
+        }
+    }
+
+    private QuxiaokechengEntity findCancellationRecord(YuyueliancheEntity appointment) {
+        EntityWrapper<QuxiaokechengEntity> wrapper = new EntityWrapper<QuxiaokechengEntity>();
+        wrapper.eq("zhanghao", appointment.getZhanghao());
+        wrapper.eq("jiaoliangonghao", appointment.getJiaoliangonghao());
+        wrapper.eq("yuyueshijian", appointment.getLiancheshijian());
+        List<QuxiaokechengEntity> recordList = quxiaokechengService.selectList(wrapper);
+        if(recordList == null || recordList.isEmpty()) {
+            return null;
+        }
+        return recordList.get(0);
+    }
+
+    private void mergeAppointmentIntoCancellationRecord(QuxiaokechengEntity record, YuyueliancheEntity appointment) {
+        record.setYuyueshijian(appointment.getLiancheshijian());
+        record.setJiaoliangonghao(appointment.getJiaoliangonghao());
+        record.setJiaolianxingming(appointment.getJiaolianxingming());
+        record.setZhanghao(appointment.getZhanghao());
+        record.setXingming(appointment.getXingming());
+        record.setSfsh("已通过");
+        if(StringUtils.isBlank(record.getLianchewanchengzhuangtai())) {
+            record.setLianchewanchengzhuangtai("未练车");
+        } else if("待完成".equals(record.getLianchewanchengzhuangtai()) || "待上课".equals(record.getLianchewanchengzhuangtai())) {
+            record.setLianchewanchengzhuangtai("未练车");
+        }
+
+        KechenganpaiEntity schedule = matchScheduleForAppointment(appointment);
+        if(schedule != null) {
+            record.setKechenganpaiid(schedule.getId());
+            if(StringUtils.isBlank(record.getKechengmingcheng())) {
+                record.setKechengmingcheng(StringUtils.defaultIfBlank(schedule.getKechengmingcheng(), "练车预约"));
+            }
+            if(StringUtils.isBlank(record.getKemuleixing())) {
+                record.setKemuleixing(StringUtils.defaultIfBlank(schedule.getKemuleixing(), "科目二/三"));
+            }
+        }
+        if(StringUtils.isBlank(record.getKechengmingcheng())) {
+            record.setKechengmingcheng("练车预约");
+        }
+        if(StringUtils.isBlank(record.getKemuleixing())) {
+            record.setKemuleixing("科目二/三");
+        }
+    }
+
+    private KechenganpaiEntity matchScheduleForAppointment(YuyueliancheEntity appointment) {
+        EntityWrapper<KechenganpaiEntity> exactWrapper = new EntityWrapper<KechenganpaiEntity>();
+        exactWrapper.eq("jiaoliangonghao", appointment.getJiaoliangonghao());
+        exactWrapper.eq("kechengshijian", appointment.getLiancheshijian());
+        KechenganpaiEntity schedule = kechenganpaiService.selectOne(exactWrapper);
+        if(schedule != null) {
+            return schedule;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        EntityWrapper<KechenganpaiEntity> dateWrapper = new EntityWrapper<KechenganpaiEntity>();
+        dateWrapper.eq("jiaoliangonghao", appointment.getJiaoliangonghao());
+        dateWrapper.eq("paibanriqi", sdf.format(appointment.getLiancheshijian()));
+        List<KechenganpaiEntity> scheduleList = kechenganpaiService.selectList(dateWrapper);
+        if(scheduleList == null || scheduleList.isEmpty()) {
+            return null;
+        }
+        return scheduleList.get(0);
+    }
+
     private String normalizePracticeStatus(String status) {
-        if("待上课".equals(status)) {
-            return "待完成";
+        if("待上课".equals(status) || "待完成".equals(status)) {
+            return "未练车";
         }
         return status;
     }
