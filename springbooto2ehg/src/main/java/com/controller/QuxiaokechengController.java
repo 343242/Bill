@@ -25,11 +25,9 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.annotation.IgnoreAuth;
 
 import com.entity.QuxiaokechengEntity;
-import com.entity.YuyueliancheEntity;
 import com.entity.view.QuxiaokechengView;
 
 import com.service.QuxiaokechengService;
-import com.service.YuyueliancheService;
 import com.service.TokenService;
 import com.utils.PageUtils;
 import com.utils.R;
@@ -50,8 +48,6 @@ import java.io.IOException;
 public class QuxiaokechengController {
     @Autowired
     private QuxiaokechengService quxiaokechengService;
-    @Autowired
-    private YuyueliancheService yuyueliancheService;
 
 
     
@@ -71,48 +67,7 @@ public class QuxiaokechengController {
 			quxiaokecheng.setZhanghao((String)request.getSession().getAttribute("username"));
 		}
         EntityWrapper<QuxiaokechengEntity> ew = new EntityWrapper<QuxiaokechengEntity>();
-        Wrapper<QuxiaokechengEntity> wrapper = MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, quxiaokecheng), params), params);
-        if(tableName.equals("users")) {
-            List<QuxiaokechengView> cancellationList = quxiaokechengService.selectListView(wrapper);
-            List<String> accountList = new ArrayList<String>();
-            List<String> coachNoList = new ArrayList<String>();
-            for (QuxiaokechengView record : cancellationList) {
-                if(StringUtils.isNotBlank(record.getZhanghao()) && !accountList.contains(record.getZhanghao())) {
-                    accountList.add(record.getZhanghao());
-                }
-                if(StringUtils.isNotBlank(record.getJiaoliangonghao()) && !coachNoList.contains(record.getJiaoliangonghao())) {
-                    coachNoList.add(record.getJiaoliangonghao());
-                }
-            }
-
-            List<QuxiaokechengView> filteredList = new ArrayList<QuxiaokechengView>();
-            if(!accountList.isEmpty() && !coachNoList.isEmpty()) {
-                EntityWrapper<YuyueliancheEntity> bookingWrapper = new EntityWrapper<YuyueliancheEntity>();
-                bookingWrapper.eq("status", "待完成");
-                bookingWrapper.in("zhanghao", accountList);
-                bookingWrapper.in("jiaoliangonghao", coachNoList);
-                List<YuyueliancheEntity> bookingList = yuyueliancheService.selectList(bookingWrapper);
-                List<String> activeBookingKeys = new ArrayList<String>();
-                for (YuyueliancheEntity booking : bookingList) {
-                    activeBookingKeys.add(booking.getZhanghao() + "#" + booking.getJiaoliangonghao());
-                }
-                for (QuxiaokechengView record : cancellationList) {
-                    String key = record.getZhanghao() + "#" + record.getJiaoliangonghao();
-                    if(activeBookingKeys.contains(key)) {
-                        filteredList.add(record);
-                    }
-                }
-            }
-
-            int pageSize = Integer.parseInt(params.get("limit").toString());
-            int currPage = Integer.parseInt(params.get("page").toString());
-            int fromIndex = Math.max((currPage - 1) * pageSize, 0);
-            int toIndex = Math.min(fromIndex + pageSize, filteredList.size());
-            List<QuxiaokechengView> pageList = fromIndex >= filteredList.size() ? new ArrayList<QuxiaokechengView>() : filteredList.subList(fromIndex, toIndex);
-            PageUtils page = new PageUtils(pageList, filteredList.size(), pageSize, currPage);
-            return R.ok().put("data", page);
-        }
-		PageUtils page = quxiaokechengService.queryPage(params, wrapper);
+		PageUtils page = quxiaokechengService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, quxiaokecheng), params), params));
 
         return R.ok().put("data", page);
     }
