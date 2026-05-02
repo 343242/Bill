@@ -888,6 +888,9 @@ CREATE TABLE `xueyuan`  (
   `xingbie` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '性别',
   `nianling` int NULL DEFAULT NULL COMMENT '年龄',
   `shouji` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '手机',
+  `lianxichexing` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '练习车型',
+  `jiatingzhuzhi` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '家庭住址',
+  `xueyuanzhuangtai` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '正常' COMMENT '学员状态',
   `touxiang` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `zhanghao`(`zhanghao` ASC) USING BTREE
@@ -896,11 +899,11 @@ CREATE TABLE `xueyuan`  (
 -- ----------------------------
 -- Records of xueyuan
 -- ----------------------------
-INSERT INTO `xueyuan` VALUES (11, '2022-04-20 00:18:12', 'zhangsan001', '123456', '张三', '男', 1, '13823888881', 'upload/xueyuan_touxiang1.jpg');
-INSERT INTO `xueyuan` VALUES (12, '2022-04-20 00:18:12', '账号2', '123456', '姓名2', '男', 2, '13823888882', 'upload/xueyuan_touxiang2.jpg');
-INSERT INTO `xueyuan` VALUES (13, '2022-04-20 00:18:12', '账号3', '123456', '姓名3', '男', 3, '13823888883', 'upload/xueyuan_touxiang3.jpg');
-INSERT INTO `xueyuan` VALUES (14, '2022-04-20 00:18:12', '账号4', '123456', '姓名4', '男', 4, '13823888884', 'upload/xueyuan_touxiang4.jpg');
-INSERT INTO `xueyuan` VALUES (1777133995806, '2026-04-26 00:19:55', 'lisi005', '123456', '1', '男', 1, '13928587031', '');
+INSERT INTO `xueyuan` VALUES (11, '2022-04-20 00:18:12', 'zhangsan001', '123456', '张三', '男', 1, '13823888881', '车型1', '雨花区示范路1号', '正常', 'upload/xueyuan_touxiang1.jpg');
+INSERT INTO `xueyuan` VALUES (12, '2022-04-20 00:18:12', '账号2', '123456', '姓名2', '男', 2, '13823888882', '车型2', '雨花区示范路2号', '正常', 'upload/xueyuan_touxiang2.jpg');
+INSERT INTO `xueyuan` VALUES (13, '2022-04-20 00:18:12', '账号3', '123456', '姓名3', '男', 3, '13823888883', '车型3', '雨花区示范路3号', '休学', 'upload/xueyuan_touxiang3.jpg');
+INSERT INTO `xueyuan` VALUES (14, '2022-04-20 00:18:12', '账号4', '123456', '姓名4', '男', 4, '13823888884', '车型4', '雨花区示范路4号', '结业', 'upload/xueyuan_touxiang4.jpg');
+INSERT INTO `xueyuan` VALUES (1777133995806, '2026-04-26 00:19:55', 'lisi005', '123456', '1', '男', 1, '13928587031', '车型5', '雨花区示范路5号', '正常', '');
 
 -- ----------------------------
 -- Table structure for yuyuelianche

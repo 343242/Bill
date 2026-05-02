@@ -10,6 +10,9 @@
         <result property="xingbie" column="xingbie"/>
         <result property="nianling" column="nianling"/>
         <result property="shouji" column="shouji"/>
+        <result property="lianxichexing" column="lianxichexing"/>
+        <result property="jiatingzhuzhi" column="jiatingzhuzhi"/>
+        <result property="xueyuanzhuangtai" column="xueyuanzhuangtai"/>
         <result property="touxiang" column="touxiang"/>
     </resultMap>
 

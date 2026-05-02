@@ -85,9 +85,17 @@
             </el-table-column>
             <el-table-column label="索引" :align="contents.tableAlign"  v-if="contents.tableIndex" type="index" width="50" />
                 <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                    prop="id"
+                   :header-align="contents.tableAlign"
+		    label="学员编号">
+		     <template slot-scope="scope">
+                       {{scope.row.id}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
                     prop="zhanghao"
                    :header-align="contents.tableAlign"
-		    label="账号">
+		    label="学员账号">
 		     <template slot-scope="scope">
                        {{scope.row.zhanghao}}
                      </template>
@@ -95,53 +103,57 @@
                 <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
                     prop="xingming"
                    :header-align="contents.tableAlign"
-		    label="姓名">
+		    label="学员姓名">
 		     <template slot-scope="scope">
                        {{scope.row.xingming}}
                      </template>
                 </el-table-column>
                 <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="xingbie"
-                   :header-align="contents.tableAlign"
-		    label="性别">
-		     <template slot-scope="scope">
-                       {{scope.row.xingbie}}
-                     </template>
-                </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="nianling"
-                   :header-align="contents.tableAlign"
-		    label="年龄">
-		     <template slot-scope="scope">
-                       {{scope.row.nianling}}
-                     </template>
-                </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
                     prop="shouji"
                    :header-align="contents.tableAlign"
-		    label="手机">
+		    label="联系方式">
 		     <template slot-scope="scope">
                        {{scope.row.shouji}}
                      </template>
                 </el-table-column>
-                  <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign"  prop="touxiang"
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                    prop="lianxichexing"
                    :header-align="contents.tableAlign"
-                    width="200"
-                    label="头像">
-                    <template slot-scope="scope">
-                      <div v-if="scope.row.touxiang">
-                        <img :src="$base.url+scope.row.touxiang.split(',')[0]" width="100" height="100">
-                      </div>
-                      <div v-else>无图片</div>
-                    </template>
-                  </el-table-column>
-            <el-table-column width="300" :align="contents.tableAlign" 
+		    label="练习车型">
+		     <template slot-scope="scope">
+                       {{scope.row.lianxichexing}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                    prop="jiatingzhuzhi"
+                   :header-align="contents.tableAlign"
+		    label="家庭住址"
+                    show-overflow-tooltip>
+		     <template slot-scope="scope">
+                       {{scope.row.jiatingzhuzhi}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                    prop="addtime"
+                   :header-align="contents.tableAlign"
+		    label="录入时间"
+                    width="180">
+		     <template slot-scope="scope">
+                       {{scope.row.addtime}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                    prop="xueyuanzhuangtai"
+                   :header-align="contents.tableAlign"
+		    label="学员状态">
+		     <template slot-scope="scope">
+                       {{scope.row.xueyuanzhuangtai}}
+                     </template>
+                </el-table-column>
+            <el-table-column width="200" :align="contents.tableAlign" 
                :header-align="contents.tableAlign"
                 label="操作">
                 <template slot-scope="scope">
-                <el-button v-if="isAuth('xueyuan','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="success" icon="el-icon-tickets" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
-                <el-button v-if="isAuth('xueyuan','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}<i class="el-icon-tickets el-icon--right" /></el-button>
-                <el-button v-if="isAuth('xueyuan','查看') && contents.tableBtnIcon == 0" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
                 <el-button v-if=" isAuth('xueyuan','修改') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="primary" icon="el-icon-edit" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}</el-button>
                 <el-button v-if=" isAuth('xueyuan','修改') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="primary" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}<i class="el-icon-edit el-icon--right" /></el-button>
                 <el-button v-if=" isAuth('xueyuan','修改') && contents.tableBtnIcon == 0" type="primary" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}</el-button>

@@ -88,6 +88,24 @@ public class XueyuanEntity<T> implements Serializable {
 	private String shouji;
 	
 	/**
+	 * 练习车型
+	 */
+					
+	private String lianxichexing;
+	
+	/**
+	 * 家庭住址
+	 */
+					
+	private String jiatingzhuzhi;
+	
+	/**
+	 * 学员状态
+	 */
+					
+	private String xueyuanzhuangtai;
+	
+	/**
 	 * 头像
 	 */
 					
@@ -183,6 +201,42 @@ public class XueyuanEntity<T> implements Serializable {
 	 */
 	public String getShouji() {
 		return shouji;
+	}
+	/**
+	 * 设置：练习车型
+	 */
+	public void setLianxichexing(String lianxichexing) {
+		this.lianxichexing = lianxichexing;
+	}
+	/**
+	 * 获取：练习车型
+	 */
+	public String getLianxichexing() {
+		return lianxichexing;
+	}
+	/**
+	 * 设置：家庭住址
+	 */
+	public void setJiatingzhuzhi(String jiatingzhuzhi) {
+		this.jiatingzhuzhi = jiatingzhuzhi;
+	}
+	/**
+	 * 获取：家庭住址
+	 */
+	public String getJiatingzhuzhi() {
+		return jiatingzhuzhi;
+	}
+	/**
+	 * 设置：学员状态
+	 */
+	public void setXueyuanzhuangtai(String xueyuanzhuangtai) {
+		this.xueyuanzhuangtai = xueyuanzhuangtai;
+	}
+	/**
+	 * 获取：学员状态
+	 */
+	public String getXueyuanzhuangtai() {
+		return xueyuanzhuangtai;
 	}
 	/**
 	 * 设置：头像

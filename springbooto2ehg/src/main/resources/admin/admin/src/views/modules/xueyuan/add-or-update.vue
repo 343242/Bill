@@ -87,6 +87,54 @@
           </el-form-item>
         </div>
       </el-col>
+      <el-col :span="12">
+        <el-form-item class="select" v-if="type!='info'"  label="练习车型" prop="lianxichexing">
+          <el-select :disabled="ro.lianxichexing" v-model="ruleForm.lianxichexing" placeholder="请选择练习车型">
+            <el-option
+                v-for="(item,index) in lianxichexingOptions"
+                v-bind:key="index"
+                :label="item"
+                :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="练习车型" prop="lianxichexing">
+              <el-input v-model="ruleForm.lianxichexing" 
+                placeholder="练习车型" readonly></el-input>
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item class="select" v-if="type!='info'"  label="学员状态" prop="xueyuanzhuangtai">
+          <el-select :disabled="ro.xueyuanzhuangtai" v-model="ruleForm.xueyuanzhuangtai" placeholder="请选择学员状态">
+            <el-option
+                v-for="(item,index) in xueyuanzhuangtaiOptions"
+                v-bind:key="index"
+                :label="item"
+                :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="学员状态" prop="xueyuanzhuangtai">
+              <el-input v-model="ruleForm.xueyuanzhuangtai" 
+                placeholder="学员状态" readonly></el-input>
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="24">
+        <el-form-item class="input" v-if="type!='info'"  label="家庭住址" prop="jiatingzhuzhi">
+          <el-input v-model="ruleForm.jiatingzhuzhi" 
+              placeholder="家庭住址" clearable  :readonly="ro.jiatingzhuzhi"></el-input>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="家庭住址" prop="jiatingzhuzhi">
+              <el-input v-model="ruleForm.jiatingzhuzhi" 
+                placeholder="家庭住址" readonly></el-input>
+          </el-form-item>
+        </div>
+      </el-col>
       <el-col :span="24">  
         <el-form-item class="upload" v-if="type!='info' && !ro.touxiang" label="头像" prop="touxiang">
           <file-upload
@@ -195,6 +243,9 @@ export default {
 	xingbie : false,
 	nianling : false,
 	shouji : false,
+	lianxichexing : false,
+	jiatingzhuzhi : false,
+	xueyuanzhuangtai : false,
 	touxiang : false,
       },
       ruleForm: {
@@ -204,9 +255,14 @@ export default {
         xingbie: '',
         nianling: '',
         shouji: '',
+        lianxichexing: '',
+        jiatingzhuzhi: '',
+        xueyuanzhuangtai: '正常',
         touxiang: '',
       },
           xingbieOptions: [],
+          lianxichexingOptions: [],
+          xueyuanzhuangtaiOptions: [],
       rules: {
           zhanghao: [
                 { required: true, message: '账号不能为空', trigger: 'blur' },
@@ -224,6 +280,12 @@ export default {
           ],
           shouji: [
                 { validator: validateMobile, trigger: 'blur' },
+          ],
+          lianxichexing: [
+          ],
+          jiatingzhuzhi: [
+          ],
+          xueyuanzhuangtai: [
           ],
           touxiang: [
           ],
@@ -289,6 +351,21 @@ export default {
 	    this.ro.shouji = true;
             continue;
           }
+          if(o=='lianxichexing'){
+            this.ruleForm.lianxichexing = obj[o];
+	    this.ro.lianxichexing = true;
+            continue;
+          }
+          if(o=='jiatingzhuzhi'){
+            this.ruleForm.jiatingzhuzhi = obj[o];
+	    this.ro.jiatingzhuzhi = true;
+            continue;
+          }
+          if(o=='xueyuanzhuangtai'){
+            this.ruleForm.xueyuanzhuangtai = obj[o];
+	    this.ro.xueyuanzhuangtai = true;
+            continue;
+          }
           if(o=='touxiang'){
             this.ruleForm.touxiang = obj[o];
 	    this.ro.touxiang = true;
@@ -307,7 +384,20 @@ export default {
           this.$message.error(data.msg);
         }
       });
-            this.xingbieOptions = "男,女".split(',')
+      this.$http({
+        url: "cheliangxinxi/list",
+        method: "get",
+        params: {
+          page: 1,
+          limit: 1000
+        }
+      }).then(({ data }) => {
+        if (data && data.code === 0 && data.data && data.data.list) {
+          this.lianxichexingOptions = [...new Set(data.data.list.map(item => item.chexing).filter(item => item))];
+        }
+      });
+      this.xingbieOptions = "男,女".split(',')
+      this.xueyuanzhuangtaiOptions = "正常,休学,结业".split(',')
     },
     // 多级联动参数
     info(id) {
