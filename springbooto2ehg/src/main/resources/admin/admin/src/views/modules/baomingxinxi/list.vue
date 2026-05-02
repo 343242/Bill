@@ -109,7 +109,6 @@
                 align="center"
                 width="50">
             </el-table-column>
-            <el-table-column label="索引" :align="contents.tableAlign"  v-if="contents.tableIndex" type="index" width="50" />
                 <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="id"
                    :header-align="contents.tableAlign"
@@ -171,7 +170,6 @@
                 label="操作">
                 <template slot-scope="scope">
                 <el-button v-if="scope.row.ispay!='已支付' && isAuth('baomingxinxi','支付')" type="text" icon="el-icon-edit" size="small" @click="payHandler(scope.row)">支付</el-button>
-                <el-button v-if="isAuth('baomingxinxi','审核')" type="text" icon="el-icon-edit" size="small" @click="shDialog(scope.row)">审核</el-button>
                 <el-button v-if="isAuth('baomingxinxi','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="success" icon="el-icon-tickets" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
                 <el-button v-if="isAuth('baomingxinxi','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}<i class="el-icon-tickets el-icon--right" /></el-button>
                 <el-button v-if="isAuth('baomingxinxi','查看') && contents.tableBtnIcon == 0" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
