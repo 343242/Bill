@@ -126,19 +126,19 @@ public class ShouYeXinXiController {
         Map<String, Object> map = new HashMap<>();
         // 获取驾校概况
         EntityWrapper<ShouYeXinXiEntity> ew1 = new EntityWrapper<ShouYeXinXiEntity>();
-        ew1.eq("leixing", "驾校概况").eq("zhuangtai", "启用").orderBy("paixu", true);
+        ew1.eq("leixing", "驾校概况").in("zhuangtai", Arrays.asList("已发布", "启用")).orderBy("paixu", true);
         List<ShouYeXinXiEntity> jiaxiaogaikuang = shouYeXinXiService.selectList(ew1);
         map.put("jiaxiaogaikuang", jiaxiaogaikuang);
         
         // 获取教练信息
         EntityWrapper<ShouYeXinXiEntity> ew2 = new EntityWrapper<ShouYeXinXiEntity>();
-        ew2.eq("leixing", "教练信息").eq("zhuangtai", "启用").orderBy("paixu", true);
+        ew2.eq("leixing", "教练信息").in("zhuangtai", Arrays.asList("已发布", "启用")).orderBy("paixu", true);
         List<ShouYeXinXiEntity> jiaolianxinxi = shouYeXinXiService.selectList(ew2);
         map.put("jiaolianxinxi", jiaolianxinxi);
         
         // 获取报名须知
         EntityWrapper<ShouYeXinXiEntity> ew3 = new EntityWrapper<ShouYeXinXiEntity>();
-        ew3.eq("leixing", "报名须知").eq("zhuangtai", "启用").orderBy("paixu", true);
+        ew3.eq("leixing", "报名须知").in("zhuangtai", Arrays.asList("已发布", "启用")).orderBy("paixu", true);
         List<ShouYeXinXiEntity> baomingxuzhi = shouYeXinXiService.selectList(ew3);
         map.put("baomingxuzhi", baomingxuzhi);
         

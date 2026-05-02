@@ -15,18 +15,22 @@
             style="width: 100%"
           >
             <el-table-column prop="id" label="ID" width="80" />
-            <el-table-column prop="leixing" label="类型" />
+            <el-table-column prop="leixing" label="板块类型" width="120" />
             <el-table-column prop="biaoti" label="标题" />
-            <el-table-column prop="neirong" label="内容" show-overflow-tooltip />
+            <el-table-column label="内容预览" show-overflow-tooltip>
+              <template slot-scope="scope">
+                {{ previewContent(scope.row.neirong) }}
+              </template>
+            </el-table-column>
             <el-table-column prop="zhuangtai" label="状态" width="100">
               <template slot-scope="scope">
-                <el-tag :type="scope.row.zhuangtai === '启用' ? 'success' : 'danger'">{{ scope.row.zhuangtai }}</el-tag>
+                <el-tag :type="statusTagType(scope.row.zhuangtai)">{{ statusLabel(scope.row.zhuangtai) }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column prop="addtime" label="添加时间" width="180" />
             <el-table-column label="操作" width="200" align="center">
               <template slot-scope="scope">
-                <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+                <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
                 <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
               </template>
             </el-table-column>
@@ -46,28 +50,25 @@
 
     <!-- 新增/修改对话框 -->
     <el-dialog :title="title" :visible.sync="dialogVisible" width="800px">
-      <el-form ref="form" :model="form" label-width="100px">
-        <el-form-item label="类型">
-          <el-select v-model="form.leixing" placeholder="请选择类型">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+        <el-form-item label="板块类型" prop="leixing">
+          <el-select v-model="form.leixing" placeholder="请选择板块类型">
             <el-option label="驾校概况" value="驾校概况" />
             <el-option label="教练信息" value="教练信息" />
             <el-option label="报名须知" value="报名须知" />
           </el-select>
         </el-form-item>
-        <el-form-item label="标题">
+        <el-form-item label="标题" prop="biaoti">
           <el-input v-model="form.biaoti" placeholder="请输入标题" />
         </el-form-item>
-        <el-form-item label="内容">
-          <el-input type="textarea" v-model="form.neirong" placeholder="请输入内容" rows="5" />
+        <el-form-item label="内容" prop="neirong">
+          <editor v-model="form.neirong" action="file/upload" />
         </el-form-item>
-        <el-form-item label="图片">
-          <file-upload v-model="form.tupian" :limit="1" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.zhuangtai">
-            <el-radio label="启用" />
-            <el-radio label="禁用" />
-          </el-radio-group>
+        <el-form-item label="状态" prop="zhuangtai">
+          <el-select v-model="form.zhuangtai" placeholder="请选择状态">
+            <el-option label="已发布" value="已发布" />
+            <el-option label="未发布" value="未发布" />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -79,6 +80,15 @@
 </template>
 
 <script>
+function createDefaultForm() {
+  return {
+    leixing: '驾校概况',
+    biaoti: '',
+    neirong: '',
+    zhuangtai: '未发布'
+  }
+}
+
 export default {
   data() {
     return {
@@ -89,13 +99,43 @@ export default {
       listLoading: false,
       dialogVisible: false,
       title: '',
-      form: {}
+      form: createDefaultForm(),
+      rules: {
+        leixing: [
+          { required: true, message: '请选择板块类型', trigger: 'change' }
+        ],
+        biaoti: [
+          { required: true, message: '请输入标题', trigger: 'blur' }
+        ],
+        neirong: [
+          { required: true, message: '请输入内容', trigger: 'blur' }
+        ],
+        zhuangtai: [
+          { required: true, message: '请选择状态', trigger: 'change' }
+        ]
+      }
     }
   },
   mounted() {
     this.getList()
   },
   methods: {
+    getDefaultForm() {
+      return createDefaultForm()
+    },
+    previewContent(content) {
+      return (content || '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    },
+    statusLabel(status) {
+      return status === '启用' ? '已发布' : status === '禁用' ? '未发布' : status
+    },
+    statusTagType(status) {
+      return ['已发布', '启用'].includes(status) ? 'success' : 'info'
+    },
     getList() {
       this.listLoading = true
       this.$http.get('shouyexinxi/page', {
@@ -103,11 +143,13 @@ export default {
           page: this.page,
           limit: this.limit
         }
-      }).then(res => {
+      }).then(({ data: res }) => {
         if (res.code === 0) {
-          this.list = res.page.list
-          this.total = res.page.totalCount
+          this.list = res.data.list
+          this.total = res.data.totalCount
         }
+        this.listLoading = false
+      }).catch(() => {
         this.listLoading = false
       })
     },
@@ -121,12 +163,17 @@ export default {
       this.getList()
     },
     addOrUpdateHandle(id) {
-      this.form = {}
+      this.form = this.getDefaultForm()
+      if (this.$refs.form) {
+        this.$refs.form.clearValidate()
+      }
       if (id) {
-        this.title = '修改首页信息'
-        this.$http.get('shouyexinxi/info/' + id).then(res => {
+        this.title = '编辑首页信息'
+        this.$http.get('shouyexinxi/info/' + id).then(({ data: res }) => {
           if (res.code === 0) {
-            this.form = res.data
+            this.form = Object.assign(this.getDefaultForm(), res.data, {
+              zhuangtai: this.statusLabel(res.data.zhuangtai)
+            })
           }
         })
       } else {
@@ -138,7 +185,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           const url = this.form.id ? 'shouyexinxi/update' : 'shouyexinxi/save'
-          this.$http.post(url, this.form).then(res => {
+          this.$http.post(url, this.form).then(({ data: res }) => {
             if (res.code === 0) {
               this.$message.success('操作成功')
               this.dialogVisible = false
@@ -156,7 +203,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.post('shouyexinxi/delete', [id]).then(res => {
+        this.$http.post('shouyexinxi/delete', [id]).then(({ data: res }) => {
           if (res.code === 0) {
             this.$message.success('删除成功')
             this.getList()
