@@ -31,6 +31,9 @@ CREATE TABLE `baomingxinxi`  (
   `baomingshuoming` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '报名说明',
   `zhanghao` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '账号',
   `xingming` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `shenfenzhenghaoma` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '身份证号码',
+  `baokaochexing` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '报考车型',
+  `jingbanren` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '经办人',
   `sfsh` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '否' COMMENT '是否审核',
   `shhf` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '审核回复',
   `ispay` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '未支付' COMMENT '是否支付',
@@ -40,12 +43,12 @@ CREATE TABLE `baomingxinxi`  (
 -- ----------------------------
 -- Records of baomingxinxi
 -- ----------------------------
-INSERT INTO `baomingxinxi` VALUES (41, '2022-04-20 00:18:12', '南京市雨花驾校', '1', 1, '2022-04-20 00:18:12', 'C1', 'zhangsan001', '张三', '是', '', '未支付');
-INSERT INTO `baomingxinxi` VALUES (42, '2022-04-20 00:18:12', '驾校名称2', '驾校类型2', 2, '2022-04-20 00:18:12', '报名说明2', '账号2', '姓名2', '是', '', '未支付');
-INSERT INTO `baomingxinxi` VALUES (43, '2022-04-20 00:18:12', '驾校名称3', '驾校类型3', 3, '2022-04-20 00:18:12', '报名说明3', '账号3', '姓名3', '是', '', '未支付');
-INSERT INTO `baomingxinxi` VALUES (44, '2022-04-20 00:18:12', '驾校名称4', '驾校类型4', 4, '2022-04-20 00:18:12', '报名说明4', '账号4', '姓名4', '是', '', '未支付');
-INSERT INTO `baomingxinxi` VALUES (45, '2022-04-20 00:18:12', '驾校名称5', '驾校类型5', 5, '2022-04-20 00:18:12', '报名说明5', '账号5', '姓名5', '是', '', '未支付');
-INSERT INTO `baomingxinxi` VALUES (46, '2022-04-20 00:18:12', '驾校名称6', '驾校类型6', 6, '2022-04-20 00:18:12', '报名说明6', '账号6', '姓名6', '是', '', '未支付');
+INSERT INTO `baomingxinxi` VALUES (41, '2022-04-20 00:18:12', '南京市雨花驾校', '1', 1, '2022-04-20 00:18:12', '报名说明1', 'zhangsan001', '张三', '320101199001010011', 'C1', '管理员', '是', '', '未支付');
+INSERT INTO `baomingxinxi` VALUES (42, '2022-04-20 00:18:12', '驾校名称2', '驾校类型2', 2, '2022-04-20 00:18:12', '报名说明2', '账号2', '姓名2', '身份证号2', 'C2', '经办人2', '是', '', '未支付');
+INSERT INTO `baomingxinxi` VALUES (43, '2022-04-20 00:18:12', '驾校名称3', '驾校类型3', 3, '2022-04-20 00:18:12', '报名说明3', '账号3', '姓名3', '身份证号3', 'C1', '经办人3', '是', '', '未支付');
+INSERT INTO `baomingxinxi` VALUES (44, '2022-04-20 00:18:12', '驾校名称4', '驾校类型4', 4, '2022-04-20 00:18:12', '报名说明4', '账号4', '姓名4', '身份证号4', 'C2', '经办人4', '是', '', '未支付');
+INSERT INTO `baomingxinxi` VALUES (45, '2022-04-20 00:18:12', '驾校名称5', '驾校类型5', 5, '2022-04-20 00:18:12', '报名说明5', '账号5', '姓名5', '身份证号5', 'C1', '经办人5', '是', '', '未支付');
+INSERT INTO `baomingxinxi` VALUES (46, '2022-04-20 00:18:12', '驾校名称6', '驾校类型6', 6, '2022-04-20 00:18:12', '报名说明6', '账号6', '姓名6', '身份证号6', 'C2', '经办人6', '是', '', '未支付');
 
 -- ----------------------------
 -- Table structure for caiwuxinxi

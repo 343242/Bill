@@ -11,6 +11,9 @@
         <result property="baomingshuoming" column="baomingshuoming"/>
         <result property="zhanghao" column="zhanghao"/>
         <result property="xingming" column="xingming"/>
+        <result property="shenfenzhenghaoma" column="shenfenzhenghaoma"/>
+        <result property="baokaochexing" column="baokaochexing"/>
+        <result property="jingbanren" column="jingbanren"/>
         <result property="sfsh" column="sfsh"/>
         <result property="shhf" column="shhf"/>
         <result property="ispay" column="ispay"/>
@@ -18,28 +21,28 @@
 
 	<select id="selectListVO"
 		resultType="com.entity.vo.BaomingxinxiVO" >
-		SELECT * FROM baomingxinxi  baomingxinxi         
+		SELECT * FROM baomingxinxi  baomingxinxi
         <where> 1=1 </where>
 	</select>
-	
+
 	<select id="selectVO"
 		resultType="com.entity.vo.BaomingxinxiVO" >
-		SELECT  baomingxinxi.* FROM baomingxinxi  baomingxinxi 	
- 		<where> 1=1 </where>
+		SELECT  baomingxinxi.* FROM baomingxinxi  baomingxinxi
+		<where> 1=1 </where>
 	</select>
 
     <select id="selectListView"
 		resultType="com.entity.view.BaomingxinxiView" >
 
-		SELECT  baomingxinxi.* FROM baomingxinxi  baomingxinxi 	        
+		SELECT  baomingxinxi.* FROM baomingxinxi  baomingxinxi
         <where> 1=1 </where>
 	</select>
-	
+
 	<select id="selectView"
 		resultType="com.entity.view.BaomingxinxiView" >
 		SELECT * FROM baomingxinxi  baomingxinxi <where> 1=1 </where>
 	</select>
-	
+
 
     <select id="selectValue" resultType="map" >
         SELECT ${params.xColumn}, sum(${params.yColumn}) total FROM baomingxinxi
@@ -71,4 +74,3 @@
         group by ${params.column}
     </select>
 </mapper>
-

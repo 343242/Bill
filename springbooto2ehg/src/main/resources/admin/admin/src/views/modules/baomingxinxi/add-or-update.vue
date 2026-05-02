@@ -11,36 +11,36 @@
       <el-row >
       <el-col :span="12">
         <el-form-item class="input" v-if="type!='info'"  label="驾校名称" prop="jiaxiaomingcheng">
-          <el-input v-model="ruleForm.jiaxiaomingcheng" 
+          <el-input v-model="ruleForm.jiaxiaomingcheng"
               placeholder="驾校名称" clearable  :readonly="ro.jiaxiaomingcheng"></el-input>
         </el-form-item>
         <div v-else>
           <el-form-item class="input" label="驾校名称" prop="jiaxiaomingcheng">
-              <el-input v-model="ruleForm.jiaxiaomingcheng" 
+              <el-input v-model="ruleForm.jiaxiaomingcheng"
                 placeholder="驾校名称" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
       <el-col :span="12">
         <el-form-item class="input" v-if="type!='info'"  label="驾校类型" prop="jiaxiaoleixing">
-          <el-input v-model="ruleForm.jiaxiaoleixing" 
+          <el-input v-model="ruleForm.jiaxiaoleixing"
               placeholder="驾校类型" clearable  :readonly="ro.jiaxiaoleixing"></el-input>
         </el-form-item>
         <div v-else>
           <el-form-item class="input" label="驾校类型" prop="jiaxiaoleixing">
-              <el-input v-model="ruleForm.jiaxiaoleixing" 
+              <el-input v-model="ruleForm.jiaxiaoleixing"
                 placeholder="驾校类型" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
       <el-col :span="12">
         <el-form-item class="input" v-if="type!='info'"  label="报名费用" prop="baomingfeiyong">
-          <el-input v-model="ruleForm.baomingfeiyong" 
+          <el-input v-model="ruleForm.baomingfeiyong"
               placeholder="报名费用" clearable  :readonly="ro.baomingfeiyong"></el-input>
         </el-form-item>
         <div v-else>
           <el-form-item class="input" label="报名费用" prop="baomingfeiyong">
-              <el-input v-model="ruleForm.baomingfeiyong" 
+              <el-input v-model="ruleForm.baomingfeiyong"
                 placeholder="报名费用" readonly></el-input>
           </el-form-item>
         </div>
@@ -49,7 +49,7 @@
         <el-form-item class="date" v-if="type!='info'" label="报名时间" prop="baomingshijian">
             <el-date-picker
                 value-format="yyyy-MM-dd HH:mm:ss"
-                v-model="ruleForm.baomingshijian" 
+                v-model="ruleForm.baomingshijian"
                 type="datetime"
                 :readonly="ro.baomingshijian"
                 placeholder="报名时间">
@@ -57,44 +57,82 @@
         </el-form-item>
         <div v-else>
           <el-form-item class="input" v-if="ruleForm.baomingshijian" label="报名时间" prop="baomingshijian">
-              <el-input v-model="ruleForm.baomingshijian" 
+              <el-input v-model="ruleForm.baomingshijian"
                 placeholder="报名时间" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
       <el-col :span="12">
         <el-form-item class="input" v-if="type!='info'"  label="报名说明" prop="baomingshuoming">
-          <el-input v-model="ruleForm.baomingshuoming" 
+          <el-input v-model="ruleForm.baomingshuoming"
               placeholder="报名说明" clearable  :readonly="ro.baomingshuoming"></el-input>
         </el-form-item>
         <div v-else>
           <el-form-item class="input" label="报名说明" prop="baomingshuoming">
-              <el-input v-model="ruleForm.baomingshuoming" 
+              <el-input v-model="ruleForm.baomingshuoming"
                 placeholder="报名说明" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
       <el-col :span="12">
         <el-form-item class="input" v-if="type!='info'"  label="账号" prop="zhanghao">
-          <el-input v-model="ruleForm.zhanghao" 
+          <el-input v-model="ruleForm.zhanghao"
               placeholder="账号" clearable  :readonly="ro.zhanghao"></el-input>
         </el-form-item>
         <div v-else>
           <el-form-item class="input" label="账号" prop="zhanghao">
-              <el-input v-model="ruleForm.zhanghao" 
+              <el-input v-model="ruleForm.zhanghao"
                 placeholder="账号" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
       <el-col :span="12">
         <el-form-item class="input" v-if="type!='info'"  label="姓名" prop="xingming">
-          <el-input v-model="ruleForm.xingming" 
+          <el-input v-model="ruleForm.xingming"
               placeholder="姓名" clearable  :readonly="ro.xingming"></el-input>
         </el-form-item>
         <div v-else>
           <el-form-item class="input" label="姓名" prop="xingming">
-              <el-input v-model="ruleForm.xingming" 
+              <el-input v-model="ruleForm.xingming"
                 placeholder="姓名" readonly></el-input>
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item class="input" v-if="type!='info'"  label="身份证号码" prop="shenfenzhenghaoma">
+          <el-input v-model="ruleForm.shenfenzhenghaoma"
+              placeholder="身份证号码" clearable  :readonly="ro.shenfenzhenghaoma"></el-input>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="身份证号码" prop="shenfenzhenghaoma">
+              <el-input v-model="ruleForm.shenfenzhenghaoma"
+                placeholder="身份证号码" readonly></el-input>
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item class="select" v-if="type!='info'"  label="报考车型" prop="baokaochexing">
+          <el-select :disabled="ro.baokaochexing" v-model="ruleForm.baokaochexing" placeholder="请选择报考车型">
+            <el-option label="C1" value="C1"></el-option>
+            <el-option label="C2" value="C2"></el-option>
+          </el-select>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="报考车型" prop="baokaochexing">
+              <el-input v-model="ruleForm.baokaochexing"
+                placeholder="报考车型" readonly></el-input>
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item class="input" v-if="type!='info'"  label="经办人" prop="jingbanren">
+          <el-input v-model="ruleForm.jingbanren"
+              placeholder="经办人" clearable  :readonly="ro.jingbanren"></el-input>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="经办人" prop="jingbanren">
+              <el-input v-model="ruleForm.jingbanren"
+                placeholder="经办人" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
@@ -105,7 +143,7 @@
         <el-button v-if="type=='info'" class="btn-close" @click="back()">返回</el-button>
       </el-form-item>
     </el-form>
-    
+
 
   </div>
 </template>
@@ -190,6 +228,9 @@ export default {
 	baomingshuoming : false,
 	zhanghao : false,
 	xingming : false,
+	shenfenzhenghaoma : false,
+	baokaochexing : false,
+	jingbanren : false,
 	sfsh : false,
 	shhf : false,
 	ispay : false,
@@ -202,6 +243,9 @@ export default {
         baomingshuoming: '',
         zhanghao: '',
         xingming: '',
+        shenfenzhenghaoma: '',
+        baokaochexing: '',
+        jingbanren: '',
         shhf: '',
       },
       rules: {
@@ -219,6 +263,13 @@ export default {
           zhanghao: [
           ],
           xingming: [
+          ],
+          shenfenzhenghaoma: [
+                { validator: validateIdCard, trigger: 'blur' },
+          ],
+          baokaochexing: [
+          ],
+          jingbanren: [
           ],
           sfsh: [
           ],
@@ -295,6 +346,21 @@ export default {
 	    this.ro.xingming = true;
             continue;
           }
+          if(o=='shenfenzhenghaoma'){
+            this.ruleForm.shenfenzhenghaoma = obj[o];
+	    this.ro.shenfenzhenghaoma = true;
+            continue;
+          }
+          if(o=='baokaochexing'){
+            this.ruleForm.baokaochexing = obj[o];
+	    this.ro.baokaochexing = true;
+            continue;
+          }
+          if(o=='jingbanren'){
+            this.ruleForm.jingbanren = obj[o];
+	    this.ro.jingbanren = true;
+            continue;
+          }
         }
       }
       // 获取用户信息
@@ -304,14 +370,14 @@ export default {
       }).then(({ data }) => {
         if (data && data.code === 0) {
           var json = data.data;
-		if(json.zhanghao!=''&&json.zhanghao){
+          if(json.zhanghao!=''&&json.zhanghao){
                 this.ruleForm.zhanghao = json.zhanghao
-	    		this.ro.zhanghao = true;
-		}
-		if(json.xingming!=''&&json.xingming){
+                this.ro.zhanghao = true;
+          }
+          if(json.xingming!=''&&json.xingming){
                 this.ruleForm.xingming = json.xingming
-	    		this.ro.xingming = true;
-		}
+                this.ro.xingming = true;
+          }
         } else {
           this.$message.error(data.msg);
         }
@@ -393,20 +459,20 @@ var objcross = this.$storage.getObj('crossObj');
 		 if(crossrefid && crossuserid) {
 			 this.ruleForm.crossuserid = crossuserid;
 			 this.ruleForm.crossrefid = crossrefid;
-			let params = { 
-				page: 1, 
-				limit: 10, 
+			let params = {
+				page: 1,
+				limit: 10,
 				crossuserid:this.ruleForm.crossuserid,
 				crossrefid:this.ruleForm.crossrefid,
-			} 
-			this.$http({ 
-				url: "baomingxinxi/page", 
-				method: "get", 
-				params: params 
-			}).then(({ 
-				data 
-			}) => { 
-				if (data && data.code === 0) { 
+			}
+			this.$http({
+				url: "baomingxinxi/page",
+				method: "get",
+				params: params
+			}).then(({
+				data
+			}) => {
+				if (data && data.code === 0) {
 				       if(data.data.total>=crossoptnum) {
 					     this.$message.error(this.$storage.get('tips'));
 					       return false;
@@ -435,8 +501,8 @@ var objcross = this.$storage.getObj('crossObj');
 					 });
 
 				       }
-				} else { 
-				} 
+				} else {
+				}
 			});
 		 } else {
 			 this.$http({
@@ -618,7 +684,7 @@ var objcross = this.$storage.getObj('crossObj');
 <style lang="scss">
 .editor{
   height: 500px;
-  
+
   &::v-deep .ql-container {
 	  height: 310px;
   }

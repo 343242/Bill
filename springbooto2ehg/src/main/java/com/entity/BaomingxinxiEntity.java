@@ -24,8 +24,8 @@ import com.baomidou.mybatisplus.enums.IdType;
 /**
  * 报名信息
  * 数据库通用操作实体类（普通增删改查）
- * @author 
- * @email 
+ * @author
+ * @email
  * @date 2022-04-20 00:17:36
  */
 @TableName("baomingxinxi")
@@ -34,9 +34,9 @@ public class BaomingxinxiEntity<T> implements Serializable {
 
 
 	public BaomingxinxiEntity() {
-		
+
 	}
-	
+
 	public BaomingxinxiEntity(T t) {
 		try {
 			BeanUtils.copyProperties(this, t);
@@ -45,7 +45,7 @@ public class BaomingxinxiEntity<T> implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 主键id
 	 */
@@ -54,66 +54,84 @@ public class BaomingxinxiEntity<T> implements Serializable {
 	/**
 	 * 驾校名称
 	 */
-					
+
 	private String jiaxiaomingcheng;
-	
+
 	/**
 	 * 驾校类型
 	 */
-					
+
 	private String jiaxiaoleixing;
-	
+
 	/**
 	 * 报名费用
 	 */
-					
+
 	private Float baomingfeiyong;
-	
+
 	/**
 	 * 报名时间
 	 */
-				
+
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	@DateTimeFormat 		
+	@DateTimeFormat
 	private Date baomingshijian;
-	
+
 	/**
 	 * 报名说明
 	 */
-					
+
 	private String baomingshuoming;
-	
+
 	/**
 	 * 账号
 	 */
-					
+
 	private String zhanghao;
-	
+
 	/**
 	 * 姓名
 	 */
-					
+
 	private String xingming;
-	
+
+	/**
+	 * 身份证号码
+	 */
+
+	private String shenfenzhenghaoma;
+
+	/**
+	 * 报考车型
+	 */
+
+	private String baokaochexing;
+
+	/**
+	 * 经办人
+	 */
+
+	private String jingbanren;
+
 	/**
 	 * 是否审核
 	 */
-					
+
 	private String sfsh;
-	
+
 	/**
 	 * 审核回复
 	 */
-					
+
 	private String shhf;
-	
+
 	/**
 	 * 是否支付
 	 */
-					
+
 	private String ispay;
-	
-	
+
+
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat
 	private Date addtime;
@@ -215,6 +233,42 @@ public class BaomingxinxiEntity<T> implements Serializable {
 	 */
 	public String getXingming() {
 		return xingming;
+	}
+	/**
+	 * 设置：身份证号码
+	 */
+	public void setShenfenzhenghaoma(String shenfenzhenghaoma) {
+		this.shenfenzhenghaoma = shenfenzhenghaoma;
+	}
+	/**
+	 * 获取：身份证号码
+	 */
+	public String getShenfenzhenghaoma() {
+		return shenfenzhenghaoma;
+	}
+	/**
+	 * 设置：报考车型
+	 */
+	public void setBaokaochexing(String baokaochexing) {
+		this.baokaochexing = baokaochexing;
+	}
+	/**
+	 * 获取：报考车型
+	 */
+	public String getBaokaochexing() {
+		return baokaochexing;
+	}
+	/**
+	 * 设置：经办人
+	 */
+	public void setJingbanren(String jingbanren) {
+		this.jingbanren = jingbanren;
+	}
+	/**
+	 * 获取：经办人
+	 */
+	public String getJingbanren() {
+		return jingbanren;
 	}
 	/**
 	 * 设置：是否审核

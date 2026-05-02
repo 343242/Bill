@@ -110,23 +110,47 @@
                 width="50">
             </el-table-column>
             <el-table-column label="索引" :align="contents.tableAlign"  v-if="contents.tableIndex" type="index" width="50" />
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="jiaxiaomingcheng"
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="id"
                    :header-align="contents.tableAlign"
-		    label="驾校名称">
+		    label="报名编号">
 		     <template slot-scope="scope">
-                       {{scope.row.jiaxiaomingcheng}}
+                       {{scope.row.id}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="jiaxiaoleixing"
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="xingming"
                    :header-align="contents.tableAlign"
-		    label="驾校类型">
+		    label="学员姓名">
 		     <template slot-scope="scope">
-                       {{scope.row.jiaxiaoleixing}}
+                       {{scope.row.xingming}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="shenfenzhenghaoma"
+                   :header-align="contents.tableAlign"
+		    label="身份证号码">
+		     <template slot-scope="scope">
+                       {{scope.row.shenfenzhenghaoma}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="baokaochexing"
+                   :header-align="contents.tableAlign"
+		    label="报考车型">
+		     <template slot-scope="scope">
+                       {{scope.row.baokaochexing}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="baomingshijian"
+                   :header-align="contents.tableAlign"
+		    label="报名日期">
+		     <template slot-scope="scope">
+                       {{scope.row.baomingshijian}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="baomingfeiyong"
                    :header-align="contents.tableAlign"
 		    label="报名费用">
@@ -134,74 +158,20 @@
                        {{scope.row.baomingfeiyong}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="baomingshijian"
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="jingbanren"
                    :header-align="contents.tableAlign"
-		    label="报名时间">
+		    label="经办人">
 		     <template slot-scope="scope">
-                       {{scope.row.baomingshijian}}
+                       {{scope.row.jingbanren}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="baomingshuoming"
-                   :header-align="contents.tableAlign"
-		    label="报名说明">
-		     <template slot-scope="scope">
-                       {{scope.row.baomingshuoming}}
-                     </template>
-                </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="zhanghao"
-                   :header-align="contents.tableAlign"
-		    label="账号">
-		     <template slot-scope="scope">
-                       {{scope.row.zhanghao}}
-                     </template>
-                </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                    prop="xingming"
-                   :header-align="contents.tableAlign"
-		    label="姓名">
-		     <template slot-scope="scope">
-                       {{scope.row.xingming}}
-                     </template>
-                </el-table-column>
-                <el-table-column
-                  :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                  prop="ispay"
-                 :header-align="contents.tableAlign"
-                  label="是否支付">
-                  <template slot-scope="scope">
-                    <span style="margin-right:10px">{{scope.row.ispay=='已支付'?'已支付':'未支付'}}</span>
-                    <el-button v-if="scope.row.ispay!='已支付' && isAuth('baomingxinxi','支付') " type="text" icon="el-icon-edit" size="small" @click="payHandler(scope.row)">支付</el-button>
-                  </template>
-                </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                  prop="shhf"
-                 :header-align="contents.tableAlign"
-                  label="审核回复">
-              </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                  prop="sfsh"
-                 :header-align="contents.tableAlign"
-                  label="审核状态">
-                  <template slot-scope="scope">
-                    <span style="margin-right:10px">{{scope.row.sfsh=='是'?'通过':'未通过'}}</span>
-                  </template>
-              </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                  v-if="isAuth('baomingxinxi','审核')"
-                  prop="sfsh"
-                 :header-align="contents.tableAlign"
-                  label="审核">
-                  <template slot-scope="scope">
-                    <el-button  type="text" icon="el-icon-edit" size="small" @click="shDialog(scope.row)">审核</el-button>
-                  </template>
-              </el-table-column>
-            <el-table-column width="300" :align="contents.tableAlign" 
+            <el-table-column width="300" :align="contents.tableAlign"
                :header-align="contents.tableAlign"
                 label="操作">
                 <template slot-scope="scope">
+                <el-button v-if="scope.row.ispay!='已支付' && isAuth('baomingxinxi','支付')" type="text" icon="el-icon-edit" size="small" @click="payHandler(scope.row)">支付</el-button>
+                <el-button v-if="isAuth('baomingxinxi','审核')" type="text" icon="el-icon-edit" size="small" @click="shDialog(scope.row)">审核</el-button>
                 <el-button v-if="isAuth('baomingxinxi','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="success" icon="el-icon-tickets" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
                 <el-button v-if="isAuth('baomingxinxi','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}<i class="el-icon-tickets el-icon--right" /></el-button>
                 <el-button v-if="isAuth('baomingxinxi','查看') && contents.tableBtnIcon == 0" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
@@ -781,11 +751,11 @@ export default {
       }
     }
   }
-  
+
 
   .el-button+.el-button {
     margin:0;
-  } 
+  }
 
   .tables {
 	&::v-deep .el-button--success {
@@ -798,7 +768,7 @@ export default {
 		border-radius: 20px;
 		background-color: rgba(249, 173, 147, 1);
 	}
-	
+
 	&::v-deep .el-button--primary {
 		height: 40px;
 		color: #333;
@@ -809,7 +779,7 @@ export default {
 		border-radius: 20px;
 		background-color: rgba(249, 173, 147, 1);
 	}
-	
+
 	&::v-deep .el-button--danger {
 		height: 40px;
 		color: #333;
@@ -831,7 +801,7 @@ export default {
 	.table-content {
 		background: transparent;
 	}
-	
+
 	.tables::v-deep .el-table__body tr {
 				background-color: rgba(255, 255, 255, 1) !important;
 				color: rgba(92, 93, 95, 1) !important;
@@ -843,10 +813,10 @@ export default {
 		background-color: #F5F7FA !important;
 		color: #606266 !important;
 	}
-	
-	 .tables::v-deep .el-table__body tr:hover>td {
-	   	   background-color: #f5f5f5 !important;
-	   	   	   color: #333 !important;
-	   	 }
-	 
+
+	.tables::v-deep .el-table__body tr:hover>td {
+		background-color: #f5f5f5 !important;
+		color: #333 !important;
+	}
+
 </style>
