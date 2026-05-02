@@ -27,11 +27,13 @@ import com.annotation.IgnoreAuth;
 
 import com.entity.ShouYeXinXiEntity;
 import com.entity.JiaolianEntity;
+import com.entity.JiaxiaoxinxiEntity;
 import com.entity.NewsEntity;
 import com.entity.view.ShouYeXinXiView;
 
 import com.service.ShouYeXinXiService;
 import com.service.JiaolianService;
+import com.service.JiaxiaoxinxiService;
 import com.service.NewsService;
 import com.service.TokenService;
 import com.utils.PageUtils;
@@ -55,6 +57,8 @@ public class ShouYeXinXiController {
     private ShouYeXinXiService shouYeXinXiService;
     @Autowired
     private JiaolianService jiaolianService;
+    @Autowired
+    private JiaxiaoxinxiService jiaxiaoxinxiService;
     @Autowired
     private NewsService newsService;
 
@@ -166,15 +170,43 @@ public class ShouYeXinXiController {
 
         List<Map<String, Object>> merged = new ArrayList<>();
 
-        List<ShouYeXinXiEntity> homepageList = shouYeXinXiService.selectList(new EntityWrapper<ShouYeXinXiEntity>().orderBy("addtime", false));
-        for (ShouYeXinXiEntity item : homepageList) {
+        List<JiaxiaoxinxiEntity> schoolList = jiaxiaoxinxiService.selectList(new EntityWrapper<JiaxiaoxinxiEntity>().orderBy("addtime", false));
+        for (JiaxiaoxinxiEntity item : schoolList) {
+            StringBuilder contentBuilder = new StringBuilder();
+            if (StringUtils.isNotBlank(item.getJiaxiaoleixing())) {
+                contentBuilder.append("驾校类型：").append(item.getJiaxiaoleixing());
+            }
+            if (StringUtils.isNotBlank(item.getJiaxiaodizhi())) {
+                if (contentBuilder.length() > 0) {
+                    contentBuilder.append("\n");
+                }
+                contentBuilder.append("驾校地址：").append(item.getJiaxiaodizhi());
+            }
+            if (item.getBaomingfeiyong() != null) {
+                if (contentBuilder.length() > 0) {
+                    contentBuilder.append("\n");
+                }
+                contentBuilder.append("报名费用：").append(item.getBaomingfeiyong());
+            }
+            if (StringUtils.isNotBlank(item.getJiaxiaodianhua())) {
+                if (contentBuilder.length() > 0) {
+                    contentBuilder.append("\n");
+                }
+                contentBuilder.append("驾校电话：").append(item.getJiaxiaodianhua());
+            }
+            if (StringUtils.isNotBlank(item.getJiaxiaojieshao())) {
+                if (contentBuilder.length() > 0) {
+                    contentBuilder.append("\n");
+                }
+                contentBuilder.append(item.getJiaxiaojieshao());
+            }
             merged.add(buildAggregateRow(
                     item.getId(),
-                    "shouyexinxi",
-                    item.getLeixing(),
-                    item.getBiaoti(),
-                    item.getNeirong(),
-                    item.getZhuangtai(),
+                    "jiaxiaoxinxi",
+                    "驾校概况",
+                    item.getJiaxiaomingcheng(),
+                    contentBuilder.toString(),
+                    "-",
                     item.getAddtime()
             ));
         }

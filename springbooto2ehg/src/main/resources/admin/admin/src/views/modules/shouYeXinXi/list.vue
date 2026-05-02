@@ -78,7 +78,7 @@
       <el-form label-width="100px">
         <el-form-item label="板块类型">
           <el-select v-model="selectedSourceType" placeholder="请选择板块类型" style="width: 100%;">
-            <el-option label="驾校概况" value="shouyexinxi" />
+            <el-option label="驾校概况" value="jiaxiaoxinxi" />
             <el-option label="教练信息" value="jiaolian" />
             <el-option label="报名须知" value="news" />
           </el-select>
@@ -96,6 +96,12 @@
       ref="jiaolianAddOrUpdate"
     ></jiaolian-add-or-update>
 
+    <jiaxiaoxinxi-add-or-update
+      v-if="addOrUpdateFlag && jiaxiaoxinxiAddOrUpdateFlag"
+      :parent="this"
+      ref="jiaxiaoxinxiAddOrUpdate"
+    ></jiaxiaoxinxi-add-or-update>
+
     <news-add-or-update
       v-if="addOrUpdateFlag && newsAddOrUpdateFlag"
       :parent="this"
@@ -106,6 +112,7 @@
 
 <script>
 import JiaolianAddOrUpdate from '../jiaolian/add-or-update'
+import JiaxiaoxinxiAddOrUpdate from '../jiaxiaoxinxi/add-or-update'
 import NewsAddOrUpdate from '../news/add-or-update'
 
 function createDefaultForm() {
@@ -120,6 +127,7 @@ function createDefaultForm() {
 export default {
   components: {
     JiaolianAddOrUpdate,
+    JiaxiaoxinxiAddOrUpdate,
     NewsAddOrUpdate
   },
   data() {
@@ -133,12 +141,14 @@ export default {
       dialogVisible: false,
       sourceDialogVisible: false,
       jiaolianAddOrUpdateFlag: false,
+      jiaxiaoxinxiAddOrUpdateFlag: false,
+      jiaxiaoxinxiCrossAddOrUpdateFlag: false,
       newsAddOrUpdateFlag: false,
       addOrUpdateFlag: false,
       jiaolianCrossAddOrUpdateFlag: false,
       newsCrossAddOrUpdateFlag: false,
       title: '',
-      selectedSourceType: 'shouyexinxi',
+      selectedSourceType: 'jiaxiaoxinxi',
       form: createDefaultForm(),
       rules: {
         leixing: [
@@ -217,18 +227,26 @@ export default {
       this.getList()
     },
     openAddDialog() {
-      this.selectedSourceType = 'shouyexinxi'
+      this.selectedSourceType = 'jiaxiaoxinxi'
       this.sourceDialogVisible = true
     },
     confirmAddSource() {
       this.sourceDialogVisible = false
-      if (this.selectedSourceType === 'shouyexinxi') {
-        this.openShouyeDialog()
+      if (this.selectedSourceType === 'jiaxiaoxinxi') {
+        this.showFlag = false
+        this.addOrUpdateFlag = true
+        this.jiaolianAddOrUpdateFlag = false
+        this.newsAddOrUpdateFlag = false
+        this.jiaxiaoxinxiAddOrUpdateFlag = true
+        this.$nextTick(() => {
+          this.$refs.jiaxiaoxinxiAddOrUpdate.init(undefined, 'else')
+        })
         return
       }
       if (this.selectedSourceType === 'jiaolian') {
         this.showFlag = false
         this.addOrUpdateFlag = true
+        this.jiaxiaoxinxiAddOrUpdateFlag = false
         this.newsAddOrUpdateFlag = false
         this.jiaolianAddOrUpdateFlag = true
         this.$nextTick(() => {
@@ -238,6 +256,7 @@ export default {
       }
       this.showFlag = false
       this.addOrUpdateFlag = true
+      this.jiaxiaoxinxiAddOrUpdateFlag = false
       this.jiaolianAddOrUpdateFlag = false
       this.newsAddOrUpdateFlag = true
       this.$nextTick(() => {
@@ -264,13 +283,21 @@ export default {
       this.dialogVisible = true
     },
     editHandler(row) {
-      if (row.sourceTable === 'shouyexinxi') {
-        this.openShouyeDialog(row.sourceId)
+      if (row.sourceTable === 'jiaxiaoxinxi') {
+        this.showFlag = false
+        this.addOrUpdateFlag = true
+        this.newsAddOrUpdateFlag = false
+        this.jiaolianAddOrUpdateFlag = false
+        this.jiaxiaoxinxiAddOrUpdateFlag = true
+        this.$nextTick(() => {
+          this.$refs.jiaxiaoxinxiAddOrUpdate.init(row.sourceId, 'else')
+        })
         return
       }
       this.showFlag = false
       this.addOrUpdateFlag = true
       if (row.sourceTable === 'jiaolian') {
+        this.jiaxiaoxinxiAddOrUpdateFlag = false
         this.newsAddOrUpdateFlag = false
         this.jiaolianAddOrUpdateFlag = true
         this.$nextTick(() => {
@@ -278,6 +305,11 @@ export default {
         })
         return
       }
+      if (row.sourceTable === 'shouyexinxi') {
+        this.openShouyeDialog(row.sourceId)
+        return
+      }
+      this.jiaxiaoxinxiAddOrUpdateFlag = false
       this.jiaolianAddOrUpdateFlag = false
       this.newsAddOrUpdateFlag = true
       this.$nextTick(() => {
@@ -304,6 +336,7 @@ export default {
     deleteHandler(row) {
       const endpointMap = {
         shouyexinxi: 'shouyexinxi/delete',
+        jiaxiaoxinxi: 'jiaxiaoxinxi/delete',
         jiaolian: 'jiaolian/delete',
         news: 'news/delete'
       }
