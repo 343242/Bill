@@ -101,29 +101,30 @@
                     :formatter="exampaperStatusFormatter"
 		    label="练习题库状态">
                 </el-table-column>
-            <el-table-column width="300" :align="contents.tableAlign" 
+            <el-table-column :width="isAdminSession() ? 120 : 300" :align="contents.tableAlign" 
                :header-align="contents.tableAlign"
                 label="操作">
                 <template slot-scope="scope">
-                <el-button v-if="isAuth('exampaper','查看') && !isStudentSession() && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="success" icon="el-icon-tickets" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
-                <el-button v-if="isAuth('exampaper','查看') && !isStudentSession() && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}<i class="el-icon-tickets el-icon--right" /></el-button>
-                <el-button v-if="isAuth('exampaper','查看') && !isStudentSession() && contents.tableBtnIcon == 0" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
-                <el-button v-if=" isAuth('exampaper','修改') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="primary" icon="el-icon-edit" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}</el-button>
-                <el-button v-if=" isAuth('exampaper','修改') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="primary" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}<i class="el-icon-edit el-icon--right" /></el-button>
-                <el-button v-if=" isAuth('exampaper','修改') && contents.tableBtnIcon == 0" type="primary" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}</el-button>
-
-
-
-
-                <el-button v-if="isAuth('exampaper','删除') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="danger" icon="el-icon-delete" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}</el-button>
-                <el-button v-if="isAuth('exampaper','删除') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="danger" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}<i class="el-icon-delete el-icon--right" /></el-button>
-                <el-button v-if="isAuth('exampaper','删除') && contents.tableBtnIcon == 0" type="danger" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}</el-button>
-                
-                <!-- 考试按钮 -->
-                <el-button type="warning" size="mini" @click="exam(scope.row.id)" :icon="contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1 ? 'el-icon-video-camera' : ''">
-                  {{ contents.tableBtnFont == 1?'考试':'' }}
-                  <i v-if="contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" class="el-icon-video-camera el-icon--right" />
-                </el-button>
+                  <div v-if="isAdminSession()" class="admin-action-stack">
+                    <el-button v-if="isAuth('exampaper','修改')" type="text" size="mini" class="admin-action-btn" @click="addOrUpdateHandler(scope.row.id)">修改</el-button>
+                    <el-button v-if="isAuth('exampaper','删除')" type="text" size="mini" class="admin-action-btn" @click="deleteHandler(scope.row.id)">删除</el-button>
+                    <el-button type="text" size="mini" class="admin-action-btn" @click="exam(scope.row.id)">考试</el-button>
+                  </div>
+                  <template v-else>
+                    <el-button v-if="isAuth('exampaper','查看') && !isStudentSession() && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="success" icon="el-icon-tickets" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
+                    <el-button v-if="isAuth('exampaper','查看') && !isStudentSession() && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}<i class="el-icon-tickets el-icon--right" /></el-button>
+                    <el-button v-if="isAuth('exampaper','查看') && !isStudentSession() && contents.tableBtnIcon == 0" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
+                    <el-button v-if=" isAuth('exampaper','修改') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="primary" icon="el-icon-edit" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}</el-button>
+                    <el-button v-if=" isAuth('exampaper','修改') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="primary" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}<i class="el-icon-edit el-icon--right" /></el-button>
+                    <el-button v-if=" isAuth('exampaper','修改') && contents.tableBtnIcon == 0" type="primary" size="mini" @click="addOrUpdateHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'修改':'' }}</el-button>
+                    <el-button v-if="isAuth('exampaper','删除') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="danger" icon="el-icon-delete" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}</el-button>
+                    <el-button v-if="isAuth('exampaper','删除') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="danger" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}<i class="el-icon-delete el-icon--right" /></el-button>
+                    <el-button v-if="isAuth('exampaper','删除') && contents.tableBtnIcon == 0" type="danger" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}</el-button>
+                    <el-button type="warning" size="mini" @click="exam(scope.row.id)" :icon="contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1 ? 'el-icon-video-camera' : ''">
+                      {{ contents.tableBtnFont == 1?'考试':'' }}
+                      <i v-if="contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" class="el-icon-video-camera el-icon--right" />
+                    </el-button>
+                  </template>
                 </template>
             </el-table-column>
         </el-table>
@@ -212,6 +213,9 @@ export default {
     },
     isStudentSession() {
       return this.$storage.get("sessionTable") === "xueyuan";
+    },
+    isAdminSession() {
+      return this.$storage.get("role") === "管理员";
     },
     contentStyleChange() {
       this.contentSearchStyleChange()
@@ -535,6 +539,20 @@ export default {
   .el-button+.el-button {
     margin:0;
   } 
+
+  .admin-action-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .admin-action-btn {
+    margin: 0 !important;
+    padding: 0;
+    color: #606266;
+    font-weight: 400;
+  }
 
   .tables {
 	&::v-deep .el-button--success {
