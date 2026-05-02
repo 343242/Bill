@@ -1102,7 +1102,6 @@
       data: {
 
         jiaxiaoxinxiRecommend: [],
-        targetSchoolName: '南京市雨花驾校C1',
 	        jiaolianHomeList: [],
 
         swiperList: [],
@@ -1263,22 +1262,7 @@
         page: 1,
 		limit: 3 * 2
 		}, function(res) {
-			var yuhuaSchool = null
-			for (var i = 0; i < res.data.list.length; i++) {
-				if (res.data.list[i].jiaxiaomingcheng === vue.targetSchoolName) {
-					yuhuaSchool = res.data.list[i]
-					break
-				}
-			}
-			if (!yuhuaSchool) {
-				for (var j = 0; j < res.data.list.length; j++) {
-					if (res.data.list[j].jiaxiaomingcheng && res.data.list[j].jiaxiaomingcheng.indexOf(vue.targetSchoolName) !== -1) {
-						yuhuaSchool = res.data.list[j]
-						break
-					}
-				}
-			}
-			vue.jiaxiaoxinxiRecommend = yuhuaSchool ? [yuhuaSchool] : []
+			vue.jiaxiaoxinxiRecommend = (res.data.list || []).slice(0, 1)
 		});
 
 	  });
