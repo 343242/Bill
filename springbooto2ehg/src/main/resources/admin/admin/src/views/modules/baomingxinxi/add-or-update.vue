@@ -701,6 +701,10 @@ var objcross = this.$storage.getObj('crossObj');
 }
 .addEdit-block {
 	margin: -10px;
+
+	&::v-deep .el-form-item__label {
+		white-space: nowrap;
+	}
 }
 .detail-form-content {
 	padding: 12px;
