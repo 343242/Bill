@@ -118,6 +118,15 @@ public class JiaxiaoxinxiController {
     }
 
     /**
+     * 后台详情（无点击副作用）
+     */
+    @RequestMapping("/admininfo/{id}")
+    public R adminInfo(@PathVariable("id") Long id){
+        JiaxiaoxinxiEntity jiaxiaoxinxi = jiaxiaoxinxiService.selectById(id);
+        return R.ok().put("data", jiaxiaoxinxi);
+    }
+
+    /**
      * 前端详情
      */
 	@IgnoreAuth

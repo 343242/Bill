@@ -349,11 +349,13 @@ export default {
         jiaolian: 'jiaolian/update',
         news: 'news/update'
       }
-      this.$http.get(`${row.sourceTable}/query`, {
-        params: {
-          id: row.sourceId
-        }
-      }).then(({ data: res }) => {
+      const detailEndpointMap = {
+        shouyexinxi: `shouyexinxi/info/${row.sourceId}`,
+        jiaxiaoxinxi: `jiaxiaoxinxi/admininfo/${row.sourceId}`,
+        jiaolian: `jiaolian/info/${row.sourceId}`,
+        news: `news/info/${row.sourceId}`
+      }
+      this.$http.get(detailEndpointMap[row.sourceTable]).then(({ data: res }) => {
         if (res.code !== 0) {
           this.$message.error(res.msg)
           return
