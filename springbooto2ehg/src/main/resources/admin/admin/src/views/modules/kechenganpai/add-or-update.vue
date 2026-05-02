@@ -110,11 +110,15 @@ export default {
         this.form.kechengmingcheng = '练车排班-' + this.form.shijianduan;
       }
       this.form.kemuleixing = '科目二/三';
+      const submitForm = {
+        ...this.form,
+        paiBanriqi: this.normalizeMonthDate(this.form.paiBanriqi)
+      };
       const url = this.form.id ? "kechenganpai/update" : "kechenganpai/save";
       this.$http({
         url: url,
         method: "post",
-        data: this.form
+        data: submitForm
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.$message.success('操作成功');
@@ -128,6 +132,15 @@ export default {
     back() {
       this.showFlag = false;
       this.parent.showFlag = true;
+    },
+    normalizeMonthDate(value) {
+      if (!value) {
+        return value;
+      }
+      if (/^\d{4}-\d{2}$/.test(value)) {
+        return value + '-01';
+      }
+      return value;
     }
   }
 };
