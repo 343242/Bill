@@ -307,8 +307,10 @@ public class JiaolianController {
         tokenWrapper.eq("userid", jiaolian.getId());
         tokenWrapper.eq("tablename", "jiaolian");
         TokenEntity token =tokenService.selectOne(tokenWrapper);
-        token.setUsername(jiaolian.getJiaoliangonghao());
-        tokenService.updateById(token);
+        if(token != null) {
+            token.setUsername(jiaolian.getJiaoliangonghao());
+            tokenService.updateById(token);
+        }
         return R.ok();
     }
     
