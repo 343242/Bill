@@ -83,7 +83,6 @@
                 align="center"
                 width="50">
             </el-table-column>
-            <el-table-column label="索引" :align="contents.tableAlign"  v-if="contents.tableIndex" type="index" width="50" />
                 <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
                     prop="id"
                    :header-align="contents.tableAlign"
