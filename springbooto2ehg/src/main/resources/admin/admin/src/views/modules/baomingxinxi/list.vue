@@ -112,6 +112,7 @@
                 <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="id"
                    :header-align="contents.tableAlign"
+                    width="115"
 		    label="报名编号">
 		     <template slot-scope="scope">
                        {{scope.row.id}}
@@ -120,6 +121,7 @@
                 <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="xingming"
                    :header-align="contents.tableAlign"
+                    width="95"
 		    label="学员姓名">
 		     <template slot-scope="scope">
                        {{scope.row.xingming}}
