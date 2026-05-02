@@ -59,6 +59,7 @@ export function normalizeMenus(menus) {
     }
     return menus.map(roleMenu => {
         const isAdminRole = roleMenu.roleName === '管理员';
+        const isCoachRole = roleMenu.roleName === '教练';
         const normalizedRoleMenu = {
             ...roleMenu
         };
@@ -77,6 +78,12 @@ export function normalizeMenus(menus) {
                                 ...child,
                                 menu: isAdminRole ? stripCoordinatorLabel(child.menu) : child.menu
                             };
+                            if (isCoachRole && child.tableName === 'xueyuan') {
+                                return {
+                                    ...normalizedChild,
+                                    buttons: ['查看', '修改', '删除']
+                                };
+                            }
                             if (child.menu === '理论考试') {
                                 return {
                                     ...normalizedChild,
