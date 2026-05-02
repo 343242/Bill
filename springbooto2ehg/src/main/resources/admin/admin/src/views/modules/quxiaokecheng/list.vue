@@ -14,7 +14,7 @@
                   <el-input v-if="contents.inputIcon == 1 && contents.inputIconPosition == 2" suffix-icon="el-icon-search" v-model="searchForm.kemuleixing" placeholder="科目类型" clearable></el-input>
                   <el-input v-if="contents.inputIcon == 0" v-model="searchForm.kemuleixing" placeholder="科目类型" clearable></el-input>
                 </el-form-item>
-		<el-form-item class="select" label="是否通过" prop="sfsh">
+		<el-form-item v-if="!isAdminSession()" class="select" label="是否通过" prop="sfsh">
 		  <el-select  @change="sfshChange" clearable v-model="searchForm.sfsh" placeholder="是否通过">
 		    <el-option
 			v-for="(item,index) in sfshOptions"
@@ -34,36 +34,36 @@
         <el-row class="ad" :style="{justifyContent:contents.btnAdAllBoxPosition=='1'?'flex-start':contents.btnAdAllBoxPosition=='2'?'center':'flex-end'}">
           <el-form-item>
             <el-button
-              v-if="isAuth('quxiaokecheng','新增') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 1"
+              v-if="!isAdminSession() && isAuth('quxiaokecheng','新增') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 1"
               type="success"
               icon="el-icon-plus"
               @click="addOrUpdateHandler()"
             >{{ contents.btnAdAllFont == 1?'新增':'' }}</el-button>
             <el-button
-              v-if="isAuth('quxiaokecheng','新增') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 2"
+              v-if="!isAdminSession() && isAuth('quxiaokecheng','新增') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 2"
               type="success"
               @click="addOrUpdateHandler()"
             >{{ contents.btnAdAllFont == 1?'新增':'' }}<i class="el-icon-plus el-icon--right" /></el-button>
             <el-button
-              v-if="isAuth('quxiaokecheng','新增') && contents.btnAdAllIcon == 0"
+              v-if="!isAdminSession() && isAuth('quxiaokecheng','新增') && contents.btnAdAllIcon == 0"
               type="success"
               @click="addOrUpdateHandler()"
             >{{ contents.btnAdAllFont == 1?'新增':'' }}</el-button>
             <el-button
-              v-if="isAuth('quxiaokecheng','删除') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 1 && contents.tableSelection"
+              v-if="!isAdminSession() && isAuth('quxiaokecheng','删除') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 1 && contents.tableSelection"
               :disabled="dataListSelections.length <= 0"
               type="danger"
               icon="el-icon-delete"
               @click="deleteHandler()"
             >{{ contents.btnAdAllFont == 1?'删除':'' }}</el-button>
             <el-button
-              v-if="isAuth('quxiaokecheng','删除') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 2 && contents.tableSelection"
+              v-if="!isAdminSession() && isAuth('quxiaokecheng','删除') && contents.btnAdAllIcon == 1 && contents.btnAdAllIconPosition == 2 && contents.tableSelection"
               :disabled="dataListSelections.length <= 0"
               type="danger"
               @click="deleteHandler()"
             >{{ contents.btnAdAllFont == 1?'删除':'' }}<i class="el-icon-delete el-icon--right" /></el-button>
             <el-button
-              v-if="isAuth('quxiaokecheng','删除') && contents.btnAdAllIcon == 0 && contents.tableSelection"
+              v-if="!isAdminSession() && isAuth('quxiaokecheng','删除') && contents.btnAdAllIcon == 0 && contents.tableSelection"
               :disabled="dataListSelections.length <= 0"
               type="danger"
               @click="deleteHandler()"
@@ -94,7 +94,23 @@
                 width="50">
             </el-table-column>
             <el-table-column label="索引" :align="contents.tableAlign"  v-if="contents.tableIndex" type="index" width="50" />
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column v-if="isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="zhanghao"
+                   :header-align="contents.tableAlign"
+		    label="学员账号">
+		     <template slot-scope="scope">
+                       {{scope.row.zhanghao}}
+                     </template>
+                </el-table-column>
+                <el-table-column v-if="isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="xingming"
+                   :header-align="contents.tableAlign"
+		    label="学员姓名">
+		     <template slot-scope="scope">
+                       {{scope.row.xingming}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="kechengmingcheng"
                    :header-align="contents.tableAlign"
 		    label="课程名称">
@@ -110,7 +126,7 @@
                        {{scope.row.kemuleixing}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column v-if="!isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="quxiaoshijian"
                    :header-align="contents.tableAlign"
 		    label="取消时间">
@@ -118,7 +134,15 @@
                        {{scope.row.quxiaoshijian}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column v-if="isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
+                    prop="yuyueshijian"
+                   :header-align="contents.tableAlign"
+		    label="预约时间">
+		     <template slot-scope="scope">
+                       {{scope.row.yuyueshijian}}
+                     </template>
+                </el-table-column>
+                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="jiaoliangonghao"
                    :header-align="contents.tableAlign"
 		    label="教练工号">
@@ -134,7 +158,7 @@
                        {{scope.row.jiaolianxingming}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column v-if="!isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="zhanghao"
                    :header-align="contents.tableAlign"
 		    label="账号">
@@ -142,7 +166,7 @@
                        {{scope.row.zhanghao}}
                      </template>
                 </el-table-column>
-                <el-table-column  :sortable="contents.tableSortable" :align="contents.tableAlign" 
+                <el-table-column v-if="!isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
                     prop="xingming"
                    :header-align="contents.tableAlign"
 		    label="姓名">
@@ -150,12 +174,28 @@
                        {{scope.row.xingming}}
                      </template>
                 </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
+              <el-table-column v-if="isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
+                  prop="lianchewanchengzhuangtai"
+                 :header-align="contents.tableAlign"
+                  label="练车完成状态">
+                  <template slot-scope="scope">
+                    <span>{{ formatPracticeStatus(scope.row.lianchewanchengzhuangtai) }}</span>
+                  </template>
+              </el-table-column>
+              <el-table-column v-if="isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
+                  prop="shuoming"
+                 :header-align="contents.tableAlign"
+                  label="说明">
+                  <template slot-scope="scope">
+                    <span>{{ displayExplanation(scope.row) }}</span>
+                  </template>
+              </el-table-column>
+              <el-table-column v-if="!isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
                   prop="shhf"
                  :header-align="contents.tableAlign"
                   label="审核回复">
               </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
+              <el-table-column v-if="!isAdminSession()" :sortable="contents.tableSortable" :align="contents.tableAlign"
                   prop="sfsh"
                  :header-align="contents.tableAlign"
                   label="审核状态">
@@ -163,8 +203,8 @@
                     <span style="margin-right:10px">{{scope.row.sfsh=='是'?'通过':'未通过'}}</span>
                   </template>
               </el-table-column>
-              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign" 
-                  v-if="isAuth('quxiaokecheng','审核')"
+              <el-table-column :sortable="contents.tableSortable" :align="contents.tableAlign"
+                  v-if="!isAdminSession() && isAuth('quxiaokecheng','审核')"
                   prop="sfsh"
                  :header-align="contents.tableAlign"
                   label="审核">
@@ -172,10 +212,18 @@
                     <el-button  type="text" icon="el-icon-edit" size="small" @click="shDialog(scope.row)">审核</el-button>
                   </template>
               </el-table-column>
-            <el-table-column width="300" :align="contents.tableAlign" 
+            <el-table-column :width="isAdminSession() ? 140 : 300" :align="contents.tableAlign"
                :header-align="contents.tableAlign"
                 label="操作">
                 <template slot-scope="scope">
+                <el-button
+                  v-if="isAdminSession() && canCancelRecord(scope.row)"
+                  type="danger"
+                  size="mini"
+                  @click="openCancelDialog(scope.row)"
+                >取消预约</el-button>
+                <span v-else-if="isAdminSession()">-</span>
+                <template v-else>
                 <el-button v-if="isAuth('quxiaokecheng','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="success" icon="el-icon-tickets" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
                 <el-button v-if="isAuth('quxiaokecheng','查看') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}<i class="el-icon-tickets el-icon--right" /></el-button>
                 <el-button v-if="isAuth('quxiaokecheng','查看') && contents.tableBtnIcon == 0" type="success" size="mini" @click="addOrUpdateHandler(scope.row.id,'info')">{{ contents.tableBtnFont == 1?'详情':'' }}</el-button>
@@ -189,6 +237,7 @@
                 <el-button v-if="isAuth('quxiaokecheng','删除') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 1" type="danger" icon="el-icon-delete" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}</el-button>
                 <el-button v-if="isAuth('quxiaokecheng','删除') && contents.tableBtnIcon == 1 && contents.tableBtnIconPosition == 2" type="danger" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}<i class="el-icon-delete el-icon--right" /></el-button>
                 <el-button v-if="isAuth('quxiaokecheng','删除') && contents.tableBtnIcon == 0" type="danger" size="mini" @click="deleteHandler(scope.row.id)">{{ contents.tableBtnFont == 1?'删除':'' }}</el-button>
+                </template>
                 </template>
             </el-table-column>
         </el-table>
@@ -211,6 +260,25 @@
     <!-- 添加/修改页面  将父组件的search方法传递给子组件-->
     <add-or-update v-if="addOrUpdateFlag" :parent="this" ref="addOrUpdate"></add-or-update>
 
+
+    <el-dialog
+      title="取消预约"
+      :visible.sync="cancelDialogVisible"
+      width="50%">
+      <div style="margin-bottom: 12px;">请输入本次取消预约的原因说明：</div>
+      <el-input
+        type="textarea"
+        :rows="6"
+        maxlength="200"
+        show-word-limit
+        v-model="cancelForm.shuoming"
+        placeholder="请输入50到200字的取消原因">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelDialogVisible = false">返 回</el-button>
+        <el-button type="danger" @click="submitCancelHandler">确定取消</el-button>
+      </span>
+    </el-dialog>
 
     <el-dialog
       title="审核"
@@ -255,7 +323,12 @@ export default {
       dataListSelections: [],
       showFlag: true,
       sfshVisiable: false,
+      cancelDialogVisible: false,
       shForm: {},
+      cancelForm: {
+        id: '',
+        shuoming: ''
+      },
       chartVisiable: false,
       addOrUpdateFlag:false,
       contents:{"searchBtnFontColor":"#333","pagePosition":"1","inputFontSize":"14px","inputBorderRadius":"4px","tableBtnDelFontColor":"#333","tableBtnIconPosition":"1","searchBtnHeight":"40px","tableBgColor":"rgba(255, 255, 255, 1)","inputIconColor":"#C0C4CC","searchBtnBorderRadius":"4px","tableStripe":false,"btnAdAllWarnFontColor":"#333","tableBtnDelBgColor":"rgba(255, 69, 0, 0.41)","searchBtnIcon":"1","tableSize":"medium","searchBtnBorderStyle":"solid","text":{"padding":"10px 0","boxShadow":"0 0 0px rgba(0,0,0,.1)","margin":"0 auto","borderColor":"rgba(255, 255, 255, 1)","backgroundColor":"rgba(255, 178, 150, 1)","color":"#333","borderRadius":"40%","borderWidth":"10px","width":"80%","lineHeight":"80%","fontSize":"24px","borderStyle":"dashed "},"tableSelection":true,"searchBtnBorderWidth":"1px","tableContentFontSize":"14px","searchBtnBgColor":"#fff","inputTitleSize":"14px","btnAdAllBorderColor":"rgba(255, 255, 255, 1)","pageJumper":true,"btnAdAllIconPosition":"1","searchBoxPosition":"1","tableBtnDetailFontColor":"#333","tableBtnHeight":"40px","pagePager":true,"searchBtnBorderColor":"#DCDFE6","tableHeaderFontColor":"rgba(66, 66, 67, 1)","inputTitle":"1","tableBtnBorderRadius":"20px","btnAdAllFont":"1","btnAdAllDelFontColor":"#333","tableBtnIcon":"1","btnAdAllHeight":"auto","btnAdAllWarnBgColor":"rgba(94, 173, 207, 0.72)","btnAdAllBorderWidth":"15px","tableStripeFontColor":"#606266","tableBtnBorderStyle":"dashed ","inputHeight":"40px","btnAdAllBorderRadius":"20px","btnAdAllDelBgColor":"rgba(94, 173, 207, 0.72)","pagePrevNext":true,"btnAdAllAddBgColor":"rgba(94, 173, 207, 0.72)","searchBtnFont":"1","tableIndex":true,"btnAdAllIcon":"1","tableSortable":false,"pageSizes":false,"tableFit":true,"pageBtnBG":false,"searchBtnFontSize":"14px","tableBtnEditBgColor":"rgba(249, 173, 147, 1)","box":{"padding":"10px 20px","boxShadow":"0 0 6px rgba(0,0,0,0)","flag":"2","backgroundImage":"","background":"#fff"},"inputBorderWidth":"1px","inputFontPosition":"2","inputFontColor":"#333","pageEachNum":10,"tableHeaderBgColor":"rgba(94, 173, 207, 0.72)","inputTitleColor":"#333","btnAdAllBoxPosition":"1","tableBtnDetailBgColor":"rgba(249, 173, 147, 1)","inputIcon":"0","searchBtnIconPosition":"1","btnAdAllFontSize":"14px","inputBorderStyle":"solid","tableHoverFontColor":"#333","inputBgColor":"#fff","pageStyle":true,"pageTotal":true,"btnAdAllAddFontColor":"#333","tableBtnFont":"1","tableContentFontColor":"rgba(92, 93, 95, 1)","inputBorderColor":"#DCDFE6","tableShowHeader":true,"tableHoverBgColor":"#f5f5f5","tableBtnFontSize":"14px","tableBtnBorderColor":"rgba(255, 255, 255, 1)","inputIconPosition":"1","tableBorder":false,"btnAdAllBorderStyle":"solid dashed","tableBtnBorderWidth":"2px","tableStripeBgColor":"#F5F7FA","tableBtnEditFontColor":"#333","tableAlign":"center"},
@@ -281,6 +354,58 @@ export default {
     AddOrUpdate,
   },
   methods: {
+    isAdminSession() {
+      return this.$storage.get('sessionTable') === 'users';
+    },
+    formatPracticeStatus(status) {
+      if (status === '待上课') {
+        return '待完成';
+      }
+      return status || '-';
+    },
+    displayExplanation(row) {
+      return row.shuoming || row.shhf || '-';
+    },
+    canCancelRecord(row) {
+      return this.formatPracticeStatus(row.lianchewanchengzhuangtai) === '待完成';
+    },
+    openCancelDialog(row) {
+      this.cancelForm = {
+        id: row.id,
+        shuoming: ''
+      };
+      this.cancelDialogVisible = true;
+    },
+    submitCancelHandler() {
+      const reason = (this.cancelForm.shuoming || '').trim();
+      if (!reason) {
+        this.$message.error('请填写取消预约的原因说明');
+        return;
+      }
+      if (reason.length < 50 || reason.length > 200) {
+        this.$message.error('取消预约原因需控制在50到200字');
+        return;
+      }
+      this.$http({
+        url: "quxiaokecheng/cancelBooking",
+        method: "post",
+        data: this.cancelForm
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.$message({
+            message: "操作成功",
+            type: "success",
+            duration: 1500,
+            onClose: () => {
+              this.cancelDialogVisible = false;
+              this.getDataList();
+            }
+          });
+        } else {
+          this.$message.error(data.msg);
+        }
+      });
+    },
 
     contentStyleChange() {
       this.contentSearchStyleChange()
@@ -461,6 +586,7 @@ export default {
     init () {
         this.sfshOptions = "是,否".split(',');
     },
+    sfshChange() {},
     search() {
       this.pageIndex = 1;
       this.getDataList();

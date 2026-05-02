@@ -663,6 +663,9 @@ CREATE TABLE `quxiaokecheng`  (
   `kechengmingcheng` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '课程名称',
   `kemuleixing` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '科目类型',
   `quxiaoshijian` datetime NULL DEFAULT NULL COMMENT '取消时间',
+  `kechenganpaiid` bigint NULL DEFAULT NULL COMMENT '课程安排id',
+  `yuyueshijian` datetime NULL DEFAULT NULL COMMENT '预约时间',
+  `lianchewanchengzhuangtai` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '待完成' COMMENT '练车完成状态',
   `quxiaoyuanyin` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '取消原因',
   `jiaoliangonghao` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '教练工号',
   `jiaolianxingming` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '教练姓名',
@@ -670,19 +673,20 @@ CREATE TABLE `quxiaokecheng`  (
   `xingming` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '姓名',
   `sfsh` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '否' COMMENT '是否审核',
   `shhf` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '审核回复',
+  `shuoming` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '说明',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1777226475635 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '取消课程' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of quxiaokecheng
 -- ----------------------------
-INSERT INTO `quxiaokecheng` VALUES (101, '2022-04-20 00:18:12', 'C1科二', '科目二', '2026-04-27 01:59:49', '教练请假', 'c1tom001', 'tom', 'zhangsan001', '张三', '是', '');
-INSERT INTO `quxiaokecheng` VALUES (102, '2022-04-20 00:18:12', '课程名称2', '科目类型2', '2022-04-20 00:18:12', '取消原因2', '教练工号2', '教练姓名2', '账号2', '姓名2', '是', '');
-INSERT INTO `quxiaokecheng` VALUES (103, '2022-04-20 00:18:12', '课程名称3', '科目类型3', '2022-04-20 00:18:12', '取消原因3', '教练工号3', '教练姓名3', '账号3', '姓名3', '是', '');
-INSERT INTO `quxiaokecheng` VALUES (104, '2022-04-20 00:18:12', '课程名称4', '科目类型4', '2022-04-20 00:18:12', '取消原因4', '教练工号4', '教练姓名4', '账号4', '姓名4', '是', '');
-INSERT INTO `quxiaokecheng` VALUES (105, '2022-04-20 00:18:12', '课程名称5', '科目类型5', '2022-04-20 00:18:12', '取消原因5', '教练工号5', '教练姓名5', '账号5', '姓名5', '是', '');
-INSERT INTO `quxiaokecheng` VALUES (106, '2022-04-20 00:18:12', '课程名称6', '科目类型6', '2022-04-20 00:18:12', '取消原因6', '教练工号6', '教练姓名6', '账号6', '姓名6', '是', '');
-INSERT INTO `quxiaokecheng` VALUES (1777226475634, '2026-04-27 02:01:15', 'C2', '科三', '2026-04-27 02:00:38', '', '222', '222', '222', '222', '否', '');
+INSERT INTO `quxiaokecheng` VALUES (101, '2022-04-20 00:18:12', 'C1科二', '科目二', '2026-04-27 01:59:49', 1001, '2026-04-28 09:00:00', '已完成', '教练请假', 'c1tom001', 'tom', 'zhangsan001', '张三', '是', '', '');
+INSERT INTO `quxiaokecheng` VALUES (102, '2022-04-20 00:18:12', '课程名称2', '科目类型2', '2022-04-20 00:18:12', 1002, '2022-04-20 09:00:00', '待完成', '取消原因2', '教练工号2', '教练姓名2', '账号2', '姓名2', '是', '', '');
+INSERT INTO `quxiaokecheng` VALUES (103, '2022-04-20 00:18:12', '课程名称3', '科目类型3', '2022-04-20 00:18:12', 1003, '2022-04-20 10:00:00', '已取消', '取消原因3', '教练工号3', '教练姓名3', '账号3', '姓名3', '是', '', '学员临时出差，无法按时练车');
+INSERT INTO `quxiaokecheng` VALUES (104, '2022-04-20 00:18:12', '课程名称4', '科目类型4', '2022-04-20 00:18:12', 1004, '2022-04-20 11:00:00', '待完成', '取消原因4', '教练工号4', '教练姓名4', '账号4', '姓名4', '是', '', '');
+INSERT INTO `quxiaokecheng` VALUES (105, '2022-04-20 00:18:12', '课程名称5', '科目类型5', '2022-04-20 00:18:12', 1005, '2022-04-20 12:00:00', '待完成', '取消原因5', '教练工号5', '教练姓名5', '账号5', '姓名5', '是', '', '');
+INSERT INTO `quxiaokecheng` VALUES (106, '2022-04-20 00:18:12', '课程名称6', '科目类型6', '2022-04-20 00:18:12', 1006, '2022-04-20 13:00:00', '待完成', '取消原因6', '教练工号6', '教练姓名6', '账号6', '姓名6', '是', '', '');
+INSERT INTO `quxiaokecheng` VALUES (1777226475634, '2026-04-27 02:01:15', 'C2', '科三', '2026-04-27 02:00:38', 1777226475633, '2026-04-27 16:00:00', '待完成', '', '222', '222', '222', '222', '否', '', '');
 
 -- ----------------------------
 -- Table structure for rizhi

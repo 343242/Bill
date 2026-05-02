@@ -125,15 +125,33 @@ color: rgba(0, 0, 0, 1) !important;
 						</span>
 					</div>
 					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>预约时间：</span>
+						<span  style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.yuyueshijian || '-'}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
 						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>取消时间：</span>
 						<span  style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
 							{{detail.quxiaoshijian}}
 						</span>
 					</div>
 					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>练车完成状态：</span>
+						<span  style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.lianchewanchengzhuangtai == '待上课' ? '待完成' : (detail.lianchewanchengzhuangtai || '-')}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
 						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>取消原因：</span>
 						<span  style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
 							{{detail.quxiaoyuanyin}}
+						</span>
+					</div>
+					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">
+						<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"rgba(0, 0, 0, 1)","textAlign":"right"}'>说明：</span>
+						<span  style="word-break: break-all" :style='{"padding":"4px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","color":"#333","borderRadius":"0","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"23px","fontSize":"14px","borderStyle":"solid"}' class="desc">
+							{{detail.shuoming || detail.shhf || '-'}}
 						</span>
 					</div>
 					<div :style='{"padding":"4px 15px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0","borderColor":"rgba(136, 198, 229, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="detail-item">

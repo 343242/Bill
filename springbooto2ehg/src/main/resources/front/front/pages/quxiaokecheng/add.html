@@ -200,10 +200,13 @@
 					}],
 					dataList: [],
 					baseurl:'',
-      					ro:{
+					ro:{
 				        kechengmingcheng : false,
 				        kemuleixing : false,
 				        quxiaoshijian : false,
+				        kechenganpaiid : false,
+				        yuyueshijian : false,
+				        lianchewanchengzhuangtai : false,
 				        quxiaoyuanyin : false,
 				        jiaoliangonghao : false,
 				        jiaolianxingming : false,
@@ -211,11 +214,15 @@
 				        xingming : false,
 				        sfsh : false,
 				        shhf : false,
-              				},
+				        shuoming : false,
+					},
                     detail: {
                         kechengmingcheng: '',
                         kemuleixing: '',
                         quxiaoshijian: '',
+                        kechenganpaiid: '',
+                        yuyueshijian: '',
+                        lianchewanchengzhuangtai: '',
                         quxiaoyuanyin: '',
                         jiaoliangonghao: '',
                         jiaolianxingming: '',
@@ -223,6 +230,7 @@
                         xingming: '',
                         sfsh: '',
                         shhf: '',
+                        shuoming: '',
                     },
 					centerMenu: centerMenu
 				},
@@ -325,44 +333,56 @@
                 if(http.getParam('corss')){
 					var obj = JSON.parse(localStorage.getItem('crossObj'));
 					for (var o in obj){
-					if(o=='kechengmingcheng'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='kechengmingcheng'){
+							vue.detail[o] = obj[o];
 						vue.ro.kechengmingcheng = true;
 						continue;
                                         }
-					if(o=='kemuleixing'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='kemuleixing'){
+							vue.detail[o] = obj[o];
 						vue.ro.kemuleixing = true;
 						continue;
                                         }
-					if(o=='quxiaoshijian'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='quxiaoshijian'){
+							vue.detail[o] = obj[o];
 						vue.ro.quxiaoshijian = true;
-						jquery('#quxiaoshijian').val(obj[o]);						
+						jquery('#quxiaoshijian').val(obj[o]);
 						continue;
                                         }
-					if(o=='quxiaoyuanyin'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='id'){
+							vue.detail['kechenganpaiid'] = obj[o];
+						continue;
+                                        }
+						if(o=='kechengshijian'){
+							vue.detail['yuyueshijian'] = obj[o];
+						continue;
+                                        }
+						if(o=='shangkezt'){
+							vue.detail['lianchewanchengzhuangtai'] = obj[o] === '待上课' ? '待完成' : obj[o];
+						continue;
+                                        }
+						if(o=='quxiaoyuanyin'){
+							vue.detail[o] = obj[o];
 						vue.ro.quxiaoyuanyin = true;
 						continue;
                                         }
-					if(o=='jiaoliangonghao'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='jiaoliangonghao'){
+							vue.detail[o] = obj[o];
 						vue.ro.jiaoliangonghao = true;
 						continue;
                                         }
-					if(o=='jiaolianxingming'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='jiaolianxingming'){
+							vue.detail[o] = obj[o];
 						vue.ro.jiaolianxingming = true;
 						continue;
                                         }
-					if(o=='zhanghao'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='zhanghao'){
+							vue.detail[o] = obj[o];
 						vue.ro.zhanghao = true;
 						continue;
                                         }
-					if(o=='xingming'){
-          	                                vue.detail[o] = obj[o];
+						if(o=='xingming'){
+							vue.detail[o] = obj[o];
 						vue.ro.xingming = true;
 						continue;
                                         }
@@ -373,6 +393,10 @@
 		// 提交
 		form.on('submit(*)', function(data) {
 			data = data.field;
+			data.kechenganpaiid = vue.detail.kechenganpaiid;
+			data.yuyueshijian = vue.detail.yuyueshijian;
+			data.lianchewanchengzhuangtai = vue.detail.lianchewanchengzhuangtai || '待完成';
+			data.shuoming = vue.detail.shuoming || '';
                     // 数据校验
 
 					// 跨表计算判断

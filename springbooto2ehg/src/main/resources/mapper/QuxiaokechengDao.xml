@@ -7,6 +7,9 @@
         <result property="kechengmingcheng" column="kechengmingcheng"/>
         <result property="kemuleixing" column="kemuleixing"/>
         <result property="quxiaoshijian" column="quxiaoshijian"/>
+        <result property="kechenganpaiid" column="kechenganpaiid"/>
+        <result property="yuyueshijian" column="yuyueshijian"/>
+        <result property="lianchewanchengzhuangtai" column="lianchewanchengzhuangtai"/>
         <result property="quxiaoyuanyin" column="quxiaoyuanyin"/>
         <result property="jiaoliangonghao" column="jiaoliangonghao"/>
         <result property="jiaolianxingming" column="jiaolianxingming"/>
@@ -14,6 +17,7 @@
         <result property="xingming" column="xingming"/>
         <result property="sfsh" column="sfsh"/>
         <result property="shhf" column="shhf"/>
+        <result property="shuoming" column="shuoming"/>
     </resultMap>
 
 	<select id="selectListVO"

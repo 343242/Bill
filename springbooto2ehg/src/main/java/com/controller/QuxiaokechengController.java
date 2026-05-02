@@ -24,9 +24,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.annotation.IgnoreAuth;
 
+import com.entity.KechenganpaiEntity;
 import com.entity.QuxiaokechengEntity;
 import com.entity.view.QuxiaokechengView;
 
+import com.service.KechenganpaiService;
 import com.service.QuxiaokechengService;
 import com.service.TokenService;
 import com.utils.PageUtils;
@@ -48,6 +50,8 @@ import java.io.IOException;
 public class QuxiaokechengController {
     @Autowired
     private QuxiaokechengService quxiaokechengService;
+    @Autowired
+    private KechenganpaiService kechenganpaiService;
 
 
     
@@ -132,8 +136,11 @@ public class QuxiaokechengController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody QuxiaokechengEntity quxiaokecheng, HttpServletRequest request){
-    	quxiaokecheng.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(quxiaokecheng);
+		quxiaokecheng.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
+		//ValidatorUtils.validateEntity(quxiaokecheng);
+        if(StringUtils.isBlank(quxiaokecheng.getLianchewanchengzhuangtai())) {
+            quxiaokecheng.setLianchewanchengzhuangtai("待完成");
+        }
         quxiaokechengService.insert(quxiaokecheng);
         return R.ok();
     }
@@ -143,8 +150,11 @@ public class QuxiaokechengController {
      */
     @RequestMapping("/add")
     public R add(@RequestBody QuxiaokechengEntity quxiaokecheng, HttpServletRequest request){
-    	quxiaokecheng.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(quxiaokecheng);
+		quxiaokecheng.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
+		//ValidatorUtils.validateEntity(quxiaokecheng);
+        if(StringUtils.isBlank(quxiaokecheng.getLianchewanchengzhuangtai())) {
+            quxiaokecheng.setLianchewanchengzhuangtai("待完成");
+        }
         quxiaokechengService.insert(quxiaokecheng);
         return R.ok();
     }
@@ -157,6 +167,59 @@ public class QuxiaokechengController {
         //ValidatorUtils.validateEntity(quxiaokecheng);
         quxiaokechengService.updateById(quxiaokecheng);//全部更新
         return R.ok();
+    }
+
+    /**
+     * 管理员取消预约
+     */
+    @RequestMapping("/cancelBooking")
+    public R cancelBooking(@RequestBody QuxiaokechengEntity quxiaokecheng, HttpServletRequest request){
+        String tableName = request.getSession().getAttribute("tableName").toString();
+        if(!"users".equals(tableName)) {
+            return R.error("仅管理员可执行此操作");
+        }
+        if(quxiaokecheng.getId() == null) {
+            return R.error("缺少取消记录编号");
+        }
+        String reason = StringUtils.trimToEmpty(quxiaokecheng.getShuoming());
+        if(StringUtils.isBlank(reason)) {
+            return R.error("请填写取消预约的原因说明");
+        }
+        if(reason.length() < 50 || reason.length() > 200) {
+            return R.error("取消预约原因需控制在50到200字");
+        }
+
+        QuxiaokechengEntity record = quxiaokechengService.selectById(quxiaokecheng.getId());
+        if(record == null) {
+            return R.error("取消记录不存在");
+        }
+        if(!"待完成".equals(normalizePracticeStatus(record.getLianchewanchengzhuangtai()))) {
+            return R.error("当前记录不允许再次取消预约");
+        }
+
+        KechenganpaiEntity schedule = null;
+        if(record.getKechenganpaiid() != null) {
+            schedule = kechenganpaiService.selectById(record.getKechenganpaiid());
+        }
+        if(schedule == null && record.getYuyueshijian() != null) {
+            EntityWrapper<KechenganpaiEntity> scheduleWrapper = new EntityWrapper<KechenganpaiEntity>();
+            scheduleWrapper.eq("zhanghao", record.getZhanghao());
+            scheduleWrapper.eq("jiaoliangonghao", record.getJiaoliangonghao());
+            scheduleWrapper.eq("kechengmingcheng", record.getKechengmingcheng());
+            scheduleWrapper.eq("kechengshijian", record.getYuyueshijian());
+            schedule = kechenganpaiService.selectOne(scheduleWrapper);
+        }
+        if(schedule != null) {
+            schedule.setShangkezt("已取消");
+            kechenganpaiService.updateById(schedule);
+            record.setKechenganpaiid(schedule.getId());
+        }
+
+        record.setLianchewanchengzhuangtai("已取消");
+        record.setShuoming(reason);
+        record.setShhf(reason);
+        quxiaokechengService.updateById(record);
+        return R.ok("取消预约成功");
     }
     
 
@@ -218,7 +281,14 @@ public class QuxiaokechengController {
 		int count = quxiaokechengService.selectCount(wrapper);
 		return R.ok().put("count", count);
 	}
-	
+
+    private String normalizePracticeStatus(String status) {
+        if("待上课".equals(status)) {
+            return "待完成";
+        }
+        return status;
+    }
+
 
 
 

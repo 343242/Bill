@@ -692,6 +692,9 @@ CREATE TABLE `quxiaokecheng` (
   `kechengmingcheng` varchar(200) DEFAULT NULL COMMENT '课程名称',
   `kemuleixing` varchar(200) DEFAULT NULL COMMENT '科目类型',
   `quxiaoshijian` datetime DEFAULT NULL COMMENT '取消时间',
+  `kechenganpaiid` bigint(20) DEFAULT NULL COMMENT '课程安排id',
+  `yuyueshijian` datetime DEFAULT NULL COMMENT '预约时间',
+  `lianchewanchengzhuangtai` varchar(200) DEFAULT '待完成' COMMENT '练车完成状态',
   `quxiaoyuanyin` longtext COMMENT '取消原因',
   `jiaoliangonghao` varchar(200) DEFAULT NULL COMMENT '教练工号',
   `jiaolianxingming` varchar(200) DEFAULT NULL COMMENT '教练姓名',
@@ -699,6 +702,7 @@ CREATE TABLE `quxiaokecheng` (
   `xingming` varchar(200) DEFAULT NULL COMMENT '姓名',
   `sfsh` varchar(200) DEFAULT '否' COMMENT '是否审核',
   `shhf` longtext COMMENT '审核回复',
+  `shuoming` longtext COMMENT '说明',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8 COMMENT='取消课程';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -709,7 +713,7 @@ CREATE TABLE `quxiaokecheng` (
 
 LOCK TABLES `quxiaokecheng` WRITE;
 /*!40000 ALTER TABLE `quxiaokecheng` DISABLE KEYS */;
-INSERT INTO `quxiaokecheng` VALUES (101,'2022-04-19 16:18:12','课程名称1','科目类型1','2022-04-20 00:18:12','取消原因1','教练工号1','教练姓名1','账号1','姓名1','是',''),(102,'2022-04-19 16:18:12','课程名称2','科目类型2','2022-04-20 00:18:12','取消原因2','教练工号2','教练姓名2','账号2','姓名2','是',''),(103,'2022-04-19 16:18:12','课程名称3','科目类型3','2022-04-20 00:18:12','取消原因3','教练工号3','教练姓名3','账号3','姓名3','是',''),(104,'2022-04-19 16:18:12','课程名称4','科目类型4','2022-04-20 00:18:12','取消原因4','教练工号4','教练姓名4','账号4','姓名4','是',''),(105,'2022-04-19 16:18:12','课程名称5','科目类型5','2022-04-20 00:18:12','取消原因5','教练工号5','教练姓名5','账号5','姓名5','是',''),(106,'2022-04-19 16:18:12','课程名称6','科目类型6','2022-04-20 00:18:12','取消原因6','教练工号6','教练姓名6','账号6','姓名6','是','');
+INSERT INTO `quxiaokecheng` VALUES (101,'2022-04-19 16:18:12','课程名称1','科目类型1','2022-04-20 00:18:12',1001,'2022-04-20 09:00:00','待完成','取消原因1','教练工号1','教练姓名1','账号1','姓名1','是','',''),(102,'2022-04-19 16:18:12','课程名称2','科目类型2','2022-04-20 00:18:12',1002,'2022-04-20 10:00:00','已完成','取消原因2','教练工号2','教练姓名2','账号2','姓名2','是','',''),(103,'2022-04-19 16:18:12','课程名称3','科目类型3','2022-04-20 00:18:12',1003,'2022-04-20 11:00:00','已取消','取消原因3','教练工号3','教练姓名3','账号3','姓名3','是','','学员临时出差，无法按时练车'),(104,'2022-04-19 16:18:12','课程名称4','科目类型4','2022-04-20 00:18:12',1004,'2022-04-20 12:00:00','待完成','取消原因4','教练工号4','教练姓名4','账号4','姓名4','是','',''),(105,'2022-04-19 16:18:12','课程名称5','科目类型5','2022-04-20 00:18:12',1005,'2022-04-20 13:00:00','待完成','取消原因5','教练工号5','教练姓名5','账号5','姓名5','是','',''),(106,'2022-04-19 16:18:12','课程名称6','科目类型6','2022-04-20 00:18:12',1006,'2022-04-20 14:00:00','待完成','取消原因6','教练工号6','教练姓名6','账号6','姓名6','是','','');
 /*!40000 ALTER TABLE `quxiaokecheng` ENABLE KEYS */;
 UNLOCK TABLES;
 

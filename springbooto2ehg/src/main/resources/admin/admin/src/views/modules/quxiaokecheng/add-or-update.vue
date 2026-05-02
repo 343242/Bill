@@ -204,6 +204,9 @@ export default {
 	kechengmingcheng : false,
 	kemuleixing : false,
 	quxiaoshijian : false,
+	kechenganpaiid : false,
+	yuyueshijian : false,
+	lianchewanchengzhuangtai : false,
 	quxiaoyuanyin : false,
 	jiaoliangonghao : false,
 	jiaolianxingming : false,
@@ -211,17 +214,22 @@ export default {
 	xingming : false,
 	sfsh : false,
 	shhf : false,
+	shuoming : false,
       },
       ruleForm: {
         kechengmingcheng: '',
         kemuleixing: '',
         quxiaoshijian: '',
+        kechenganpaiid: '',
+        yuyueshijian: '',
+        lianchewanchengzhuangtai: '',
         quxiaoyuanyin: '',
         jiaoliangonghao: '',
         jiaolianxingming: '',
         zhanghao: '',
         xingming: '',
         shhf: '',
+        shuoming: '',
       },
       rules: {
           kechengmingcheng: [
@@ -229,6 +237,12 @@ export default {
           kemuleixing: [
           ],
           quxiaoshijian: [
+          ],
+          kechenganpaiid: [
+          ],
+          yuyueshijian: [
+          ],
+          lianchewanchengzhuangtai: [
           ],
           quxiaoyuanyin: [
           ],
@@ -243,6 +257,8 @@ export default {
           sfsh: [
           ],
           shhf: [
+          ],
+          shuoming: [
           ],
       }
     };
@@ -291,6 +307,18 @@ export default {
           if(o=='quxiaoshijian'){
             this.ruleForm.quxiaoshijian = obj[o];
 	    this.ro.quxiaoshijian = true;
+            continue;
+          }
+          if(o=='id'){
+            this.ruleForm.kechenganpaiid = obj[o];
+            continue;
+          }
+          if(o=='kechengshijian'){
+            this.ruleForm.yuyueshijian = obj[o];
+            continue;
+          }
+          if(o=='shangkezt'){
+            this.ruleForm.lianchewanchengzhuangtai = obj[o] === '待上课' ? '待完成' : obj[o];
             continue;
           }
           if(o=='quxiaoyuanyin'){

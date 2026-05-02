@@ -33,9 +33,29 @@ public class QuxiaokechengVO  implements Serializable {
 	 */
 		
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	@DateTimeFormat 
+	@DateTimeFormat
 	private Date quxiaoshijian;
-		
+
+	/**
+	 * 课程安排id
+	 */
+
+	private Long kechenganpaiid;
+
+	/**
+	 * 预约时间
+	 */
+
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat
+	private Date yuyueshijian;
+
+	/**
+	 * 练车完成状态
+	 */
+
+	private String lianchewanchengzhuangtai;
+
 	/**
 	 * 取消原因
 	 */
@@ -75,8 +95,14 @@ public class QuxiaokechengVO  implements Serializable {
 	/**
 	 * 审核回复
 	 */
-	
+
 	private String shhf;
+
+	/**
+	 * 说明
+	 */
+
+	private String shuoming;
 				
 	
 	/**
@@ -109,8 +135,56 @@ public class QuxiaokechengVO  implements Serializable {
 	public Date getQuxiaoshijian() {
 		return quxiaoshijian;
 	}
-				
-	
+
+
+	/**
+	 * 设置：课程安排id
+	 */
+
+	public void setKechenganpaiid(Long kechenganpaiid) {
+		this.kechenganpaiid = kechenganpaiid;
+	}
+
+	/**
+	 * 获取：课程安排id
+	 */
+	public Long getKechenganpaiid() {
+		return kechenganpaiid;
+	}
+
+
+	/**
+	 * 设置：预约时间
+	 */
+
+	public void setYuyueshijian(Date yuyueshijian) {
+		this.yuyueshijian = yuyueshijian;
+	}
+
+	/**
+	 * 获取：预约时间
+	 */
+	public Date getYuyueshijian() {
+		return yuyueshijian;
+	}
+
+
+	/**
+	 * 设置：练车完成状态
+	 */
+
+	public void setLianchewanchengzhuangtai(String lianchewanchengzhuangtai) {
+		this.lianchewanchengzhuangtai = lianchewanchengzhuangtai;
+	}
+
+	/**
+	 * 获取：练车完成状态
+	 */
+	public String getLianchewanchengzhuangtai() {
+		return lianchewanchengzhuangtai;
+	}
+
+
 	/**
 	 * 设置：取消原因
 	 */
@@ -221,5 +295,21 @@ public class QuxiaokechengVO  implements Serializable {
 	public String getShhf() {
 		return shhf;
 	}
-			
+
+
+	/**
+	 * 设置：说明
+	 */
+
+	public void setShuoming(String shuoming) {
+		this.shuoming = shuoming;
+	}
+
+	/**
+	 * 获取：说明
+	 */
+	public String getShuoming() {
+		return shuoming;
+	}
+
 }
