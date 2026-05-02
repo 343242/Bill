@@ -131,6 +131,38 @@
         </div>
       </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-form-item v-if="type!='info'" label="个人简介" prop="gerenjianjie">
+            <editor
+              style="min-width: 200px; max-width: 600px;"
+              v-model="ruleForm.gerenjianjie"
+              class="editor"
+              action="file/upload">
+            </editor>
+          </el-form-item>
+          <div v-else>
+            <el-form-item v-if="ruleForm.gerenjianjie" label="个人简介" prop="gerenjianjie">
+              <span v-html="ruleForm.gerenjianjie"></span>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item v-if="type!='info'" label="教学特色" prop="jiaoxuetese">
+            <editor
+              style="min-width: 200px; max-width: 600px;"
+              v-model="ruleForm.jiaoxuetese"
+              class="editor"
+              action="file/upload">
+            </editor>
+          </el-form-item>
+          <div v-else>
+            <el-form-item v-if="ruleForm.jiaoxuetese" label="教学特色" prop="jiaoxuetese">
+              <span v-html="ruleForm.jiaoxuetese"></span>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
       <el-form-item class="btn">
         <el-button  v-if="type!='info'" type="primary" class="btn-success" @click="onSubmit">提交</el-button>
         <el-button v-if="type!='info'" class="btn-close" @click="back()">取消</el-button>
@@ -222,6 +254,8 @@ export default {
 	nianling : false,
 	shouji : false,
 	zhidaokemu : false,
+	gerenjianjie : false,
+	jiaoxuetese : false,
 	touxiang : false,
 	zhuangtai : false,
       },
@@ -233,6 +267,8 @@ export default {
         nianling: '',
         shouji: '',
         zhidaokemu: '',
+        gerenjianjie: '',
+        jiaoxuetese: '',
         touxiang: '',
         zhuangtai: '已发布',
       },
@@ -256,6 +292,10 @@ export default {
                 { validator: validateMobile, trigger: 'blur' },
           ],
           zhidaokemu: [
+          ],
+          gerenjianjie: [
+          ],
+          jiaoxuetese: [
           ],
           touxiang: [
           ],
@@ -327,6 +367,16 @@ export default {
           if(o=='zhidaokemu'){
             this.ruleForm.zhidaokemu = obj[o];
 	    this.ro.zhidaokemu = true;
+            continue;
+          }
+          if(o=='gerenjianjie'){
+            this.ruleForm.gerenjianjie = obj[o];
+	    this.ro.gerenjianjie = true;
+            continue;
+          }
+          if(o=='jiaoxuetese'){
+            this.ruleForm.jiaoxuetese = obj[o];
+	    this.ro.jiaoxuetese = true;
             continue;
           }
           if(o=='touxiang'){
