@@ -21,7 +21,7 @@
 				<i class="el-icon-menu menu-ico" :class="icons[index]" />
 				<span>{{ menu.menu }}</span>
             </template>
-            <el-menu-item v-for=" (child,sort) in menu.child" :key="sort" :index="(index+2)+'-'+sort" @click="menuHandler(child.tableName, child.menu)">{{ child.menu }}</el-menu-item>
+            <el-menu-item v-for=" (child,sort) in menu.child" v-if="!shouldHideMenuItem(child)" :key="sort" :index="(index+2)+'-'+sort" @click="menuHandler(child.tableName, child.menu)">{{ child.menu }}</el-menu-item>
           </el-submenu>
         </el-menu>
       </div>
@@ -94,6 +94,9 @@ export default {
     })
   },
   methods: {
+    shouldHideMenuItem(child) {
+      return this.role === '管理员' && ['examrecord', 'cuotiban'].includes(child.tableName)
+    },
     menuHandler(name, menuName) {
       let router = this.$router
       name = '/'+name

@@ -114,6 +114,11 @@ export default {
     };
   },
   mounted() {
+    if (this.$storage.get("role") === "管理员") {
+      this.$message.warning("管理员端已隐藏考试记录页面");
+      this.$router.replace({ path: "/index/" });
+      return;
+    }
     this.init();
     this.getDataList();
   },
