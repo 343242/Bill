@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     shouldHideMenuItem(child) {
-      return this.role === '管理员' && ['examrecord', 'cuotiban'].includes(child.tableName)
+      return this.role === '管理员' && ['examrecord', 'cuotiban', 'examfailrecord'].includes(child.tableName)
     },
     menuHandler(name, menuName) {
       let router = this.$router
