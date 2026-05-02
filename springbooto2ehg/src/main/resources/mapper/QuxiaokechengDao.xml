@@ -35,13 +35,13 @@
     <select id="selectListView"
 		resultType="com.entity.view.QuxiaokechengView" >
 
-		SELECT  quxiaokecheng.* FROM quxiaokecheng  quxiaokecheng 	        
-        <where> 1=1 </where>
+		SELECT  quxiaokecheng.* FROM quxiaokecheng  quxiaokecheng
+        WHERE 1=1 ${ew.sqlSegment}
 	</select>
-	
+
 	<select id="selectView"
 		resultType="com.entity.view.QuxiaokechengView" >
-		SELECT * FROM quxiaokecheng  quxiaokecheng <where> 1=1 </where>
+		SELECT * FROM quxiaokecheng  quxiaokecheng WHERE 1=1 ${ew.sqlSegment}
 	</select>
 	
 
