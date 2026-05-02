@@ -5,7 +5,7 @@
         <!-- 搜索 -->
         <el-row :gutter="20" class="slt">
           <el-form-item label="排班日期">
-            <el-date-picker v-model="searchForm.paiBanriqi" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" clearable />
+            <el-date-picker v-model="searchForm.paiBanriqi" type="month" value-format="yyyy-MM" placeholder="选择月份" clearable />
           </el-form-item>
           <el-form-item label="教练">
             <el-input v-model="searchForm.jiaolianxingming" placeholder="教练姓名" clearable />
@@ -29,7 +29,11 @@
           style="width: 100%"
         >
           <el-table-column prop="id" label="ID" width="80" />
-          <el-table-column prop="paiBanriqi" label="排班日期" width="120" />
+          <el-table-column prop="paiBanriqi" label="排班日期" width="120">
+            <template slot-scope="scope">
+              {{ formatMonth(scope.row.paiBanriqi) }}
+            </template>
+          </el-table-column>
           <el-table-column prop="shijianduan" label="时间段" width="160" />
           <el-table-column prop="jiaoliangonghao" label="教练工号" width="120" />
           <el-table-column prop="jiaolianxingming" label="教练姓名" width="120" />
@@ -93,7 +97,7 @@ export default {
         sort: 'paiBanriqi'
       };
       if (this.searchForm.paiBanriqi) {
-        params['paiBanriqi'] = this.searchForm.paiBanriqi;
+        params['paiBanriqi'] = '%' + this.searchForm.paiBanriqi + '%';
       }
       if (this.searchForm.jiaolianxingming) {
         params['jiaolianxingming'] = '%' + this.searchForm.jiaolianxingming + '%';
@@ -130,6 +134,12 @@ export default {
     currentChangeHandle(val) {
       this.pageIndex = val;
       this.getDataList();
+    },
+    formatMonth(value) {
+      if (!value) {
+        return '';
+      }
+      return String(value).substring(0, 7);
     },
     addOrUpdateHandler(id) {
       this.showFlag = false;

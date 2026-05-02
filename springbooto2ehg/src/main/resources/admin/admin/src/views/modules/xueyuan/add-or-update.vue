@@ -88,15 +88,9 @@
         </div>
       </el-col>
       <el-col :span="12">
-        <el-form-item class="select" v-if="type!='info'"  label="练习车型" prop="lianxichexing">
-          <el-select :disabled="ro.lianxichexing" v-model="ruleForm.lianxichexing" placeholder="请选择练习车型">
-            <el-option
-                v-for="(item,index) in lianxichexingOptions"
-                v-bind:key="index"
-                :label="item"
-                :value="item">
-            </el-option>
-          </el-select>
+        <el-form-item class="input" v-if="type!='info'"  label="练习车型" prop="lianxichexing">
+          <el-input v-model="ruleForm.lianxichexing"
+              placeholder="练习车型" clearable  :readonly="ro.lianxichexing"></el-input>
         </el-form-item>
         <div v-else>
           <el-form-item class="input" label="练习车型" prop="lianxichexing">
@@ -261,7 +255,6 @@ export default {
         touxiang: '',
       },
           xingbieOptions: [],
-          lianxichexingOptions: [],
           xueyuanzhuangtaiOptions: [],
       rules: {
           zhanghao: [
@@ -382,18 +375,6 @@ export default {
           var json = data.data;
         } else {
           this.$message.error(data.msg);
-        }
-      });
-      this.$http({
-        url: "cheliangxinxi/list",
-        method: "get",
-        params: {
-          page: 1,
-          limit: 1000
-        }
-      }).then(({ data }) => {
-        if (data && data.code === 0 && data.data && data.data.list) {
-          this.lianxichexingOptions = [...new Set(data.data.list.map(item => item.chexing).filter(item => item))];
         }
       });
       this.xingbieOptions = "男,女".split(',')

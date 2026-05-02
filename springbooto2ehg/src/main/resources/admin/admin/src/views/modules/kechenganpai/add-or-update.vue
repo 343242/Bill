@@ -3,7 +3,7 @@
     <div v-if="showFlag">
       <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="排班日期">
-          <el-date-picker v-model="form.paiBanriqi" type="date" value-format="yyyy-MM-dd" placeholder="请选择排班日期" style="width: 100%" />
+          <el-date-picker v-model="form.paiBanriqi" type="month" value-format="yyyy-MM" placeholder="请选择排班月份" style="width: 100%" />
         </el-form-item>
         <el-form-item label="时间段">
           <el-select v-model="form.shijianduan" placeholder="请选择时间段" style="width: 100%" @change="onTimeSlotChange">
@@ -53,9 +53,9 @@ export default {
         }).then(({ data }) => {
           if (data && data.code === 0) {
             this.form = data.data;
-            // 日期格式截取为 yyyy-MM-dd
-            if (this.form.paiBanriqi && this.form.paiBanriqi.length > 10) {
-              this.form.paiBanriqi = this.form.paiBanriqi.substring(0, 10);
+            // 排班计划管理只保留到月份精度
+            if (this.form.paiBanriqi && this.form.paiBanriqi.length > 7) {
+              this.form.paiBanriqi = this.form.paiBanriqi.substring(0, 7);
             }
           }
         });
