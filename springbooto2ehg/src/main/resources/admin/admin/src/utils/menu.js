@@ -87,6 +87,7 @@ export function normalizeMenus(menus) {
                 if (Array.isArray(parentMenu.child)) {
                     normalizedParentMenu.child = parentMenu.child
                         .filter(child => child.menu !== '视频互动管理')
+                        .filter(child => !(isAdminRole && ['examrecord', 'cuotiban'].includes(child.tableName)))
                         .map(child => {
                             const normalizedChild = {
                                 ...child,
