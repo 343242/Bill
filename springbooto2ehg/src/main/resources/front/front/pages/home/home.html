@@ -950,7 +950,7 @@
 			<div class="box10"></div>
 		</div>
 	    <div class="title" :style='{"padding":"5px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0px 0px 10px 0px","borderColor":"rgba(0,0,0,1)","backgroundColor":"rgba(255, 255, 255, 1)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","alignItems":"center","borderWidth":"0","fontSize":"20px","borderStyle":"solid"}'>
-	      <span>Recommend</span><span>驾校信息推荐</span>
+		      <span>Recommend</span><span>驾校概况</span>
 	    </div>
 		<div v-if="false && 1 == 2" class="idea recommendIdea" :style='{"padding":"10px 5px","boxShadow":"0 0 6px rgba(0,0,0,0)","margin":"10px 0","borderColor":"#ccc","borderRadius":"0","borderWidth":"0","background":"rgba(0,0,0,.3)","width":"100%","borderStyle":"solid","height":"auto"}'>
 			<div class="box1"></div>
@@ -965,16 +965,17 @@
 			<div class="box10"></div>
 		</div>
 	    <div class="list">
-	      <div v-for="(item,index) in jiaxiaoxinxiRecommend" :key="index" @click="jump('../jiaxiaoxinxi/detail.html?id='+item.id)" class="list-item" :class="3=='3'?'list-item3':3=='5'?'list-item5':''">
-	        <div class="list-item-body animation-box" :style='{"padding":"10px 0px 10px 30px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"30px 0px 0px 0px","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0","borderStyle":"solid"}'>
-				<img :style='{"boxShadow":"-32px -32px 0px rgba(50,96,158, 0.9)","borderColor":"rgba(136, 198, 229, 1)","borderRadius":"0","borderWidth":"0px 30px 30px 0px","width":"300px","borderStyle":"solid","height":"280px"}' :src="item.jiaxiaotupian?baseurl+item.jiaxiaotupian.split(',')[0]:''" alt="" />
-				<div  class="line1" v-if='true' :style='{"isshow":true,"padding":"10px","margin":"5px 0 0 0","backgroundColor":"rgba(0, 0, 0, 0)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","textAlign":"center","fontSize":"14px"}' class="name">{{item.jiaxiaomingcheng}}</div>
-	        </div>
-	      </div>
+		      <div v-for="(item,index) in jiaxiaogaikuangList" :key="index" @click="jumpToSchoolOverview()" class="list-item" :class="3=='3'?'list-item3':3=='5'?'list-item5':''">
+		        <div class="list-item-body animation-box" :style='{"padding":"10px 0px 10px 30px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"30px 0px 0px 0px","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0","borderStyle":"solid"}'>
+				<img :style='{"boxShadow":"-32px -32px 0px rgba(50,96,158, 0.9)","borderColor":"rgba(136, 198, 229, 1)","borderRadius":"0","borderWidth":"0px 30px 30px 0px","width":"300px","borderStyle":"solid","height":"280px"}' :src="item.tupian?baseurl+item.tupian.split(',')[0]:''" alt="" />
+				<div class="line1" v-if='true' :style='{"isshow":true,"padding":"10px","margin":"5px 0 0 0","backgroundColor":"rgba(0, 0, 0, 0)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","textAlign":"center","fontSize":"14px"}' class="name">{{item.biaoti}}</div>
+				<div class="line2" :style='{"padding":"0 10px 10px 10px","margin":"0","backgroundColor":"rgba(0, 0, 0, 0)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","textAlign":"center","fontSize":"14px"}'>{{item.neirong | newsDesc}}</div>
+		        </div>
+		      </div>
 	    </div>
 	    <div class="clear"></div>
 	    <div style="text-align: center;">
-    <button @click="jumpToYuhuaSchool()" style="display: block;cursor: pointer;" type="button" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"4px auto","borderColor":"#ccc","backgroundColor":"#fff","color":"rgba(50, 96, 158, 0.9)","borderRadius":"6px","borderWidth":"0","width":"auto","fontSize":"14px","borderStyle":"solid","height":"34px"}'>查看更多<i v-if="true" :style='{"isshow":true,"padding":"0 0 0 1px","fontSize":"14px","color":"rgba(50, 96, 158, 0.9)"}' class="layui-icon layui-icon-next"></i></el-button>
+	    <button @click="jumpToSchoolOverview()" style="display: block;cursor: pointer;" type="button" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"4px auto","borderColor":"#ccc","backgroundColor":"#fff","color":"rgba(50, 96, 158, 0.9)","borderRadius":"6px","borderWidth":"0","width":"auto","fontSize":"14px","borderStyle":"solid","height":"34px"}'>查看更多<i v-if="true" :style='{"isshow":true,"padding":"0 0 0 1px","fontSize":"14px","color":"rgba(50, 96, 158, 0.9)"}' class="layui-icon layui-icon-next"></i></el-button>
 	    </div>
 		<div v-if="false && 1 == 3" class="idea recommendIdea" :style='{"padding":"10px 5px","boxShadow":"0 0 6px rgba(0,0,0,0)","margin":"10px 0","borderColor":"#ccc","borderRadius":"0","borderWidth":"0","background":"rgba(0,0,0,.3)","width":"100%","borderStyle":"solid","height":"auto"}'>
 			<div class="box1"></div>
@@ -989,9 +990,31 @@
 			<div class="box10"></div>
 		</div>
 	  </div>
-	</div>
+		</div>
 
-	<!-- 新闻公告 -->
+		<div class="recommend index-pv1" :style='{"padding":"5px","boxShadow":"0 0 0px rgba(255,0,0,0)","margin":"0px 0px 0px 0px","borderColor":"rgba(50, 96, 158, 0.9)","backgroundColor":"rgba(255, 255, 255, 1)","borderRadius":"0","borderWidth":"0px 0px 2px 0px","background":"rgba(255, 255, 255, 1)","borderStyle":"dashed"}'>
+		  <div class="box" style='width:100%'>
+		    <div class="title" :style='{"padding":"5px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0px 0px 10px 0px","borderColor":"rgba(0,0,0,1)","backgroundColor":"rgba(255, 255, 255, 1)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","alignItems":"center","borderWidth":"0","fontSize":"20px","borderStyle":"solid"}'>
+		      <span>Coach</span><span>教练信息</span>
+		    </div>
+		    <div class="list">
+		      <div v-for="(item,index) in jiaolianHomeList" :key="index" @click="jump('../jiaolian/detail.html?id='+item.id)" class="list-item" :class="3=='3'?'list-item3':3=='5'?'list-item5':''">
+		        <div class="list-item-body animation-box" :style='{"padding":"10px 0px 10px 30px","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"30px 0px 0px 0px","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0","borderStyle":"solid"}'>
+				<img :style='{"boxShadow":"-32px -32px 0px rgba(50,96,158, 0.9)","borderColor":"rgba(136, 198, 229, 1)","borderRadius":"0","borderWidth":"0px 30px 30px 0px","width":"300px","borderStyle":"solid","height":"280px"}' :src="item.touxiang?baseurl+item.touxiang.split(',')[0]:''" alt="" />
+				<div class="line1" :style='{"padding":"10px","margin":"5px 0 0 0","backgroundColor":"rgba(0, 0, 0, 0)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","textAlign":"center","fontSize":"14px"}'>{{item.jiaolianxingming}}</div>
+				<div class="line1" :style='{"padding":"0 10px","margin":"0","backgroundColor":"rgba(0, 0, 0, 0)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","textAlign":"center","fontSize":"14px"}'>{{item.zhidaokemu}}</div>
+				<div class="line2" :style='{"padding":"0 10px 10px 10px","margin":"0","backgroundColor":"rgba(0, 0, 0, 0)","color":"rgba(0, 0, 0, 1)","borderRadius":"0","textAlign":"center","fontSize":"14px"}'>{{item.gerenjianjie | newsDesc}}</div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="clear"></div>
+		    <div style="text-align: center;">
+		    <button @click="jump('../jiaolian/list.html')" style="display: block;cursor: pointer;" type="button" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"4px auto","borderColor":"#ccc","backgroundColor":"#fff","color":"rgba(50, 96, 158, 0.9)","borderRadius":"6px","borderWidth":"0","width":"auto","fontSize":"14px","borderStyle":"solid","height":"34px"}'>查看更多<i v-if="true" :style='{"isshow":true,"padding":"0 0 0 1px","fontSize":"14px","color":"rgba(50, 96, 158, 0.9)"}' class="layui-icon layui-icon-next"></i></el-button>
+		    </div>
+		  </div>
+		</div>
+
+		<!-- 新闻公告 -->
 	<div class="news index-pv2" style="display: flex;justify-content: center;width:100%" :style='{"padding":"0","boxShadow":"0 0 0px rgba(255,0,0,.8)","margin":"0","borderColor":"rgba(0,0,0,.3)","backgroundColor":"rgba(255, 255, 255, 1)","borderRadius":"0","borderWidth":"0","background":"rgba(255, 255, 255, 1)","borderStyle":"solid"}'>
 	  <div class="box" style='width:95%'>
 		<div v-if="false && 1 == 1" class="idea newsIdea" :style='{"padding":"10px 5px","boxShadow":"0 0 6px rgba(0,0,0,0)","margin":"10px 0","borderColor":"#ccc","borderRadius":"0","borderWidth":"0","background":"rgba(0,0,0,.3)","width":"100%","borderStyle":"solid","height":"auto"}'>
@@ -1079,8 +1102,8 @@
       el: '#app',
       data: {
 
-        jiaxiaoxinxiRecommend: [],
-        targetSchoolName: '南京市雨花驾校C1',
+	        jiaxiaogaikuangList: [],
+	        jiaolianHomeList: [],
 
         swiperList: [],
         // 新闻公告
@@ -1106,13 +1129,9 @@
         jump(url) {
           	jump(url)
         },
-        jumpToYuhuaSchool() {
-          if (this.jiaxiaoxinxiRecommend.length > 0) {
-            jump('../jiaxiaoxinxi/detail.html?id=' + this.jiaxiaoxinxiRecommend[0].id)
-            return
-          }
-          jump('../jiaxiaoxinxi/list.html')
-        },
+	        jumpToSchoolOverview() {
+	          jump('../jiaxiaoxinxi/list.html')
+	        },
       }
     });
 
@@ -1125,9 +1144,9 @@
 		var jquery = layui.jquery;
 	vue.baseurl=http.baseurl;
       // 获取轮播图 数据
-      http.request('config/list', 'get', {
-        page: 1,
-        limit: 5
+	      http.request('config/list', 'get', {
+	        page: 1,
+	        limit: 5
       }, function(res) {
         if (res.data.list.length > 0) {
           let swiperList = [];
@@ -1158,11 +1177,23 @@
           // vue.$nextTick(()=>{
           //   window.xznSlide();
           // });
-        }
-      });
+	        }
+	      });
 
-      // 新闻公告
-      http.request('news/list', 'get', {
+	      http.request('shouyexinxi/shouye', 'get', {}, function(res) {
+	        var sectionData = res.data || {}
+	        vue.jiaxiaogaikuangList = sectionData.jiaxiaogaikuang ? sectionData.jiaxiaogaikuang.slice(0, 3) : []
+	      });
+
+	      http.request('jiaolian/list', 'get', {
+	        page: 1,
+	        limit: 3
+	      }, function(res) {
+	        vue.jiaolianHomeList = res.data.list || []
+	      });
+
+	      // 新闻公告
+	      http.request('news/list', 'get', {
         page: 1,
         order: 'desc'
       }, function(res) {
@@ -1228,85 +1259,7 @@
 		}
       });
 
-      // 获取推荐信息
-      var autoSortUrl = "jiaxiaoxinxi/autoSort";
-      http.request(autoSortUrl, 'get', {
-        page: 1,
-	limit: 3 * 2
-		}, function(res) {
-			var yuhuaSchool = null
-			for (var i = 0; i < res.data.list.length; i++) {
-				if (res.data.list[i].jiaxiaomingcheng === vue.targetSchoolName) {
-					yuhuaSchool = res.data.list[i]
-					break
-				}
-			}
-			if (!yuhuaSchool) {
-				for (var j = 0; j < res.data.list.length; j++) {
-					if (res.data.list[j].jiaxiaomingcheng && res.data.list[j].jiaxiaomingcheng.indexOf(vue.targetSchoolName) !== -1) {
-						yuhuaSchool = res.data.list[j]
-						break
-					}
-				}
-			}
-			vue.jiaxiaoxinxiRecommend = yuhuaSchool ? [yuhuaSchool] : []
-			let flag = 1;
-			let options = {"navigation":{"nextEl":".swiper-button-next","prevEl":".swiper-button-prev"},"slidesPerView":5,"loop":true,"spaceBetween":20,"autoplay":{"delay":3000,"disableOnInteraction":false}}
-			options.pagination = {el:'null'}
-			if(options.slidesPerView) {
-				options.slidesPerView = Number(options.slidesPerView);
-			}
-			if(options.spaceBetween) {
-				options.spaceBetween = Number(options.spaceBetween);
-			}
-			if(flag == 3) {
-				vue.$nextTick(() => {
-						new Swiper('#recommendjiaxiaoxinxi', options)
-				})
-			}
-			
-			// 商品推荐样式五
-			if(flag == 5) {
-				vue.$nextTick(() => {
-					var swiper = new Swiper('#recommend-five-swiperjiaxiaoxinxi', {
-						loop: true,
-						speed: 500,
-						slidesPerView: Number(5),
-						spaceBetween: Number(10),
-						autoplay: {"delay":3000,"disableOnInteraction":false},
-						centeredSlides: true,
-						watchSlidesProgress: true,
-						on: {
-							setTranslate: function() {
-								slides = this.slides
-								for (i = 0; i < slides.length; i++) {
-									slide = slides.eq(i)
-									progress = slides[i].progress
-									// slide.html(progress.toFixed(2)); //看清楚progress是怎么变化的
-									slide.css({
-										'opacity': '',
-										'background': ''
-									});
-									slide.transform(''); //清除样式
-					
-									slide.transform('scale(' + (1.5 - Math.abs(progress) / 4) + ')');
-								}
-							},
-							setTransition: function(transition) {
-								for (var i = 0; i < this.slides.length; i++) {
-									var slide = this.slides.eq(i)
-									slide.transition(transition);
-								}
-							},
-						},
-						navigation: {"nextEl":".swiper-button-next","prevEl":".swiper-button-prev"},
-						pagination: {"el":".swiper-pagination","clickable":true},
-					});
-				})
-			}
-		});
-
-  });
+	  });
 
   window.xznSlide = function() {
     // jQuery(".banner").slide({mainCell:".bd ul",autoPlay:true,interTime:5000});
