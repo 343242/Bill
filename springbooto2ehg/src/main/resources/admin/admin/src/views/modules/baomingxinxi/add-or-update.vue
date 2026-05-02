@@ -545,6 +545,9 @@ var objcross = this.$storage.getObj('crossObj');
 	addEditStyleChange() {
 	  this.$nextTick(()=>{
 	    // input
+	    document.querySelectorAll('.addEdit-block .input .el-input').forEach(el=>{
+	      el.style.width = 'calc(100% - 10px)'
+	    })
 	    document.querySelectorAll('.addEdit-block .input .el-input__inner').forEach(el=>{
 	      el.style.height = this.addEditForm.inputHeight
 	      el.style.color = this.addEditForm.inputFontColor
