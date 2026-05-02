@@ -511,6 +511,8 @@ var objcross = this.$storage.getObj('crossObj');
 					   } else {
 					     this.$message.error(data.msg);
 					   }
+					 }).catch((error) => {
+					   this.$message.error(error && error.message ? error.message : "提交失败");
 					 });
 
 				       }
@@ -539,6 +541,8 @@ var objcross = this.$storage.getObj('crossObj');
 			   } else {
 			     this.$message.error(data.msg);
 			   }
+			 }).catch((error) => {
+			   this.$message.error(error && error.message ? error.message : "提交失败");
 			 });
 		 }
          }

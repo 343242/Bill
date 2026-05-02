@@ -305,8 +305,10 @@ public class XueyuanController {
 		tokenWrapper.eq("userid", xueyuan.getId());
 		tokenWrapper.eq("tablename", "xueyuan");
 		TokenEntity token =tokenService.selectOne(tokenWrapper);
-		token.setUsername(xueyuan.getZhanghao());
-		tokenService.updateById(token);
+		if(token != null) {
+			token.setUsername(xueyuan.getZhanghao());
+			tokenService.updateById(token);
+		}
 
         return R.ok();
     }
