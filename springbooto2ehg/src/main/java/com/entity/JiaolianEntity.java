@@ -108,8 +108,14 @@ public class JiaolianEntity<T> implements Serializable {
 	/**
 	 * 教学特色
 	 */
-					
+
 	private String jiaoxuetese;
+
+	/**
+	 * 状态
+	 */
+
+	private String zhuangtai;
 	
 	
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
@@ -249,6 +255,19 @@ public class JiaolianEntity<T> implements Serializable {
 	 */
 	public String getJiaoxuetese() {
 		return jiaoxuetese;
+	}
+
+	/**
+	 * 设置：状态
+	 */
+	public void setZhuangtai(String zhuangtai) {
+		this.zhuangtai = zhuangtai;
+	}
+	/**
+	 * 获取：状态
+	 */
+	public String getZhuangtai() {
+		return zhuangtai;
 	}
 
 }

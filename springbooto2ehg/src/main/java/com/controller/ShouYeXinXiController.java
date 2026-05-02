@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Date;
 import java.util.List;
+import java.util.Comparator;
 import javax.servlet.http.HttpServletRequest;
 
 import com.utils.ValidatorUtils;
@@ -25,9 +26,13 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.annotation.IgnoreAuth;
 
 import com.entity.ShouYeXinXiEntity;
+import com.entity.JiaolianEntity;
+import com.entity.NewsEntity;
 import com.entity.view.ShouYeXinXiView;
 
 import com.service.ShouYeXinXiService;
+import com.service.JiaolianService;
+import com.service.NewsService;
 import com.service.TokenService;
 import com.utils.PageUtils;
 import com.utils.R;
@@ -48,6 +53,10 @@ import java.io.IOException;
 public class ShouYeXinXiController {
     @Autowired
     private ShouYeXinXiService shouYeXinXiService;
+    @Autowired
+    private JiaolianService jiaolianService;
+    @Autowired
+    private NewsService newsService;
 
 
     
@@ -126,23 +135,138 @@ public class ShouYeXinXiController {
         Map<String, Object> map = new HashMap<>();
         // 获取驾校概况
         EntityWrapper<ShouYeXinXiEntity> ew1 = new EntityWrapper<ShouYeXinXiEntity>();
-        ew1.eq("leixing", "驾校概况").in("zhuangtai", Arrays.asList("已发布", "启用")).orderBy("paixu", true);
+        ew1.eq("leixing", "驾校概况").in("zhuangtai", Arrays.asList("已发布", "启用", "显示")).orderBy("paixu", true);
         List<ShouYeXinXiEntity> jiaxiaogaikuang = shouYeXinXiService.selectList(ew1);
         map.put("jiaxiaogaikuang", jiaxiaogaikuang);
         
         // 获取教练信息
         EntityWrapper<ShouYeXinXiEntity> ew2 = new EntityWrapper<ShouYeXinXiEntity>();
-        ew2.eq("leixing", "教练信息").in("zhuangtai", Arrays.asList("已发布", "启用")).orderBy("paixu", true);
+        ew2.eq("leixing", "教练信息").in("zhuangtai", Arrays.asList("已发布", "启用", "显示")).orderBy("paixu", true);
         List<ShouYeXinXiEntity> jiaolianxinxi = shouYeXinXiService.selectList(ew2);
         map.put("jiaolianxinxi", jiaolianxinxi);
         
         // 获取报名须知
         EntityWrapper<ShouYeXinXiEntity> ew3 = new EntityWrapper<ShouYeXinXiEntity>();
-        ew3.eq("leixing", "报名须知").in("zhuangtai", Arrays.asList("已发布", "启用")).orderBy("paixu", true);
+        ew3.eq("leixing", "报名须知").in("zhuangtai", Arrays.asList("已发布", "启用", "显示")).orderBy("paixu", true);
         List<ShouYeXinXiEntity> baomingxuzhi = shouYeXinXiService.selectList(ew3);
         map.put("baomingxuzhi", baomingxuzhi);
         
         return R.ok().put("data", map);
+    }
+
+    /**
+     * 首页信息聚合列表
+     */
+    @RequestMapping("/aggregatePage")
+    public R aggregatePage(@RequestParam Map<String, Object> params, HttpServletRequest request){
+        String leixing = params.get("leixing") == null ? null : params.get("leixing").toString();
+        String biaoti = params.get("biaoti") == null ? null : params.get("biaoti").toString();
+        int page = params.get("page") == null ? 1 : Integer.parseInt(params.get("page").toString());
+        int limit = params.get("limit") == null ? 10 : Integer.parseInt(params.get("limit").toString());
+
+        List<Map<String, Object>> merged = new ArrayList<>();
+
+        List<ShouYeXinXiEntity> homepageList = shouYeXinXiService.selectList(new EntityWrapper<ShouYeXinXiEntity>().orderBy("addtime", false));
+        for (ShouYeXinXiEntity item : homepageList) {
+            merged.add(buildAggregateRow(
+                    item.getId(),
+                    "shouyexinxi",
+                    item.getLeixing(),
+                    item.getBiaoti(),
+                    item.getNeirong(),
+                    item.getZhuangtai(),
+                    item.getAddtime()
+            ));
+        }
+
+        List<JiaolianEntity> coachList = jiaolianService.selectList(new EntityWrapper<JiaolianEntity>().orderBy("addtime", false));
+        for (JiaolianEntity item : coachList) {
+            String title = StringUtils.defaultIfBlank(item.getJiaolianxingming(), "教练") + "介绍";
+            StringBuilder contentBuilder = new StringBuilder();
+            if (StringUtils.isNotBlank(item.getGerenjianjie())) {
+                contentBuilder.append(item.getGerenjianjie());
+            }
+            if (StringUtils.isNotBlank(item.getJiaoxuetese())) {
+                if (contentBuilder.length() > 0) {
+                    contentBuilder.append("\n");
+                }
+                contentBuilder.append(item.getJiaoxuetese());
+            }
+            merged.add(buildAggregateRow(
+                    item.getId(),
+                    "jiaolian",
+                    "教练信息",
+                    title,
+                    contentBuilder.toString(),
+                    item.getZhuangtai(),
+                    item.getAddtime()
+            ));
+        }
+
+        List<NewsEntity> noticeList = newsService.selectList(new EntityWrapper<NewsEntity>().orderBy("addtime", false));
+        for (NewsEntity item : noticeList) {
+            String content = StringUtils.isNotBlank(item.getContent()) ? item.getContent() : item.getIntroduction();
+            merged.add(buildAggregateRow(
+                    item.getId(),
+                    "news",
+                    "报名须知",
+                    item.getTitle(),
+                    content,
+                    item.getZhuangtai(),
+                    item.getAddtime()
+            ));
+        }
+
+        List<Map<String, Object>> filtered = new ArrayList<>();
+        for (Map<String, Object> row : merged) {
+            String rowLeixing = row.get("leixing") == null ? "" : row.get("leixing").toString();
+            String rowBiaoti = row.get("biaoti") == null ? "" : row.get("biaoti").toString();
+            if (StringUtils.isNotBlank(leixing) && !rowLeixing.equals(leixing)) {
+                continue;
+            }
+            if (StringUtils.isNotBlank(biaoti) && !rowBiaoti.contains(biaoti)) {
+                continue;
+            }
+            filtered.add(row);
+        }
+
+        filtered.sort(new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> left, Map<String, Object> right) {
+                Date leftDate = (Date) left.get("addtime");
+                Date rightDate = (Date) right.get("addtime");
+                if (leftDate == null && rightDate == null) {
+                    return 0;
+                }
+                if (leftDate == null) {
+                    return 1;
+                }
+                if (rightDate == null) {
+                    return -1;
+                }
+                return rightDate.compareTo(leftDate);
+            }
+        });
+
+        int total = filtered.size();
+        int fromIndex = Math.max((page - 1) * limit, 0);
+        int toIndex = Math.min(fromIndex + limit, total);
+        List<Map<String, Object>> pageList = fromIndex >= total ? new ArrayList<Map<String, Object>>() : filtered.subList(fromIndex, toIndex);
+
+        return R.ok().put("data", new PageUtils(pageList, total, limit, page));
+    }
+
+    private Map<String, Object> buildAggregateRow(Long id, String sourceTable, String leixing, String biaoti, String neirong, String zhuangtai, Date addtime) {
+        Map<String, Object> row = new HashMap<>();
+        row.put("id", id);
+        row.put("sourceId", id);
+        row.put("sourceTable", sourceTable);
+        row.put("leixing", leixing);
+        row.put("biaoti", biaoti);
+        row.put("neirong", neirong);
+        row.put("zhuangtai", zhuangtai);
+        row.put("addtime", addtime);
+        return row;
     }
 
     /**

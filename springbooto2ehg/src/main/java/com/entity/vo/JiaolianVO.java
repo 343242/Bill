@@ -61,8 +61,14 @@ public class JiaolianVO  implements Serializable {
 	/**
 	 * 头像
 	 */
-	
+
 	private String touxiang;
+
+	/**
+	 * 状态
+	 */
+
+	private String zhuangtai;
 				
 	
 	/**
@@ -175,5 +181,19 @@ public class JiaolianVO  implements Serializable {
 	public String getTouxiang() {
 		return touxiang;
 	}
-			
+
+	/**
+	 * 设置：状态
+	 */
+	public void setZhuangtai(String zhuangtai) {
+		this.zhuangtai = zhuangtai;
+	}
+
+	/**
+	 * 获取：状态
+	 */
+	public String getZhuangtai() {
+		return zhuangtai;
+	}
+
 }

@@ -185,7 +185,7 @@ public class JiaolianController {
      */
 	@IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,JiaolianEntity jiaolian, 
+    public R list(@RequestParam Map<String, Object> params,JiaolianEntity jiaolian,
 		HttpServletRequest request){
 		Object tableNameObj = request.getSession().getAttribute("tableName");
 		/*if(tableNameObj != null) {
@@ -214,6 +214,9 @@ public class JiaolianController {
 			}
 		}*/
         EntityWrapper<JiaolianEntity> ew = new EntityWrapper<JiaolianEntity>();
+		if(StringUtils.isBlank(jiaolian.getZhuangtai())) {
+			ew.in("zhuangtai", Arrays.asList("已发布", "启用", "显示"));
+		}
 		PageUtils page = jiaolianService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, jiaolian), params), params));
         return R.ok().put("data", page);
     }

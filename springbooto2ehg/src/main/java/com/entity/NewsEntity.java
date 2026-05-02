@@ -72,8 +72,14 @@ public class NewsEntity<T> implements Serializable {
 	/**
 	 * 内容
 	 */
-					
+
 	private String content;
+
+	/**
+	 * 状态
+	 */
+
+	private String zhuangtai;
 	
 	
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
@@ -141,6 +147,19 @@ public class NewsEntity<T> implements Serializable {
 	 */
 	public String getContent() {
 		return content;
+	}
+
+	/**
+	 * 设置：状态
+	 */
+	public void setZhuangtai(String zhuangtai) {
+		this.zhuangtai = zhuangtai;
+	}
+	/**
+	 * 获取：状态
+	 */
+	public String getZhuangtai() {
+		return zhuangtai;
 	}
 
 }

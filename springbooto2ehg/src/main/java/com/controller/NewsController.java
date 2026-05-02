@@ -70,9 +70,12 @@ public class NewsController {
      */
 	@IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,NewsEntity news, 
+    public R list(@RequestParam Map<String, Object> params,NewsEntity news,
 		HttpServletRequest request){
         EntityWrapper<NewsEntity> ew = new EntityWrapper<NewsEntity>();
+		if(StringUtils.isBlank(news.getZhuangtai())) {
+			ew.in("zhuangtai", Arrays.asList("已发布", "启用", "显示"));
+		}
 		PageUtils page = newsService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, news), params), params));
         return R.ok().put("data", page);
     }

@@ -21,7 +21,7 @@
           </el-form-item>
         </div>
       </el-col>
-      <el-col :span="24">  
+      <el-col :span="24">
         <el-form-item class="upload" v-if="type!='info' && !ro.picture" label="图片" prop="picture">
           <file-upload
           tip="点击上传图片"
@@ -35,6 +35,20 @@
         <div v-else>
           <el-form-item v-if="ruleForm.picture" label="图片" prop="picture">
             <img style="margin-right:20px;" v-bind:key="index" v-for="(item,index) in ruleForm.picture.split(',')" :src="$base.url+item" width="100" height="100">
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item class="select" v-if="type!='info'"  label="状态" prop="zhuangtai">
+          <el-select :disabled="ro.zhuangtai" v-model="ruleForm.zhuangtai" placeholder="请选择状态">
+            <el-option label="已发布" value="已发布"></el-option>
+            <el-option label="未发布" value="未发布"></el-option>
+          </el-select>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="状态" prop="zhuangtai">
+              <el-input v-model="ruleForm.zhuangtai"
+                placeholder="状态" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
@@ -162,12 +176,14 @@ export default {
 	introduction : false,
 	picture : false,
 	content : false,
+	zhuangtai : false,
       },
       ruleForm: {
         title: '',
         introduction: '',
         picture: '',
         content: '',
+        zhuangtai: '已发布',
       },
       rules: {
           title: [
@@ -180,6 +196,9 @@ export default {
           ],
           content: [
                 { required: true, message: '内容不能为空', trigger: 'blur' },
+          ],
+          zhuangtai: [
+                { required: true, message: '状态不能为空', trigger: 'change' },
           ],
       }
     };

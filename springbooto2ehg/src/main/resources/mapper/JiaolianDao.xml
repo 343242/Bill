@@ -12,6 +12,7 @@
         <result property="shouji" column="shouji"/>
         <result property="zhidaokemu" column="zhidaokemu"/>
         <result property="touxiang" column="touxiang"/>
+        <result property="zhuangtai" column="zhuangtai"/>
     </resultMap>
 
 	<select id="selectListVO"

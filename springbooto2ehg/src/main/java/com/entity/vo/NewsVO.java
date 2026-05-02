@@ -37,8 +37,14 @@ public class NewsVO  implements Serializable {
 	/**
 	 * 内容
 	 */
-	
+
 	private String content;
+
+	/**
+	 * 状态
+	 */
+
+	private String zhuangtai;
 				
 	
 	/**
@@ -87,5 +93,19 @@ public class NewsVO  implements Serializable {
 	public String getContent() {
 		return content;
 	}
-			
+
+	/**
+	 * 设置：状态
+	 */
+	public void setZhuangtai(String zhuangtai) {
+		this.zhuangtai = zhuangtai;
+	}
+
+	/**
+	 * 获取：状态
+	 */
+	public String getZhuangtai() {
+		return zhuangtai;
+	}
+
 }

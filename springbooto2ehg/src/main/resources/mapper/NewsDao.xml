@@ -8,6 +8,7 @@
         <result property="introduction" column="introduction"/>
         <result property="picture" column="picture"/>
         <result property="content" column="content"/>
+        <result property="zhuangtai" column="zhuangtai"/>
     </resultMap>
 
 	<select id="selectListVO"

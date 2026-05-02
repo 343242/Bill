@@ -99,7 +99,7 @@
           </el-form-item>
         </div>
       </el-col>
-      <el-col :span="24">  
+      <el-col :span="24">
         <el-form-item class="upload" v-if="type!='info' && !ro.touxiang" label="头像" prop="touxiang">
           <file-upload
           tip="点击上传头像"
@@ -113,6 +113,20 @@
         <div v-else>
           <el-form-item v-if="ruleForm.touxiang" label="头像" prop="touxiang">
             <img style="margin-right:20px;" v-bind:key="index" v-for="(item,index) in ruleForm.touxiang.split(',')" :src="$base.url+item" width="100" height="100">
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item class="select" v-if="type!='info'"  label="状态" prop="zhuangtai">
+          <el-select :disabled="ro.zhuangtai" v-model="ruleForm.zhuangtai" placeholder="请选择状态">
+            <el-option label="已发布" value="已发布"></el-option>
+            <el-option label="未发布" value="未发布"></el-option>
+          </el-select>
+        </el-form-item>
+        <div v-else>
+          <el-form-item class="input" label="状态" prop="zhuangtai">
+	      <el-input v-model="ruleForm.zhuangtai"
+                placeholder="状态" readonly></el-input>
           </el-form-item>
         </div>
       </el-col>
@@ -209,6 +223,7 @@ export default {
 	shouji : false,
 	zhidaokemu : false,
 	touxiang : false,
+	zhuangtai : false,
       },
       ruleForm: {
         jiaoliangonghao: '',
@@ -219,6 +234,7 @@ export default {
         shouji: '',
         zhidaokemu: '',
         touxiang: '',
+        zhuangtai: '已发布',
       },
           xingbieOptions: [],
       rules: {
@@ -242,6 +258,9 @@ export default {
           zhidaokemu: [
           ],
           touxiang: [
+          ],
+          zhuangtai: [
+                { required: true, message: '状态不能为空', trigger: 'change' },
           ],
       }
     };
